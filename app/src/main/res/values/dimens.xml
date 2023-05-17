@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="all_pad">16dp</dimen>
+    <dimen name="corner_radius">16dp</dimen>
+    <dimen name="text_size_main">22sp</dimen>
+    <dimen name="button_top_marg">16dp</dimen>
+    <dimen name="icon_pad">10dp</dimen>
+    <dimen name="top_screen">14dp</dimen>
+    <dimen name="text_size_settings">16sp</dimen>
+    <dimen name="settings_left_text">16dp</dimen>
+    <dimen name="settings_right_text">44dp</dimen>
+    <dimen name="settings_right_image">12dp</dimen>
+
+
+</resources>

@@ -1,18 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/main_background"
+android:orientation="vertical"
+android:paddingLeft = "@dimen/all_pad"
+android:paddingRight="@dimen/all_pad"
+android:paddingBottom="28dp"
+android:paddingTop="@dimen/top_screen"
+    >
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_gravity="start"
+        android:text="Playlist maker"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_main"
+        android:layout_marginBottom="24dp"
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        />
+    <Button
+        android:layout_marginTop="@dimen/button_top_marg"
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:backgroundTint="@color/white"
+        android:foreground="?attr/selectableItemBackground"
+        android:letterSpacing="0.02"
+        android:text="@string/search"
+        android:textAllCaps="false"
+        android:textColor="@color/main_text"
+        android:textSize="@dimen/text_size_main"
+        app:cornerRadius="@dimen/corner_radius"
+        app:icon="@drawable/search"
+        app:iconGravity="textStart"
+        app:iconPadding="@dimen/icon_pad"
+        app:iconTint="@color/icons_tint" />
+
+    <Button
+        android:layout_marginTop="@dimen/button_top_marg"
+        android:id="@+id/media"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:backgroundTint="@color/white"
+        android:foreground="?attr/selectableItemBackground"
+        android:letterSpacing="0.02"
+        android:text="@string/mediateka"
+        android:textAllCaps="false"
+        android:textColor="@color/main_text"
+        android:textSize="@dimen/text_size_main"
+        app:cornerRadius="@dimen/corner_radius"
+        app:icon="@drawable/media"
+        app:iconGravity="textStart"
+        app:iconPadding="@dimen/icon_pad"
+        app:iconTint="@color/icons_tint"
+
+        />
+
+    <Button
+        android:id="@+id/settings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/button_top_marg"
+        android:layout_weight="1"
+        android:backgroundTint="@color/white"
+        android:foreground="?attr/selectableItemBackground"
+        android:letterSpacing="0.02"
+        android:text="@string/settings"
+        android:textAllCaps="false"
+        android:textColor="@color/main_text"
+        android:textSize="@dimen/text_size_main"
+        app:cornerRadius="@dimen/corner_radius"
+        app:icon="@drawable/settings"
+        app:iconGravity="textStart"
+        app:iconPadding="@dimen/icon_pad"
+        app:iconTint="@color/icons_tint"
+
+            />
+
+
+
+</LinearLayout>
