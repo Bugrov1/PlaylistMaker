@@ -10,6 +10,13 @@
     <dimen name="settings_left_text">16dp</dimen>
     <dimen name="settings_right_text">44dp</dimen>
     <dimen name="settings_right_image">12dp</dimen>
+    <dimen name="icon_width">24dp</dimen>
+    <dimen name="icon_height">24dp</dimen>
+    <dimen name="button_back_width">48dp</dimen>
+    <dimen name="button_back_height">48dp</dimen>
+    <dimen name="spacing">0.02</dimen>
+    <dimen name="left_top_settings">4dp</dimen>
+    <dimen name="switch_size">56dp</dimen>
 
 
 </resources>

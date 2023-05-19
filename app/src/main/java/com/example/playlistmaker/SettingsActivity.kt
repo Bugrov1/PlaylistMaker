@@ -16,8 +16,9 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
         val backButton = findViewById<ImageButton>(R.id.back)
         backButton.setOnClickListener{
-            val displayIntent = Intent(this, MainActivity::class.java)
-            startActivity(displayIntent)
+            //val displayIntent = Intent(this, MainActivity::class.java)
+            finish()
+            //startActivity(displayIntent)
         }
     }
 

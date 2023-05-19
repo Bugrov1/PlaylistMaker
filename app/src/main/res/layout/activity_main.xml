@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@color/main_background"
-android:orientation="vertical"
-android:paddingLeft = "@dimen/all_pad"
-android:paddingRight="@dimen/all_pad"
-android:paddingBottom="28dp"
-android:paddingTop="@dimen/top_screen"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_background"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/all_pad"
+    android:paddingRight="@dimen/all_pad"
+    android:paddingBottom="28dp"
+    android:paddingTop="@dimen/top_screen">
 
     <TextView
         android:layout_width="wrap_content"
@@ -21,6 +20,7 @@ android:paddingTop="@dimen/top_screen"
         android:layout_marginBottom="24dp"
 
         />
+
     <Button
         android:layout_marginTop="@dimen/button_top_marg"
         android:id="@+id/search"
@@ -80,8 +80,7 @@ android:paddingTop="@dimen/top_screen"
         app:iconPadding="@dimen/icon_pad"
         app:iconTint="@color/icons_tint"
 
-            />
-
+        />
 
 
 </LinearLayout>
