@@ -4,43 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/settings_background"
     android:orientation="vertical"
     android:paddingBottom="476dp"
 
     >
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/left_top_settings"
-        android:layout_marginStart="@dimen/left_top_settings"
-        android:layout_marginEnd="52dp"
+        style="@style/TopLayoutBack"
         android:layout_marginBottom="28dp"
        >
+
         <ImageButton
             android:id="@+id/back"
-            android:foreground="?attr/selectableItemBackground"
-            android:contentDescription="Back"
-            android:layout_width="@dimen/button_back_width"
-            android:layout_height="@dimen/button_back_height"
-            android:layout_marginEnd="12dp"
-            android:layout_marginStart="@dimen/left_top_settings"
-
-            android:src="@drawable/backarrow"
-            android:background="@color/white"
+            style="@style/BackButton"
              />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="134dp"
+            style="@style/TopText"
             android:text="@string/settings"
-            android:letterSpacing="0.02"
-            android:textColor="@color/main_text"
-            android:textSize="@dimen/text_size_main" />
+             />
 
 
     </LinearLayout>
@@ -52,116 +35,77 @@
         android:layout_weight="1"
         >
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/settings_left_text"
-            android:layout_marginEnd="@dimen/settings_right_text"
-            android:letterSpacing="0.02"
-            android:layout_gravity="center|start"
-            android:text="@string/dark_theme_settings"
-            android:textColor="@color/main_text"
-            android:textSize="@dimen/text_size_settings" />
+            style="@style/SettingsText"
+            android:text="@string/dark_theme_settings" />
 
         <Switch
             android:layout_width="@dimen/switch_size"
             android:layout_height="@dimen/switch_size"
             android:layout_marginEnd="6dp"
             android:layout_gravity="center|end"
-
-            tools:ignore="UseSwitchCompatOrMaterialXml" />
+            tools:ignore="UseSwitchCompatOrMaterialXml"
+            android:theme="@style/SwitchColor"/>
 
 
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/share_button"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="horizontal"
+        android:foreground="?attr/selectableItemBackground"
         >
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|start"
-            android:layout_marginStart="@dimen/settings_left_text"
-            android:layout_marginEnd="@dimen/settings_right_text"
-            android:letterSpacing="0.02"
-            android:text="@string/share_settings"
-            android:textAllCaps="false"
-            android:textColor="@color/main_text"
-            android:textSize="@dimen/text_size_settings" />
+            style="@style/SettingsText"
+            android:text="@string/share_settings" />
 
         <ImageView
-            android:layout_gravity="center|end"
+            style="@style/SettingsIcon"
             android:contentDescription="Share"
-            android:layout_width="@dimen/icon_width"
-            android:layout_height="@dimen/icon_height"
-
-            android:layout_marginEnd="@dimen/settings_right_image"
-            android:background="@color/white"
             android:src="@drawable/share" />
 
 
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/support_button"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="horizontal"
-
+        android:foreground="?attr/selectableItemBackground"
         >
-
         <TextView
-            android:layout_gravity="center|start"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/settings_left_text"
-            android:layout_marginEnd="@dimen/settings_right_text"
-            android:letterSpacing="0.02"
-            android:text="@string/support_settings"
-            android:textColor="@color/main_text"
-            android:textSize="@dimen/text_size_settings" />
+            style="@style/SettingsText"
+            android:text="@string/support_settings" />
 
         <ImageView
-            android:layout_width="@dimen/icon_width"
-            android:layout_height="@dimen/icon_height"
-            android:layout_gravity="center|end"
-            android:layout_marginEnd="@dimen/settings_right_image"
-            android:src="@drawable/support"
-            app:backgroundTint="@color/white" />
+            style="@style/SettingsIcon"
+            android:src="@drawable/support" />
 
     </FrameLayout>
     <FrameLayout
+        android:id="@+id/users_license"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="horizontal"
+        android:foreground="?attr/selectableItemBackground"
 
         >
         <TextView
-            android:layout_gravity="center|start"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/settings_left_text"
-            android:letterSpacing="0.02"
-            android:text="@string/terms_settings"
-            android:layout_marginEnd="@dimen/settings_right_text"
-            android:textColor="@color/main_text"
-            android:textSize="@dimen/text_size_settings" />
+            style="@style/SettingsText"
+            android:text="@string/terms_settings" />
 
         <ImageView
-            android:layout_gravity="center|end"
-            android:layout_width="@dimen/icon_width"
-            android:layout_height="@dimen/icon_height"
-            android:layout_marginEnd="@dimen/settings_right_image"
-            android:src="@drawable/arrow_forward"
-            android:background="@color/white" />
+            style="@style/SettingsIcon"
+            android:src="@drawable/arrow_forward" />
 
 
     </FrameLayout>
-
 
 
 

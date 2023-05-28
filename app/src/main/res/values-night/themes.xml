@@ -13,4 +13,13 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+
+    <style name="SwitchColor">
+        <item name="colorSecondary">#2C77FB</item>
+        <item name="colorSecondaryVariant">#4B02F0</item>
+        <item name="android:thumbTint">@color/white</item>
+        <item name="android:trackTint">@color/light_grey</item>
+
+    </style>
 </resources>

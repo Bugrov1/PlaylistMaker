@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MessageTextStyle">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+
+    <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:textColor">@color/main_text</item>
+        <item name="android:textSize">@dimen/text_size_main</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="cornerRadius">@dimen/corner_radius</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">@dimen/icon_pad</item>
+        <item name="iconTint">@color/icons_tint</item>
+
+    </style>
+
+    <style name="SettingsText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textFontWeight">300</item>
+        <item name="android:layout_marginStart">@dimen/settings_left_text</item>
+        <item name="android:layout_marginEnd">@dimen/settings_right_text</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:layout_gravity">center|start</item>
+        <item name="android:textColor">@color/settings_text</item>
+        <item name="android:textSize">@dimen/text_size_settings</item>
+    </style>
+
+    <style name="SettingsIcon">
+        <item name="android:layout_width">@dimen/icon_width</item>
+        <item name="android:layout_height">@dimen/icon_height</item>
+        <item name="android:layout_marginEnd">@dimen/settings_right_image</item>
+        <item name="android:layout_gravity">center|end</item>
+        <item name="android:background">@color/settings_icons_back</item>
+        <item name="android:tint">@color/settings_icons</item>
+    </style>
+    <style name="TopLayoutBack">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginTop">@dimen/left_top_settings</item>
+        <item name="android:layout_marginStart">@dimen/left_top_settings</item>
+        <item name="android:layout_marginEnd">@dimen/top_layout_margin_end</item>
+        <item name="android:background">@color/settings_icons_back</item>
+        <item name="android:tint">@color/settings_icons</item>
+    </style>
+    <style name="BackButton">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_width">@dimen/button_back_width</item>
+        <item name="android:layout_height">@dimen/button_back_height</item>
+        <item name="android:layout_marginEnd">12dp</item>
+        <item name="android:background">@color/settings_background</item>
+        <item name="android:contentDescription">Back</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:src">@drawable/backarrow</item>
+        <item name="tint">@color/backarrow_color</item>
+    </style>
+
+    <style name="TopText">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+
+        <item name="android:layout_gravity">center</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="android:textColor">@color/settings_upper</item>
+        <item name="android:textSize">@dimen/text_size_main</item>
+
+    </style>
+
+</resources>

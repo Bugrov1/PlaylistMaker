@@ -1,9 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchActivity">
+    android:background="@color/settings_background"
+    android:orientation="vertical"
+    >
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        style="@style/TopLayoutBack"
+        >
+        <ImageButton
+            android:id="@+id/back"
+            style="@style/BackButton"
+            />
+
+        <TextView
+            android:text="@string/search"
+            style="@style/TopText"
+
+ />
+
+    </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        >
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/search_corners"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            >
+            <EditText
+                android:id="@+id/inputEditText"
+                android:fontFamily="@font/ys_display_regular"
+                android:textFontWeight="400"
+                android:textSize="@dimen/text_size_settings"
+                android:paddingLeft="12dp"
+                android:drawableStart="@drawable/search"
+                android:drawableTint="#AEAFB4"
+                android:drawablePadding="8dp"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:hint="@string/search"
+                android:maxLength="15"
+                android:maxLines="1"
+                android:inputType="text"
+                android:textColorHint="#AEAFB4"
+                android:background="@drawable/search_corners"
+                />
+            <ImageView
+                android:id="@+id/clearIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                android:visibility="gone"
+                android:background="@drawable/search_corners"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

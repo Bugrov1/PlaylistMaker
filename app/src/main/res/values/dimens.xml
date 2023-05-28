@@ -17,6 +17,7 @@
     <dimen name="spacing">0.02</dimen>
     <dimen name="left_top_settings">4dp</dimen>
     <dimen name="switch_size">56dp</dimen>
+    <dimen name="top_layout_margin_end">52dp</dimen>
 
 
 </resources>
