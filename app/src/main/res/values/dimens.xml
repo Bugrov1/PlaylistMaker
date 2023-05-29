@@ -18,6 +18,7 @@
     <dimen name="left_top_settings">4dp</dimen>
     <dimen name="switch_size">56dp</dimen>
     <dimen name="top_layout_margin_end">52dp</dimen>
+    <dimen name="search_left_right_margin">16dp</dimen>
 
 
 </resources>

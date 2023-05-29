@@ -25,7 +25,7 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
     <string name="share_button_message">https://practicum.yandex.ru/profile/android-developer/</string>
-    <string name="support_mail_to">px316@yandex.ru/</string>
+    <string name="support_mail_to">px316@yandex.ru</string>
     <string name="support_theme_message">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="support_text_message">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="users_licence_link">https://yandex.ru/legal/practicum_offer/</string>

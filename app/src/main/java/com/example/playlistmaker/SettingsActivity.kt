@@ -18,9 +18,9 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
         val backButton = findViewById<ImageButton>(R.id.back)
         backButton.setOnClickListener{
-            //val displayIntent = Intent(this, MainActivity::class.java)
+
             finish()
-            //startActivity(displayIntent)
+
         }
         val shareButton=findViewById<FrameLayout>(R.id.share_button)
         shareButton.setOnClickListener {
@@ -49,7 +49,7 @@ class SettingsActivity : AppCompatActivity() {
             val uri = Uri.parse(link)
             val usersIntent = Intent(Intent.ACTION_VIEW,uri)
             startActivity(usersIntent)
-            //написать интент
+
         }
 
     }

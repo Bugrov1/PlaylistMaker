@@ -33,14 +33,14 @@
         android:paddingBottom="8dp"
         >
 
-        <LinearLayout
+        <FrameLayout
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:background="@drawable/search_corners"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginLeft="@dimen/search_left_right_margin"
+            android:layout_marginRight="@dimen/search_left_right_margin"
             >
             <EditText
                 android:id="@+id/inputEditText"
@@ -49,28 +49,28 @@
                 android:textSize="@dimen/text_size_settings"
                 android:paddingLeft="12dp"
                 android:drawableStart="@drawable/search"
-                android:drawableTint="#AEAFB4"
+                android:drawableTint="@color/search_hint_color"
                 android:drawablePadding="8dp"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="36dp"
-                android:layout_weight="1"
                 android:hint="@string/search"
                 android:maxLength="15"
                 android:maxLines="1"
                 android:inputType="text"
-                android:textColorHint="#AEAFB4"
+                android:textColorHint="@color/search_hint_color"
                 android:background="@drawable/search_corners"
                 />
             <ImageView
+                android:layout_gravity="center|end"
                 android:id="@+id/clearIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
+                android:layout_width="40dp"
+                android:layout_height="36dp"
                 android:src="@android:drawable/ic_menu_close_clear_cancel"
                 android:visibility="gone"
-                android:background="@drawable/search_corners"/>
+                app:tint="@color/search_hint_color"
+                />
 
-        </LinearLayout>
+        </FrameLayout>
 
 
     </LinearLayout>

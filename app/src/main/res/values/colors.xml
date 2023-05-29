@@ -18,4 +18,7 @@
     <color name="light_grey">#EBEDF3</color>
     <color name="settings_text">#1A1B22</color>
     <color name="settings_icons_back">#FFFFFFFF</color>
+    <color name="search_hint_color"> #AEAFB4</color>
+
+
 </resources>
