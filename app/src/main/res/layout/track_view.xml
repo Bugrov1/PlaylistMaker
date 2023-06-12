@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/recycler_view"
+
+    >
+
+    <ImageView
+        android:id="@+id/artWork"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_height="@dimen/artworrk_dimensions"
+        android:layout_width="@dimen/artworrk_dimensions"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf ="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/baseline_person_24"/>
+
+    <TextView
+        android:id="@+id/trackName"
+        android:fontFamily="@font/ys_display_regular"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_settings"
+        android:textColor="@color/black_white"
+        android:ellipsize="end"
+        android:layout_marginTop="@dimen/track_view_top_bot_margin"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        tools:text="Very long name of the song"
+        android:lines="1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/artWork"
+        app:layout_constraintEnd_toStartOf="@id/arrowButton"/>
+
+    <TextView
+        android:id="@+id/artistName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/tracks_dimensions"
+        android:fontFamily="@font/ys_display_regular"
+        android:textColor="@color/settings_icons"
+        android:layout_marginTop="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="@dimen/track_view_top_bot_margin"
+        tools:text="VeryGoodArtist"
+        android:lines="1"
+        android:ellipsize="end"
+        app:layout_constraintTop_toBottomOf="@id/trackName"
+        app:layout_constraintStart_toEndOf="@id/artWork"
+        app:layout_constraintEnd_toStartOf="@id/dot"/>
+
+    <ImageView
+        android:id="@+id/dot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:tint = "@color/settings_icons"
+        android:layout_marginTop="1dp"
+        android:src="@drawable/ic"
+        app:layout_constraintTop_toBottomOf="@id/trackName"
+        app:layout_constraintStart_toEndOf="@id/artistName"
+        app:layout_constraintEnd_toStartOf="@id/trackTime"/>
+
+    <TextView
+        android:id="@+id/trackTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/settings_icons"
+        android:textSize="@dimen/tracks_dimensions"
+        android:fontFamily="@font/ys_display_regular"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="@dimen/track_view_top_bot_margin"
+        android:ellipsize="end"
+        android:layout_marginEnd="135dp"
+        tools:text="3:16"
+        android:lines="1"
+        app:layout_constraintTop_toBottomOf="@id/trackName"
+        app:layout_constraintStart_toEndOf="@id/dot"
+        app:layout_constraintEnd_toStartOf="@id/arrowButton"/>
+
+
+
+    <ImageView
+
+        android:id="@+id/arrowButton"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="19dp"
+        android:layout_marginEnd="12dp"
+        style="@style/SettingsIcon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/arrow_forward"
+        android:foreground="?attr/selectableItemBackground"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

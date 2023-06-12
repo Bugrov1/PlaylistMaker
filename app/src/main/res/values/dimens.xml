@@ -19,6 +19,9 @@
     <dimen name="switch_size">56dp</dimen>
     <dimen name="top_layout_margin_end">52dp</dimen>
     <dimen name="search_left_right_margin">16dp</dimen>
+    <dimen name="tracks_dimensions">11sp</dimen>
+    <dimen name="track_view_top_bot_margin">14dp</dimen>
+    <dimen name="artworrk_dimensions">45dp</dimen>
 
 
 </resources>
