@@ -10,26 +10,26 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import kotlinx.coroutines.NonDisposableHandle.parent
 
-class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    private val trackName: TextView= itemView.findViewById(R.id.trackName)
-    private val artistName: TextView= itemView.findViewById(R.id.artistName)
-    private val trackTime: TextView= itemView.findViewById(R.id.trackTime)
-    private val artWork: ImageView= itemView.findViewById(R.id.artWork)
+    private val trackName: TextView = itemView.findViewById(R.id.trackName)
+    private val artistName: TextView = itemView.findViewById(R.id.artistName)
+    private val trackTime: TextView = itemView.findViewById(R.id.trackTime)
+    private val imageViewArtwork: ImageView = itemView.findViewById(R.id.imageViewArtwork)
 
 
     fun bind(model: Track) {
         trackName.text = model.trackName
         artistName.text = model.artistName
         trackTime.text = model.trackTime
+        val roundingRadius = 10
         Glide.with(itemView)
             .load(model.artworkUrl100)
-            .placeholder(R.drawable.baseline_person_24)
+            .placeholder(R.drawable.placeholder)
             .centerCrop()
-            .transform(RoundedCorners(10))
-            .into(artWork)
+            .transform(RoundedCorners(roundingRadius))
+            .into(imageViewArtwork)
     }
-
 
 
 }

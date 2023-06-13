@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class SearchActivity : AppCompatActivity() {
     var inputText = ""
-    lateinit var input: EditText
+    private lateinit var input: EditText
 
     companion object {
         const val SAVED_INPUT = "SAVED_INPUT"

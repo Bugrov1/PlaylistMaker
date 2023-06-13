@@ -18,8 +18,6 @@ class Adapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(tracks[position])
-        val item = tracks[position]
-
     }
 
     override fun getItemCount(): Int {
