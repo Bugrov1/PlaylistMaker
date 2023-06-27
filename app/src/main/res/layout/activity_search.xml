@@ -59,6 +59,8 @@
                 android:inputType="text"
                 android:textColorHint="@color/search_hint_color"
                 android:background="@drawable/search_corners"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
                 />
             <ImageView
                 android:layout_gravity="center|end"
@@ -81,5 +83,41 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/track_view" />
+        tools:itemCount="1"
+        tools:listitem="@layout/track_view"
+        />
+
+    <ImageView android:id="@+id/placeholderImage"
+        android:layout_marginTop="102dp"
+        android:layout_width="@dimen/search_placeholder_imagesize"
+        android:layout_height="@dimen/search_placeholder_imagesize"
+        android:layout_gravity="center"
+        android:src="@drawable/nothing_found_image"
+        android:textAlignment="center"
+        android:visibility="gone"
+      />
+    <TextView android:id="@+id/placeholderMessage"
+        android:layout_marginTop="16dp"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:text="Проблемы со связью \n\nЗагрузка не удалась. Проверьте подключение к интернету"
+        android:textFontWeight="400"
+        android:fontFamily="@font/ys_display_medium"
+        android:textSize="@dimen/search_placeholder_textsize"
+        android:textStyle="bold"
+        android:textColor="@color/settings_text"
+        android:visibility="gone"/>
+    <Button
+        android:id="@+id/placeholderButton"
+        android:layout_marginTop="14dp"
+        style="@style/RefreshButtonStyle"
+        android:text="@string/refresh_button"
+        android:visibility="gone"
+
+        />
+
+
+
 </LinearLayout>

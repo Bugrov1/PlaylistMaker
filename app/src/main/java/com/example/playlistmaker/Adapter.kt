@@ -8,9 +8,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 class Adapter(
-    private val tracks: List<Track>
-) : RecyclerView.Adapter<ViewHolder> () {
 
+) : RecyclerView.Adapter<ViewHolder> () {
+    var tracks =  ArrayList<Track>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_view, parent, false)
         return ViewHolder(view)

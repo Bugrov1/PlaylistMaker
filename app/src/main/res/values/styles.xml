@@ -79,4 +79,25 @@
 
     </style>
 
+    <style name="RefreshButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:backgroundTint">@color/settings_text</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:textColor">@color/settings_background</item>
+        <item name="android:textSize">@dimen/search_refresh_textsize</item>
+        <item name="android:letterSpacing">0.02</item>
+        <item name="cornerRadius">@dimen/search_refresh_radius</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingLeft">6dp</item>
+        <item name="android:paddingRight">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+
+
+    </style>
+
 </resources>

@@ -29,4 +29,7 @@
     <string name="support_theme_message">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="support_text_message">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="users_licence_link">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="something_went_wrong">Wrong</string>
+    <string name="nothing_found">Ничего не нашлось</string>
+    <string name="refresh_button">Обновить</string>
 </resources>
