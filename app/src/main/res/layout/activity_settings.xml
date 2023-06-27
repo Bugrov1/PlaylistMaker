@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/settings_background"
+    android:orientation="vertical"
+    android:paddingBottom="476dp"
+
+    >
+
+    <LinearLayout
+        style="@style/TopLayoutBack"
+        android:layout_marginBottom="28dp"
+       >
+
+        <ImageButton
+            android:id="@+id/back"
+            style="@style/BackButton"
+             />
+
+        <TextView
+            style="@style/TopText"
+            android:text="@string/settings"
+             />
+
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        >
+        <TextView
+            style="@style/SettingsText"
+            android:text="@string/dark_theme_settings" />
+
+        <Switch
+            android:layout_width="@dimen/switch_size"
+            android:layout_height="@dimen/switch_size"
+            android:layout_marginEnd="6dp"
+            android:layout_gravity="center|end"
+            tools:ignore="UseSwitchCompatOrMaterialXml"
+            android:theme="@style/SwitchColor"/>
+
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/share_button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:foreground="?attr/selectableItemBackground"
+        >
+
+        <TextView
+            style="@style/SettingsText"
+            android:text="@string/share_settings" />
+
+        <ImageView
+            style="@style/SettingsIcon"
+            android:contentDescription="Share"
+            android:src="@drawable/share" />
+
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/support_button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:foreground="?attr/selectableItemBackground"
+        >
+        <TextView
+            style="@style/SettingsText"
+            android:text="@string/support_settings" />
+
+        <ImageView
+            style="@style/SettingsIcon"
+            android:src="@drawable/support" />
+
+    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/users_license"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:foreground="?attr/selectableItemBackground"
+
+        >
+        <TextView
+            style="@style/SettingsText"
+            android:text="@string/terms_settings" />
+
+        <ImageView
+            style="@style/SettingsIcon"
+            android:src="@drawable/arrow_forward" />
+
+
+    </FrameLayout>
+
+
+
+</LinearLayout>

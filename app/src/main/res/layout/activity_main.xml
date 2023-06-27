@@ -1,18 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="@color/main_background"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/all_pad"
+    android:paddingRight="@dimen/all_pad"
+    android:paddingBottom="28dp"
+    android:paddingTop="@dimen/top_screen">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_gravity="start"
+        android:text="Playlist maker"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_main"
+        style="@style/MessageTextStyle"
+        android:layout_marginBottom="24dp"
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        />
+
+    <Button
+        style="@style/ButtonStyle"
+        android:layout_marginTop="@dimen/button_top_marg"
+        android:id="@+id/search"
+        android:layout_weight="1"
+        android:text="@string/search"
+        app:icon="@drawable/search"
+      />
+
+    <Button
+        style="@style/ButtonStyle"
+        android:layout_marginTop="@dimen/button_top_marg"
+        android:id="@+id/media"
+        android:layout_weight="1"
+        android:text="@string/mediateka"
+        app:icon="@drawable/media"
+
+        />
+
+    <Button
+        style="@style/ButtonStyle"
+        android:id="@+id/settings"
+        android:layout_marginTop="@dimen/button_top_marg"
+        android:layout_weight="1"
+        android:text="@string/settings"
+        app:icon="@drawable/settings"
+
+        />
+
+
+</LinearLayout>
