@@ -111,7 +111,7 @@
         android:visibility="gone"/>
     <Button
         android:id="@+id/placeholderButton"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="@dimen/top_screen"
         style="@style/RefreshButtonStyle"
         android:text="@string/refresh_button"
         android:visibility="gone"

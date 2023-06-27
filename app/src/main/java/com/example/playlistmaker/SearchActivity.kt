@@ -1,8 +1,7 @@
 package com.example.playlistmaker
 
-import android.content.Context
+
 import android.os.Bundle
-import android.os.Message
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -13,7 +12,6 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
@@ -23,14 +21,14 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
-    private val BaseUrl = "https://itunes.apple.com"
-
+    private val baseUrl = "https://itunes.apple.com"
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl(BaseUrl )
+        .baseUrl(baseUrl )
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-    private val ItunesService = retrofit.create(ItunesAPI::class.java)
+
+    private val itunesService = retrofit.create(ItunesAPI::class.java)
 
     private lateinit var inputText : String
     private lateinit var input: EditText
@@ -53,13 +51,13 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-         backButton = findViewById<ImageButton>(R.id.back)
-         inputEditText = findViewById<EditText>(R.id.inputEditText)
-         clearButton = findViewById<ImageView>(R.id.clearIcon)
-         recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+         backButton = findViewById(R.id.back)
+         inputEditText = findViewById(R.id.inputEditText)
+         clearButton = findViewById(R.id.clearIcon)
+         recyclerView = findViewById(R.id.recyclerView)
          placeholderImage = findViewById(R.id.placeholderImage)
          placeholderMessage= findViewById(R.id.placeholderMessage)
-         placeholderButton= findViewById<Button>(R.id.placeholderButton)
+         placeholderButton= findViewById(R.id.placeholderButton)
 
         input = inputEditText
 
@@ -71,38 +69,12 @@ class SearchActivity : AppCompatActivity() {
         }
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                ItunesService.search(inputEditText.text.toString()).enqueue(object :
-                    Callback<TrackResponse> {
-                    override fun onResponse(call: Call<TrackResponse>,
-                                            response: Response<TrackResponse>
-                    ) {
-                        if (response.code() == 200) {
-                            trackList.clear()
-                            if (response.body()?.results?.isNotEmpty() == true) {
-                                trackList.addAll(response.body()?.results!!)
-                                adapter.notifyDataSetChanged()
-                            }
-                            if (trackList.isEmpty()) {
-                                showMessage(getString(R.string.nothing_found))
-                            } else {
-                                showMessage("")
-                            }
-                        } else {
-                            showMessage(getString(R.string.something_went_wrong))
-                        }
-                    }
-
-                    override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                        showMessage(getString(R.string.something_went_wrong))
-                    }
-
-                })
+                search(inputEditText)
                 true
             }
             false
         }
-
-
+        placeholderButton.setOnClickListener {search(input) }
 
         clearButton.setOnClickListener {
             inputEditText.setText("")
@@ -145,6 +117,7 @@ class SearchActivity : AppCompatActivity() {
             placeholderMessage.text =getString(R.string.nothing_found)
             placeholderImage.visibility = View.VISIBLE
             placeholderMessage.visibility = View.VISIBLE
+            placeholderButton.visibility = View.GONE
             trackList.clear()
             adapter.notifyDataSetChanged()
 
@@ -153,13 +126,14 @@ class SearchActivity : AppCompatActivity() {
             placeholderMessage.text =getString(R.string.something_went_wrong)
             placeholderImage.visibility = View.VISIBLE
             placeholderMessage.visibility = View.VISIBLE
+            placeholderButton.visibility = View.VISIBLE
             trackList.clear()
             adapter.notifyDataSetChanged()
         }
     }
 
     private fun search(textToSearch: EditText) {
-        ItunesService.search(textToSearch.text.toString()).enqueue(object :
+        itunesService.search(textToSearch.text.toString()).enqueue(object :
             Callback<TrackResponse> {
             override fun onResponse(call: Call<TrackResponse>,
                                     response: Response<TrackResponse>
@@ -174,19 +148,16 @@ class SearchActivity : AppCompatActivity() {
                         showMessage("NoDataFound")
                     }
                 } else {
-                    showMessage("NoDataFound")
+                    showMessage("")
                 }
             }
 
             override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                showMessage("NoDataFound")
+                showMessage("")
             }
 
         })
-        true
     }
-
-
 
 
     override fun onSaveInstanceState(outState: Bundle) {
