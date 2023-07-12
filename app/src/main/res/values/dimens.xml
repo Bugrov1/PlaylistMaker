@@ -10,6 +10,11 @@
     <dimen name="settings_left_text">16dp</dimen>
     <dimen name="settings_right_text">44dp</dimen>
     <dimen name="settings_right_image">12dp</dimen>
+    <dimen name="settings_margin_top">21dp</dimen>
+    <dimen name="settings_margin_bot">21dp</dimen>
+    <dimen name="settings_margin_top_icon">19dp</dimen>
+    <dimen name="settings_margin_bot_icon">18dp</dimen>
+
     <dimen name="icon_width">24dp</dimen>
     <dimen name="icon_height">24dp</dimen>
     <dimen name="button_back_width">48dp</dimen>
@@ -17,6 +22,7 @@
     <dimen name="spacing">0.02</dimen>
     <dimen name="left_top_settings">4dp</dimen>
     <dimen name="switch_size">56dp</dimen>
+    <dimen name="switch_size_h">40dp</dimen>
     <dimen name="top_layout_margin_end">52dp</dimen>
     <dimen name="search_left_right_margin">16dp</dimen>
     <dimen name="tracks_dimensions">11sp</dimen>
@@ -26,6 +32,15 @@
     <dimen name="search_placeholder_textsize">19sp</dimen>
     <dimen name="search_refresh_textsize">14sp</dimen>
     <dimen name="search_refresh_radius">54dp</dimen>
+    <dimen name="search_edit_height">36dp</dimen>
+    <dimen name="track_song_width">0dp</dimen>
+    <dimen name="search_recycler_margin">24dp</dimen>
+    <dimen name="search_top_margin">18dp</dimen>
+    <dimen name="search_bot_margin">12dp</dimen>
+    <dimen name="search_top_margin_recycler">8dp</dimen>
+    <dimen name="search_top_margin_placeholder_message">16dp</dimen>
+    <dimen name="search_width_placeholder_message">300dp</dimen>
+    <dimen name="search_margin_top_placeholder_image">102dp</dimen>
 
 
 </resources>

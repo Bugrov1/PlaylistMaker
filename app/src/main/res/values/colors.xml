@@ -20,6 +20,7 @@
     <color name="settings_icons_back">#FFFFFFFF</color>
     <color name="search_hint_color"> #AEAFB4</color>
     <color name="black_white">#FF000000</color>
+    <color name="edit_text">#1A1B22</color>
 
 
 </resources>

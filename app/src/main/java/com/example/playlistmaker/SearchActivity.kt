@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -24,40 +25,43 @@ class SearchActivity : AppCompatActivity() {
     private val baseUrl = "https://itunes.apple.com"
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl(baseUrl )
+        .baseUrl(baseUrl)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
     private val itunesService = retrofit.create(ItunesAPI::class.java)
 
-    private lateinit var inputText : String
+    private lateinit var inputText: String
     private lateinit var input: EditText
     private lateinit var placeholderImage: ImageView
     private lateinit var placeholderMessage: TextView
-    private lateinit var backButton :  ImageButton
-    private lateinit var inputEditText :  EditText
-    private lateinit var clearButton : ImageView
-    private lateinit var recyclerView : RecyclerView
-    private lateinit var placeholderButton : Button
+    private lateinit var backButton: ImageButton
+    private lateinit var inputEditText: EditText
+    private lateinit var clearButton: ImageView
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var placeholderButton: Button
+    private lateinit var historyView: View
 
-    private val  trackList = arrayListOf<Track>()
+    private val trackList = arrayListOf<Track>()
     private val adapter = Adapter()
 
     companion object {
         const val SAVED_INPUT = "SAVED_INPUT"
     }
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-         backButton = findViewById(R.id.back)
-         inputEditText = findViewById(R.id.inputEditText)
-         clearButton = findViewById(R.id.clearIcon)
-         recyclerView = findViewById(R.id.recyclerView)
-         placeholderImage = findViewById(R.id.placeholderImage)
-         placeholderMessage= findViewById(R.id.placeholderMessage)
-         placeholderButton= findViewById(R.id.placeholderButton)
+        backButton = findViewById(R.id.back)
+        inputEditText = findViewById(R.id.inputEditText)
+        clearButton = findViewById(R.id.clearIcon)
+        recyclerView = findViewById(R.id.recyclerView)
+        placeholderImage = findViewById(R.id.placeholderImage)
+        placeholderMessage = findViewById(R.id.placeholderMessage)
+        placeholderButton = findViewById(R.id.placeholderButton)
+        historyView = findViewById(R.id.historyViewList)
 
         input = inputEditText
 
@@ -74,7 +78,7 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
-        placeholderButton.setOnClickListener {search(input) }
+        placeholderButton.setOnClickListener { search(input) }
 
         clearButton.setOnClickListener {
             inputEditText.setText("")
@@ -97,10 +101,19 @@ class SearchActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // empty
             }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
                 inputText = inputEditText.text.toString()
+                if (s != null) {
+                    historyView.visibility =
+                        if (inputEditText.hasFocus() && s.isEmpty()) View.VISIBLE else View.GONE
+                    //добавить проверку на историю поиска
+
+
+                }
             }
+
             override fun afterTextChanged(s: Editable?) {
                 // empty
             }
@@ -108,13 +121,12 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.addTextChangedListener(simpleTextWatcher)
 
 
-
     }
 
-    private fun showMessage(text: String) {
-        if (text=="NoDataFound") {
+    private fun showMessage(noDataFound: Boolean) {
+        if (noDataFound) {
             placeholderImage.setImageResource(R.drawable.nothing_found_image)
-            placeholderMessage.text =getString(R.string.nothing_found)
+            placeholderMessage.text = getString(R.string.nothing_found)
             placeholderImage.visibility = View.VISIBLE
             placeholderMessage.visibility = View.VISIBLE
             placeholderButton.visibility = View.GONE
@@ -123,7 +135,7 @@ class SearchActivity : AppCompatActivity() {
 
         } else {
             placeholderImage.setImageResource(R.drawable.goes_wrong_image)
-            placeholderMessage.text =getString(R.string.something_went_wrong)
+            placeholderMessage.text = getString(R.string.something_went_wrong)
             placeholderImage.visibility = View.VISIBLE
             placeholderMessage.visibility = View.VISIBLE
             placeholderButton.visibility = View.VISIBLE
@@ -135,8 +147,9 @@ class SearchActivity : AppCompatActivity() {
     private fun search(textToSearch: EditText) {
         itunesService.search(textToSearch.text.toString()).enqueue(object :
             Callback<TrackResponse> {
-            override fun onResponse(call: Call<TrackResponse>,
-                                    response: Response<TrackResponse>
+            override fun onResponse(
+                call: Call<TrackResponse>,
+                response: Response<TrackResponse>
             ) {
                 if (response.code() == 200) {
                     trackList.clear()
@@ -145,15 +158,15 @@ class SearchActivity : AppCompatActivity() {
                         adapter.notifyDataSetChanged()
                     }
                     if (trackList.isEmpty()) {
-                        showMessage("NoDataFound")
+                        showMessage(true)
                     }
                 } else {
-                    showMessage("")
+                    showMessage(false)
                 }
             }
 
             override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                showMessage("")
+                showMessage(false)
             }
 
         })
