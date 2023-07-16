@@ -2,6 +2,8 @@ package com.example.playlistmaker
 
 
 import android.annotation.SuppressLint
+import android.app.Application
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -41,10 +43,12 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var placeholderButton: Button
     private lateinit var historyView: View
+    private lateinit var clearHistoryButton: Button
+    private lateinit var historyRecycler: RecyclerView
 
     private val trackList = arrayListOf<Track>()
     private val adapter = Adapter()
-
+    private val adapterHistory = AdapterHistory()
     companion object {
         const val SAVED_INPUT = "SAVED_INPUT"
     }
@@ -62,12 +66,31 @@ class SearchActivity : AppCompatActivity() {
         placeholderMessage = findViewById(R.id.placeholderMessage)
         placeholderButton = findViewById(R.id.placeholderButton)
         historyView = findViewById(R.id.historyViewList)
+        clearHistoryButton = findViewById(R.id.clearHistory)
+        historyRecycler = findViewById(R.id.historyRecycler)
 
         input = inputEditText
+
+        var sharedPref = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
+        var history = SearchHistory(sharedPref).read()?.toCollection(ArrayList<Track>())
 
         adapter.tracks = trackList
         recyclerView.adapter = adapter
 
+        if (history != null && history.size != 0) {
+            adapterHistory.tracks = history
+            historyRecycler.adapter = adapterHistory
+            historyView.visibility = View.VISIBLE
+
+        }
+
+
+        clearHistoryButton.setOnClickListener {
+            if (history != null) {
+                SearchHistory(sharedPref).clear()
+                historyView.visibility = View.GONE
+            }
+        }
         backButton.setOnClickListener {
             finish()
         }
@@ -86,7 +109,15 @@ class SearchActivity : AppCompatActivity() {
             placeholderImage.visibility = View.GONE
             placeholderMessage.visibility = View.GONE
             placeholderButton.visibility = View.GONE
+            var sharedPref = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
+            var history = SearchHistory(sharedPref).read()?.toCollection(ArrayList<Track>())
+            if (history != null) {
+                adapterHistory.tracks = history
+            }
             adapter.notifyDataSetChanged()
+            adapterHistory.notifyDataSetChanged()
+
+
             val view: View? = this.currentFocus
             val inputMethodManager =
                 getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -105,13 +136,8 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
                 inputText = inputEditText.text.toString()
-                if (s != null) {
-                    historyView.visibility =
-                        if (inputEditText.hasFocus() && s.isEmpty()) View.VISIBLE else View.GONE
-                    //добавить проверку на историю поиска
+                historyView.visibility = if (inputEditText.hasFocus() && s?.isEmpty() == true&&history?.size!=0) View.VISIBLE else View.GONE
 
-
-                }
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -130,6 +156,7 @@ class SearchActivity : AppCompatActivity() {
             placeholderImage.visibility = View.VISIBLE
             placeholderMessage.visibility = View.VISIBLE
             placeholderButton.visibility = View.GONE
+            historyView.visibility = View.GONE
             trackList.clear()
             adapter.notifyDataSetChanged()
 
@@ -139,6 +166,7 @@ class SearchActivity : AppCompatActivity() {
             placeholderImage.visibility = View.VISIBLE
             placeholderMessage.visibility = View.VISIBLE
             placeholderButton.visibility = View.VISIBLE
+            historyView.visibility = View.GONE
             trackList.clear()
             adapter.notifyDataSetChanged()
         }
