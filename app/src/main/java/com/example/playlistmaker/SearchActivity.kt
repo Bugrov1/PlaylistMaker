@@ -111,8 +111,10 @@ class SearchActivity : AppCompatActivity() {
             placeholderButton.visibility = View.GONE
             var sharedPref = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
             var history = SearchHistory(sharedPref).read()?.toCollection(ArrayList<Track>())
-            if (history != null) {
+            if (history != null&&history.size>0) {
                 adapterHistory.tracks = history
+                historyRecycler.adapter = adapterHistory
+                historyView.visibility = View.VISIBLE
             }
             adapter.notifyDataSetChanged()
             adapterHistory.notifyDataSetChanged()
