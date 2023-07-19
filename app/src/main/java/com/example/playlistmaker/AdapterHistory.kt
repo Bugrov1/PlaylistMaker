@@ -14,7 +14,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 
 class AdapterHistory(
-
+//for commit
 ) : RecyclerView.Adapter<ViewHolder>() {
     var tracks = ArrayList<Track>()
 
