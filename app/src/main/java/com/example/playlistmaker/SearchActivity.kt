@@ -2,19 +2,13 @@ package com.example.playlistmaker
 
 
 import android.annotation.SuppressLint
-import android.app.Application
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
@@ -71,8 +65,8 @@ class SearchActivity : AppCompatActivity() {
 
         input = inputEditText
 
-        var sharedPref = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
-        var history = SearchHistory(sharedPref).read()?.toCollection(ArrayList<Track>())
+        val sharedPref = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
+        val history = SearchHistory(sharedPref).read()?.toCollection(ArrayList())
 
         adapter.tracks = trackList
         recyclerView.adapter = adapter
@@ -86,10 +80,11 @@ class SearchActivity : AppCompatActivity() {
 
 
         clearHistoryButton.setOnClickListener {
-            if (history != null) {
-                SearchHistory(sharedPref).clear()
-                historyView.visibility = View.GONE
-            }
+            println("history is ")
+            println(history )
+            SearchHistory(sharedPref).clear()
+            historyView.visibility = View.GONE
+
         }
         backButton.setOnClickListener {
             finish()
@@ -109,15 +104,19 @@ class SearchActivity : AppCompatActivity() {
             placeholderImage.visibility = View.GONE
             placeholderMessage.visibility = View.GONE
             placeholderButton.visibility = View.GONE
-            var sharedPref = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
-            var history = SearchHistory(sharedPref).read()?.toCollection(ArrayList<Track>())
-            if (history != null&&history.size>0) {
-                adapterHistory.tracks = history
+            val sharedPref = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
+            val history = SearchHistory(sharedPref).read()?.toCollection(ArrayList())
+
+            if (history == null||history.size==0) {
+
+                historyView.visibility = View.GONE
+            }else{ adapterHistory.tracks = history
                 historyRecycler.adapter = adapterHistory
+                adapterHistory.notifyDataSetChanged()
                 historyView.visibility = View.VISIBLE
             }
             adapter.notifyDataSetChanged()
-            adapterHistory.notifyDataSetChanged()
+
 
 
             val view: View? = this.currentFocus

@@ -26,13 +26,13 @@ class AdapterHistory(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(tracks[position])
-        var context = holder.itemView.context
-        var sharedPreferences = context.getSharedPreferences(TRACK_SEARCH_HISTORY , MODE_PRIVATE)
-        var history = SearchHistory(sharedPreferences)
+        val context = holder.itemView.context
+        val sharedPreferences = context.getSharedPreferences(TRACK_SEARCH_HISTORY , MODE_PRIVATE)
+        val history = SearchHistory(sharedPreferences)
         holder.itemView.setOnClickListener {
             history.write(tracks[position])
-            var sharedPreferences = context .getSharedPreferences(TRACK_SEARCH_HISTORY , MODE_PRIVATE);
-            var historyList = SearchHistory(sharedPreferences).read()?.toCollection(ArrayList())
+            val sharedPreferences = context .getSharedPreferences(TRACK_SEARCH_HISTORY , MODE_PRIVATE);
+            val historyList = SearchHistory(sharedPreferences).read()?.toCollection(ArrayList())
             if (historyList != null) {
                 tracks = historyList
             }

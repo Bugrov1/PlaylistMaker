@@ -23,7 +23,7 @@ class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(model: Track) {
         trackName.text = model.trackName
         artistName.text = model.artistName
-        var formatTrackTime = model.trackTimeMillis
+        val formatTrackTime = model.trackTimeMillis
         trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(formatTrackTime)
         val roundingRadius = 10
         Glide.with(itemView)
