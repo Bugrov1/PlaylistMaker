@@ -23,11 +23,11 @@ class Adapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(tracks[position])
-        var context = holder.itemView.context
-        var sharedPreferences = context.getSharedPreferences(TRACK_SEARCH_HISTORY ,
+        val context = holder.itemView.context
+        val sharedPreferences = context.getSharedPreferences(TRACK_SEARCH_HISTORY ,
             Context.MODE_PRIVATE
         )
-        var history = SearchHistory(sharedPreferences)
+        val history = SearchHistory(sharedPreferences)
         holder.itemView.setOnClickListener {
             history.write(tracks[position])
             notifyDataSetChanged()

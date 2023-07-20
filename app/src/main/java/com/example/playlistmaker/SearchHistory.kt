@@ -15,7 +15,7 @@ const val TRACK_SEARCH_HISTORY = "track_search_history"
 const val TRACKS_LIST_KEY = "track_list_key"
 
 class SearchHistory(var sharedPref: SharedPreferences) {
-
+    val listMaxSize = 10
     fun read(): Array<Track>? {
         var json = sharedPref.getString(TRACKS_LIST_KEY, null)
         return Gson().fromJson(json, Array<Track>::class.java)
@@ -45,15 +45,15 @@ class SearchHistory(var sharedPref: SharedPreferences) {
         }
 
         if (historyListMutable != null) {
-            if (historyListMutable.size == 10) {
+            if (historyListMutable.size == listMaxSize) {
                 Log.v(TAG, "HISTORY achieved 10 tracks");
                 Log.v(TAG, historyListMutable[9].trackName + " REMOVED from 9");
-                historyListMutable?.removeAt(9)
+                historyListMutable.removeAt(9)
 
-                historyListMutable?.add(0, track)
+                historyListMutable.add(0, track)
                 Log.v(TAG, track.trackName + " ADDED to 0")
             } else {
-                historyListMutable?.add(0, track)
+                historyListMutable.add(0, track)
                 Log.v(TAG, track.trackName + " ADDED to 0")
             }
         }
