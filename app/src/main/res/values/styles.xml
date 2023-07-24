@@ -99,4 +99,27 @@
 
     </style>
 
+    <style name="PlayerMainText">
+    <item name="android:fontFamily">@font/ys_display_medium</item>
+    <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">@dimen/text_size_main</item>
+    <item name="android:textColor">@color/settings_upper</item>
+
+    </style>
+
+    <style name="PlayerSecondText">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">@dimen/search_refresh_textsize</item>
+        <item name="android:textColor">@color/settings_upper</item>
+
+    </style>
+    <style name="PlayerThirdText">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">@dimen/sp_13</item>
+        <item name="android:textColor">@color/grey</item>
+
+    </style>
+
 </resources>

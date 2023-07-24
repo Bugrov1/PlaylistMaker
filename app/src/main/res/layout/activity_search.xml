@@ -14,7 +14,7 @@
         <ImageButton
             android:id="@+id/back"
             style="@style/BackButton"
-            />
+            android:contentDescription="@string/back_button" />
 
         <TextView
             android:text="@string/search"
