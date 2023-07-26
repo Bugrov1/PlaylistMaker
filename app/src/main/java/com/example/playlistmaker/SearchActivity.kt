@@ -93,7 +93,7 @@ class SearchActivity : AppCompatActivity() {
             intent.putExtra("collectionName", it.collectionName)
             intent.putExtra("releaseDate", it.releaseDate)
             intent.putExtra("primaryGenreName", it.primaryGenreName)
-            intent.putExtra("countrySTR", it.country)
+            intent.putExtra("country", it.country)
             startActivity(intent)
         }
 
@@ -112,7 +112,7 @@ class SearchActivity : AppCompatActivity() {
             intent.putExtra("collectionName", it.collectionName)
             intent.putExtra("releaseDate", it.releaseDate)
             intent.putExtra("primaryGenreName", it.primaryGenreName)
-            intent.putExtra("countrySTR", it.country)
+            intent.putExtra("country", it.country)
             startActivity(intent)
         }
 
