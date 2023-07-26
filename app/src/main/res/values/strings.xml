@@ -39,7 +39,7 @@
     <string name="like_button">Добавить в избранное</string>
     <string name="playlist_button">Добавить в плейлист</string>
     <string name="playPause_button"> Играть/Пауза</string>
-    <string name="test_album"> Yesterday (Remastered 2009)</string>
+    <string name="test_album"> Yesterday </string>
     <string name="trackTime">Длительность</string>
     <string name="albumName">Альбом</string>
     <string name="year">Год</string>

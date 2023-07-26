@@ -21,8 +21,7 @@ class SearchHistory(var sharedPref: SharedPreferences) {
         var historyList = read()?:emptyArray()
         println(historyList)
         val historyListMutable = historyList.toMutableList()
-        Log.v(TAG, "historyListMutable is $historyListMutable");
-
+        Log.v(TAG, "historyListMutable is $historyListMutable")
 
 
         var trackToRemove = false
@@ -43,7 +42,7 @@ class SearchHistory(var sharedPref: SharedPreferences) {
         }
 
         if (historyListMutable.size == listMaxSize) {
-            Log.v(TAG, "HISTORY achieved 10 tracks");
+            Log.v(TAG, "HISTORY achieved 10 tracks")
             Log.v(TAG, historyListMutable[9].trackName + " REMOVED from 9")
             historyListMutable.removeAt(9)
 
@@ -65,6 +64,8 @@ class SearchHistory(var sharedPref: SharedPreferences) {
         sharedPref.edit()
             .putString(TRACKS_LIST_KEY, json)
             .apply()
+
+
 
     }
 

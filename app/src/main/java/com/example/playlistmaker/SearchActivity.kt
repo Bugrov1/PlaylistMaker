@@ -3,6 +3,8 @@ package com.example.playlistmaker
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -44,7 +46,10 @@ class SearchActivity : AppCompatActivity() {
 
     private val trackList = arrayListOf<Track>()
     private val adapter = Adapter()
-    private val adapterHistory = AdapterHistory()
+
+    //private val adapterHistory = AdapterHistory()
+    private val adapterHistory = Adapter()
+
     companion object {
         const val SAVED_INPUT = "SAVED_INPUT"
     }
@@ -65,16 +70,56 @@ class SearchActivity : AppCompatActivity() {
         clearHistoryButton = findViewById(R.id.clearHistory)
         historyRecycler = findViewById(R.id.historyRecycler)
 
+        inputText = ""
         input = inputEditText
 
-        val sharedPref = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
-        val history = SearchHistory(sharedPref).read()?.toCollection(ArrayList())
+        var sharedPreferences = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
+        val history = SearchHistory(sharedPreferences).read()?.toCollection(ArrayList())
 
         adapter.tracks = trackList
         recyclerView.adapter = adapter
+        adapter.onItemClick = {
+            sharedPreferences = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
+            val history = SearchHistory(sharedPreferences)
+            history.write(it)
+            adapter.notifyDataSetChanged()
+
+            val intent = Intent(this, PlayerActivity::class.java)
+
+            intent.putExtra("trackName", it.trackName)
+            intent.putExtra("artistName", it.artistName)
+            intent.putExtra("trackTimeMillis", it.trackTimeMillis)
+            intent.putExtra("artworkUrl100", it.artworkUrl100)
+            intent.putExtra("collectionName", it.collectionName)
+            intent.putExtra("releaseDate", it.releaseDate)
+            intent.putExtra("primaryGenreName", it.primaryGenreName)
+            intent.putExtra("countrySTR", it.country)
+            startActivity(intent)
+        }
+
+        adapterHistory.onItemClick = {
+            sharedPreferences = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
+            val history = SearchHistory(sharedPreferences)
+            history.write(it)
+            adapterHistory.tracks =
+                SearchHistory(sharedPreferences).read()?.toCollection(ArrayList())!!
+            adapterHistory.notifyDataSetChanged()
+            val intent = Intent(this, PlayerActivity::class.java)
+            intent.putExtra("trackName", it.trackName)
+            intent.putExtra("artistName", it.artistName)
+            intent.putExtra("trackTimeMillis", it.trackTimeMillis)
+            intent.putExtra("artworkUrl100", it.artworkUrl100)
+            intent.putExtra("collectionName", it.collectionName)
+            intent.putExtra("releaseDate", it.releaseDate)
+            intent.putExtra("primaryGenreName", it.primaryGenreName)
+            intent.putExtra("countrySTR", it.country)
+            startActivity(intent)
+        }
 
         if (history != null && history.size != 0) {
-            adapterHistory.tracks = history
+            sharedPreferences = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
+            adapterHistory.tracks =
+                SearchHistory(sharedPreferences).read()?.toCollection(ArrayList())!!
             historyRecycler.adapter = adapterHistory
             historyView.visibility = View.VISIBLE
 
@@ -83,7 +128,7 @@ class SearchActivity : AppCompatActivity() {
 
         clearHistoryButton.setOnClickListener {
             Log.v(ContentValues.TAG, "history is is $history");
-            SearchHistory(sharedPref).clear()
+            SearchHistory(sharedPreferences).clear()
             historyView.visibility = View.GONE
 
         }
@@ -108,16 +153,16 @@ class SearchActivity : AppCompatActivity() {
             val sharedPref = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
             val history = SearchHistory(sharedPref).read()?.toCollection(ArrayList())
 
-            if (history == null||history.size==0) {
+            if (history == null || history.size == 0) {
 
                 historyView.visibility = View.GONE
-            }else{ adapterHistory.tracks = history
+            } else {
+                adapterHistory.tracks = history
                 historyRecycler.adapter = adapterHistory
                 adapterHistory.notifyDataSetChanged()
                 historyView.visibility = View.VISIBLE
             }
             adapter.notifyDataSetChanged()
-
 
 
             val view: View? = this.currentFocus
@@ -138,7 +183,8 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
                 inputText = inputEditText.text.toString()
-                historyView.visibility = if (inputEditText.hasFocus() && s?.isEmpty() == true&&history?.size!=0) View.VISIBLE else View.GONE
+                historyView.visibility =
+                    if (inputEditText.hasFocus() && s?.isEmpty() == true && history?.size != 0) View.VISIBLE else View.GONE
 
             }
 
