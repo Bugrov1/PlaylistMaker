@@ -91,10 +91,10 @@
         <item name="android:letterSpacing">0.02</item>
         <item name="cornerRadius">@dimen/search_refresh_radius</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingLeft">6dp</item>
-        <item name="android:paddingRight">6dp</item>
-        <item name="android:paddingBottom">6dp</item>
+        <item name="android:paddingTop">@dimen/dp_8</item>
+        <item name="android:paddingLeft">@dimen/dp_6</item>
+        <item name="android:paddingRight">@dimen/dp_6</item>
+        <item name="android:paddingBottom">@dimen/dp_6</item>
 
 
     </style>
@@ -119,7 +119,8 @@
         <item name="android:textFontWeight">400</item>
         <item name="android:textSize">@dimen/sp_13</item>
         <item name="android:textColor">@color/grey</item>
-
+        <item name="android:paddingTop">@dimen/dp_9</item>
+        <item name="android:paddingBottom">@dimen/dp_8</item>
     </style>
 
 </resources>

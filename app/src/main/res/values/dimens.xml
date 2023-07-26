@@ -46,6 +46,9 @@
     <dimen name="dp_100">100dp</dimen>
     <dimen name="dp_51">51dp</dimen>
     <dimen name="sp_13">13sp</dimen>
+    <dimen name="dp_9">9dp</dimen>
+    <dimen name="dp_8">8dp</dimen>
+    <dimen name="dp_6">6dp</dimen>
 
 
 </resources>

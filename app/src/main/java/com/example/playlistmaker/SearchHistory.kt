@@ -21,8 +21,8 @@ class SearchHistory(var sharedPref: SharedPreferences) {
         var historyList = read()?:emptyArray()
         println(historyList)
         val historyListMutable = historyList.toMutableList()
-        println("historyListMutable is")
-        println(historyListMutable)
+        Log.v(TAG, "historyListMutable is $historyListMutable");
+
 
 
         var trackToRemove = false

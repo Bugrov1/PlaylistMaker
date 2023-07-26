@@ -2,9 +2,11 @@ package com.example.playlistmaker
 
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -80,8 +82,7 @@ class SearchActivity : AppCompatActivity() {
 
 
         clearHistoryButton.setOnClickListener {
-            println("history is ")
-            println(history )
+            Log.v(ContentValues.TAG, "history is is $history");
             SearchHistory(sharedPref).clear()
             historyView.visibility = View.GONE
 
