@@ -114,6 +114,7 @@ class SearchActivity : AppCompatActivity() {
             intent.putExtra("primaryGenreName", it.primaryGenreName)
             intent.putExtra("country", it.country)
             startActivity(intent)
+            //
         }
 
         if (history != null && history.size != 0) {
