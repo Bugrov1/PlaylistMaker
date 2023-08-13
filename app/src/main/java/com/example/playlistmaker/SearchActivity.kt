@@ -4,8 +4,10 @@ package com.example.playlistmaker
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Intent
-import android.content.SharedPreferences
+
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -31,6 +33,16 @@ class SearchActivity : AppCompatActivity() {
 
     private val itunesService = retrofit.create(ItunesAPI::class.java)
 
+    companion object {
+        const val SAVED_INPUT = "SAVED_INPUT"
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+    }
+
+    private var isClickAllowed = true
+
+    private val handler = Handler(Looper.getMainLooper())
+
     private lateinit var inputText: String
     private lateinit var input: EditText
     private lateinit var placeholderImage: ImageView
@@ -43,6 +55,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var historyView: View
     private lateinit var clearHistoryButton: Button
     private lateinit var historyRecycler: RecyclerView
+    private lateinit var progressBar: ProgressBar
 
     private val trackList = arrayListOf<Track>()
     private val adapter = Adapter()
@@ -50,9 +63,6 @@ class SearchActivity : AppCompatActivity() {
     //private val adapterHistory = AdapterHistory()
     private val adapterHistory = Adapter()
 
-    companion object {
-        const val SAVED_INPUT = "SAVED_INPUT"
-    }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,6 +79,7 @@ class SearchActivity : AppCompatActivity() {
         historyView = findViewById(R.id.historyViewList)
         clearHistoryButton = findViewById(R.id.clearHistory)
         historyRecycler = findViewById(R.id.historyRecycler)
+        progressBar = findViewById(R.id.progressBar)
 
         inputText = ""
         input = inputEditText
@@ -79,42 +90,32 @@ class SearchActivity : AppCompatActivity() {
         adapter.tracks = trackList
         recyclerView.adapter = adapter
         adapter.onItemClick = {
-            sharedPreferences = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
-            val history = SearchHistory(sharedPreferences)
-            history.write(it)
-            adapter.notifyDataSetChanged()
+            if (clickDebounce()) {
+                sharedPreferences = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
+                val history = SearchHistory(sharedPreferences)
+                history.write(it)
+                adapter.notifyDataSetChanged()
 
-            val intent = Intent(this, PlayerActivity::class.java)
+                val intent = Intent(this, PlayerActivity::class.java)
+                putExtra(intent, it)
 
-            intent.putExtra("trackName", it.trackName)
-            intent.putExtra("artistName", it.artistName)
-            intent.putExtra("trackTimeMillis", it.trackTimeMillis)
-            intent.putExtra("artworkUrl100", it.artworkUrl100)
-            intent.putExtra("collectionName", it.collectionName)
-            intent.putExtra("releaseDate", it.releaseDate)
-            intent.putExtra("primaryGenreName", it.primaryGenreName)
-            intent.putExtra("country", it.country)
-            startActivity(intent)
+                startActivity(intent)
+            }
         }
 
         adapterHistory.onItemClick = {
-            sharedPreferences = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
-            val history = SearchHistory(sharedPreferences)
-            history.write(it)
-            adapterHistory.tracks =
-                SearchHistory(sharedPreferences).read()?.toCollection(ArrayList())!!
-            adapterHistory.notifyDataSetChanged()
-            val intent = Intent(this, PlayerActivity::class.java)
-            intent.putExtra("trackName", it.trackName)
-            intent.putExtra("artistName", it.artistName)
-            intent.putExtra("trackTimeMillis", it.trackTimeMillis)
-            intent.putExtra("artworkUrl100", it.artworkUrl100)
-            intent.putExtra("collectionName", it.collectionName)
-            intent.putExtra("releaseDate", it.releaseDate)
-            intent.putExtra("primaryGenreName", it.primaryGenreName)
-            intent.putExtra("country", it.country)
-            startActivity(intent)
-            //
+            if (clickDebounce()) {
+                sharedPreferences = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
+                val history = SearchHistory(sharedPreferences)
+                history.write(it)
+                adapterHistory.tracks =
+                    SearchHistory(sharedPreferences).read()?.toCollection(ArrayList())!!
+                adapterHistory.notifyDataSetChanged()
+                val intent = Intent(this, PlayerActivity::class.java)
+                putExtra(intent, it)
+                startActivity(intent)
+                //
+            }
         }
 
         if (history != null && history.size != 0) {
@@ -186,6 +187,7 @@ class SearchActivity : AppCompatActivity() {
                 inputText = inputEditText.text.toString()
                 historyView.visibility =
                     if (inputEditText.hasFocus() && s?.isEmpty() == true && history?.size != 0) View.VISIBLE else View.GONE
+                searchDebounce()
 
             }
 
@@ -196,6 +198,22 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.addTextChangedListener(simpleTextWatcher)
 
 
+    }
+
+    private val searchRunnable = Runnable { search(inputEditText) }
+
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
     }
 
     private fun showMessage(noDataFound: Boolean) {
@@ -221,32 +239,53 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    private fun putExtra(intent: Intent, track: Track) {
+        intent.putExtra("trackName", track.trackName)
+        intent.putExtra("artistName", track.artistName)
+        intent.putExtra("trackTimeMillis", track.trackTimeMillis)
+        intent.putExtra("artworkUrl100", track.artworkUrl100)
+        intent.putExtra("collectionName", track.collectionName)
+        intent.putExtra("releaseDate", track.releaseDate)
+        intent.putExtra("primaryGenreName", track.primaryGenreName)
+        intent.putExtra("country", track.country)
+        intent.putExtra("previewUrl", track.previewUrl)
+    }
+
     private fun search(textToSearch: EditText) {
-        itunesService.search(textToSearch.text.toString()).enqueue(object :
-            Callback<TrackResponse> {
-            override fun onResponse(
-                call: Call<TrackResponse>,
-                response: Response<TrackResponse>
-            ) {
-                if (response.code() == 200) {
-                    trackList.clear()
-                    if (response.body()?.results?.isNotEmpty() == true) {
-                        trackList.addAll(response.body()?.results!!)
-                        adapter.notifyDataSetChanged()
+        if (textToSearch.text.isNotEmpty()) {
+            progressBar.visibility = View.VISIBLE
+            placeholderMessage.visibility = View.GONE
+            recyclerView.visibility = View.GONE
+
+            itunesService.search(textToSearch.text.toString()).enqueue(object :
+                Callback<TrackResponse> {
+                override fun onResponse(
+                    call: Call<TrackResponse>,
+                    response: Response<TrackResponse>
+                ) {
+                    progressBar.visibility = View.GONE
+                    if (response.code() == 200) {
+                        trackList.clear()
+                        if (response.body()?.results?.isNotEmpty() == true) {
+                            recyclerView.visibility = View.VISIBLE
+                            trackList.addAll(response.body()?.results!!)
+                            adapter.notifyDataSetChanged()
+                        }
+                        if (trackList.isEmpty()) {
+                            showMessage(true)
+                        }
+                    } else {
+                        showMessage(false)
                     }
-                    if (trackList.isEmpty()) {
-                        showMessage(true)
-                    }
-                } else {
+                }
+
+                override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+                    progressBar.visibility = View.GONE
                     showMessage(false)
                 }
-            }
 
-            override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                showMessage(false)
-            }
-
-        })
+            })
+        }
     }
 
 

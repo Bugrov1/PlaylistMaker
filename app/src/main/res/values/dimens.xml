@@ -49,6 +49,7 @@
     <dimen name="dp_9">9dp</dimen>
     <dimen name="dp_8">8dp</dimen>
     <dimen name="dp_6">6dp</dimen>
+    <dimen name="dp_180">180dp</dimen>
 
 
 </resources>
