@@ -3,6 +3,7 @@ package com.example.playlistmaker
 import android.content.ContentValues.TAG
 import android.content.SharedPreferences
 import android.util.Log
+import com.example.playlistmaker.domain.Track
 import com.google.gson.Gson
 
 const val TRACK_SEARCH_HISTORY = "track_search_history"

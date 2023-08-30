@@ -2,6 +2,7 @@ package com.example.playlistmaker
 
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 
@@ -15,15 +16,16 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.domain.Track
+import com.example.playlistmaker.presentation.Player2Test
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : Activity() {
     private val baseUrl = "https://itunes.apple.com"
 
     private val retrofit = Retrofit.Builder()
@@ -96,7 +98,7 @@ class SearchActivity : AppCompatActivity() {
                 history.write(it)
                 adapter.notifyDataSetChanged()
 
-                val intent = Intent(this, PlayerActivity::class.java)
+                val intent = Intent(this, Player2Test::class.java)//PlayerActivity
                 putExtra(intent, it)
 
                 startActivity(intent)
@@ -111,7 +113,9 @@ class SearchActivity : AppCompatActivity() {
                 adapterHistory.tracks =
                     SearchHistory(sharedPreferences).read()?.toCollection(ArrayList())!!
                 adapterHistory.notifyDataSetChanged()
-                val intent = Intent(this, PlayerActivity::class.java)
+                val intent = Intent(this, Player2Test::class.java)//PlayerActivity
+
+                putExtra(intent, it)
                 putExtra(intent, it)
                 startActivity(intent)
                 //

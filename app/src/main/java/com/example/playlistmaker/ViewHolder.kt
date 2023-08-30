@@ -1,14 +1,12 @@
 package com.example.playlistmaker
 
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import kotlinx.coroutines.NonDisposableHandle.parent
+import com.example.playlistmaker.domain.Track
 import java.text.SimpleDateFormat
 import java.util.*
 
