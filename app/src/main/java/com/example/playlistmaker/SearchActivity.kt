@@ -18,7 +18,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.domain.Track
-import com.example.playlistmaker.presentation.Player2Test
+import com.example.playlistmaker.presentation.PlayerActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -98,7 +98,7 @@ class SearchActivity : Activity() {
                 history.write(it)
                 adapter.notifyDataSetChanged()
 
-                val intent = Intent(this, Player2Test::class.java)//PlayerActivity
+                val intent = Intent(this, PlayerActivity::class.java)//PlayerActivity
                 putExtra(intent, it)
 
                 startActivity(intent)
@@ -113,7 +113,7 @@ class SearchActivity : Activity() {
                 adapterHistory.tracks =
                     SearchHistory(sharedPreferences).read()?.toCollection(ArrayList())!!
                 adapterHistory.notifyDataSetChanged()
-                val intent = Intent(this, Player2Test::class.java)//PlayerActivity
+                val intent = Intent(this, PlayerActivity::class.java)//PlayerActivity
 
                 putExtra(intent, it)
                 putExtra(intent, it)

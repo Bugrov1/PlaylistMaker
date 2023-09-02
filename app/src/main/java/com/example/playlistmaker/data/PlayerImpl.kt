@@ -14,14 +14,8 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerImpl():Player {
-    var playerState = 0
+    var playerState = PlayerStatus.STATE_DEFAULT
     var mediaPlayer = MediaPlayer()
-    companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
-    }
 
     override fun preparePlayer(play:ImageButton, url:String,  timer:TextView,  mainThreadHandler: Handler?) {
 
@@ -29,11 +23,11 @@ class PlayerImpl():Player {
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
             play.isEnabled = true
-            playerState = STATE_PREPARED
+            playerState = PlayerStatus.STATE_PREPARED
         }
         mediaPlayer.setOnCompletionListener {
             mainThreadHandler?.removeCallbacks(createUpdateTimerTask(timer,mainThreadHandler))
-            playerState = STATE_PREPARED
+            playerState = PlayerStatus.STATE_PREPARED
             timer.text ="00:00"
             play.setBackgroundResource(R.drawable.playpausebutton)
 
@@ -44,26 +38,28 @@ class PlayerImpl():Player {
 
         mediaPlayer.start()
         play.setBackgroundResource(R.drawable.pausebutton)
-        playerState = STATE_PLAYING
+        playerState = PlayerStatus.STATE_PLAYING
     }
 
     override fun pausePlayer(play:ImageButton) {
         mediaPlayer.pause()
         play.setBackgroundResource(R.drawable.playpausebutton)
-        playerState = STATE_PAUSED
+        playerState = PlayerStatus.STATE_PAUSED
 
     }
 
     override fun playbackControl( play:ImageButton) {
         when(playerState) {
-            STATE_PLAYING -> {
+            PlayerStatus.STATE_PLAYING -> {
                 pausePlayer( play)
                 Log.v(ContentValues.TAG, "Pause")
             }
-            STATE_PREPARED, STATE_PAUSED -> {
+            PlayerStatus.STATE_PREPARED, PlayerStatus.STATE_PAUSED -> {
                 startPlayer( play)
                 Log.v(ContentValues.TAG, "play")
             }
+
+            else -> {}
         }
     }
 
@@ -73,7 +69,7 @@ class PlayerImpl():Player {
             override fun run() {
                 Log.v(ContentValues.TAG, "TIMER TASK")
                 when (playerState) {
-                    STATE_PLAYING -> {
+                    PlayerStatus.STATE_PLAYING -> {
                         timer.text = SimpleDateFormat(
                             "mm:ss",
                             Locale.getDefault()
@@ -82,11 +78,13 @@ class PlayerImpl():Player {
 
                     }
 
-                    STATE_PREPARED, STATE_PAUSED -> {
+                    PlayerStatus.STATE_PREPARED, PlayerStatus.STATE_PAUSED -> {
 
                         //timer.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
                         mainThreadHandler?.removeCallbacks(this)
                     }
+
+                    else -> {}
                 }
                 Log.v(ContentValues.TAG, "Time is $mediaPlayer.currentPosition")
             }

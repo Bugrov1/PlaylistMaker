@@ -24,11 +24,9 @@
             android:name=".SettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".PlayerActivity"
+            android:name=".presentation.PlayerActivity"
             android:exported="false" />
-        <activity
-            android:name=".presentation.Player2Test"
-            android:exported="true"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
