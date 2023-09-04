@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui
 
 
 import android.annotation.SuppressLint
@@ -17,8 +17,14 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.R
+import com.example.playlistmaker.SearchHistory
+import com.example.playlistmaker.TRACK_SEARCH_HISTORY
+import com.example.playlistmaker.data.dto.TrackResponse
+import com.example.playlistmaker.data.network.ItunesAPI
 import com.example.playlistmaker.domain.Track
-import com.example.playlistmaker.presentation.PlayerActivity
+import com.example.playlistmaker.ui.PlayerActivity
+import com.example.playlistmaker.ui.Adapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -62,6 +68,8 @@ class SearchActivity : Activity() {
     private val trackList = arrayListOf<Track>()
     private val adapter = Adapter()
 
+
+
     //private val adapterHistory = AdapterHistory()
     private val adapterHistory = Adapter()
 
@@ -91,18 +99,18 @@ class SearchActivity : Activity() {
 
         adapter.tracks = trackList
         recyclerView.adapter = adapter
-        adapter.onItemClick = {
+        adapter.onItemClick ={
             if (clickDebounce()) {
                 sharedPreferences = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
                 val history = SearchHistory(sharedPreferences)
                 history.write(it)
                 adapter.notifyDataSetChanged()
-
-                val intent = Intent(this, PlayerActivity::class.java)//PlayerActivity
+                val intent = Intent(this, PlayerActivity::class.java)
                 putExtra(intent, it)
 
                 startActivity(intent)
-            }
+        }
+
         }
 
         adapterHistory.onItemClick = {

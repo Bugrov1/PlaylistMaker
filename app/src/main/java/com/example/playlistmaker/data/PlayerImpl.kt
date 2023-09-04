@@ -28,7 +28,7 @@ class PlayerImpl() : Player {
     }
 
     override fun setOnCompletionListener(listener: (() -> Unit)?) {
-        mediaPlayer.setOnPreparedListener{ listener?.invoke()}
+        mediaPlayer.setOnCompletionListener { listener?.invoke() }
     }
 
     override fun release() {

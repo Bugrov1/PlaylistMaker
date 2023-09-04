@@ -1,7 +1,6 @@
-package com.example.playlistmaker.presentation
+package com.example.playlistmaker.ui
 
 import android.content.ContentValues
-import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -14,6 +13,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.playlistmaker.Creator
 import com.example.playlistmaker.R
 import com.example.playlistmaker.data.PlayerImpl
 import com.example.playlistmaker.domain.PlayerInteractor
@@ -22,8 +22,10 @@ import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
 
+
+
     private var mainThreadHandler: Handler? = null
-    private var mediaPlayer = PlayerInteractor(PlayerImpl())
+    private var mediaPlayer = Creator.providePlayerInteractor() //PlayerInteractor(PlayerImpl())
     private lateinit var play: ImageButton
     private lateinit var timer: TextView
     private lateinit var url: String
@@ -36,7 +38,6 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private var playerState = STATE_DEFAULT
-
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {

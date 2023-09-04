@@ -1,15 +1,13 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
-import androidx.preference.PreferenceFragmentCompat
+import com.example.playlistmaker.R
 import com.google.android.material.switchmaterial.SwitchMaterial
 
 const val PLAYLISTMAKER_SWITCH_CHECK = "playlistmaker_switch_check"
