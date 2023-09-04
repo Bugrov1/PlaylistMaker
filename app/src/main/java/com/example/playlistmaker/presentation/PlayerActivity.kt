@@ -16,12 +16,17 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.data.PlayerImpl
+import com.example.playlistmaker.domain.PlayerInteractor
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+
     private var mainThreadHandler: Handler? = null
+    private var mediaPlayer = PlayerInteractor(PlayerImpl())
+    private lateinit var play: ImageButton
+    private lateinit var timer: TextView
+    private lateinit var url: String
 
     companion object {
         private const val STATE_DEFAULT = 0
@@ -30,24 +35,11 @@ class PlayerActivity : AppCompatActivity() {
         private const val STATE_PAUSED = 3
     }
 
-
-    private lateinit var play: ImageButton
-    private lateinit var timer: TextView
-    private lateinit var url: String
-
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    var player = PlayerImpl()
-
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    var mediaPlayer = player.mediaPlayer
-
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    private var playerState = player.playerState
+    private var playerState = STATE_DEFAULT
 
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
         mainThreadHandler = Handler(Looper.getMainLooper())
@@ -82,52 +74,101 @@ class PlayerActivity : AppCompatActivity() {
             .centerCrop()
             .transform(RoundedCorners(roundingRadius))
             .into(albumCover)
-
         albumNameValue.text = intent.extras?.getString("collectionName") ?: ""
         yearValue.text = intent.extras?.getString("releaseDate")?.subSequence(0, 4) ?: ""
         genreValue.text = intent.extras?.getString("primaryGenreName") ?: ""
         countryValue.text = intent.extras?.getString("country") ?: ""
 
-        player.preparePlayer(
-            play = play,
-            url = url,
-            timer = timer,
-            mainThreadHandler = mainThreadHandler
-        )
-        Log.v(ContentValues.TAG, "playerState is $playerState")
+        preparePlayer()
         play.setOnClickListener {
             Log.v(ContentValues.TAG, "START PLAYING")
-            player.playbackControl(play = play)
-
+            playbackControl()
 
             mainThreadHandler?.post(
-                player.createUpdateTimerTask(timer = timer, mainThreadHandler = mainThreadHandler!!)
+                createUpdateTimerTask()
             )
         }
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+
     override fun onPause() {
         super.onPause()
+        pausePlayer()
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer.release()
-        mainThreadHandler?.removeCallbacks(
-            player.createUpdateTimerTask(
-                timer = timer,
-                mainThreadHandler = mainThreadHandler!!
-            )
-        )
+        mainThreadHandler?.removeCallbacks(createUpdateTimerTask())
     }
 
 
+    private fun preparePlayer() {
+        mediaPlayer.preparePlayer(url = url)
+        mediaPlayer.setOnPreparedListener {
+            play.isEnabled = true
+            playerState = STATE_PREPARED
+        }
+        mediaPlayer.setOnCompletionListener {
+            mainThreadHandler?.removeCallbacks(createUpdateTimerTask())
+            playerState = STATE_PREPARED
+            timer.text = "00:00"
+            play.setBackgroundResource(R.drawable.playpausebutton)
+
+        }
+    }
+
+    private fun createUpdateTimerTask(): Runnable {
+        return object : Runnable {
+
+            override fun run() {
+                Log.v(ContentValues.TAG, "TIMER TASK")
+                when (playerState) {
+                    STATE_PLAYING -> {
+                        timer.text = SimpleDateFormat(
+                            "mm:ss",
+                            Locale.getDefault()
+                        ).format(mediaPlayer.currentPosition())
+                        mainThreadHandler?.postDelayed(this, 500)
+
+                    }
+
+                    STATE_PREPARED, STATE_PAUSED -> {
+
+
+                        mainThreadHandler?.removeCallbacks(this)
+                    }
+                }
+                Log.v(ContentValues.TAG, "Time is $mediaPlayer.currentPosition")
+            }
+        }
+    }
+
+
+    private fun startPlayer() {
+        mediaPlayer.startPlayer()
+        play.setBackgroundResource(R.drawable.pausebutton)
+        playerState = STATE_PLAYING
+    }
+
+
+    private fun pausePlayer() {
+        mediaPlayer.pausePlayer()
+        play.setBackgroundResource(R.drawable.playpausebutton)
+        playerState = STATE_PAUSED
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun playbackControl() {
+        when (playerState) {
+            STATE_PLAYING -> {
+                pausePlayer()
+            }
+
+            STATE_PREPARED, STATE_PAUSED -> {
+                startPlayer()
+            }
+        }
+    }
 }
-
-
-
-
-
