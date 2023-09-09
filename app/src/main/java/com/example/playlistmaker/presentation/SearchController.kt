@@ -1,11 +1,9 @@
-package com.example.playlistmaker.ui
-
+package com.example.playlistmaker.presentation
 
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
-
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -15,29 +13,25 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.Creator
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.dto.TrackResponse
-import com.example.playlistmaker.data.network.ItunesAPI
 import com.example.playlistmaker.domain.Track
 import com.example.playlistmaker.domain.api.TrackInteractor
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.playlistmaker.ui.Adapter
+import com.example.playlistmaker.ui.PlayerActivity
 
-class SearchActivity : Activity() {
-    private val baseUrl = "https://itunes.apple.com"
+class SearchController(private val activity: Activity,
+                       private val adapter: Adapter
+) {
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(baseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
 
-    private val itunesService = retrofit.create(ItunesAPI::class.java)
 
     companion object {
         const val SAVED_INPUT = "SAVED_INPUT"
@@ -64,77 +58,40 @@ class SearchActivity : Activity() {
     private lateinit var progressBar: ProgressBar
 
     private val trackList = arrayListOf<Track>()
-    private val adapter = Adapter()
-    private val adapterHistory = Adapter()
+    private val adapterHistory = adapter
     private  val tracksInteractor = Creator.provideTrackInteractor()
 
     @SuppressLint("MissingInflatedId")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+   fun onCreate(savedInstanceState: Bundle?) {
 
-        backButton = findViewById(R.id.back)
-        inputEditText = findViewById(R.id.inputEditText)
-        clearButton = findViewById(R.id.clearIcon)
-        recyclerView = findViewById(R.id.recyclerView)
-        placeholderImage = findViewById(R.id.placeholderImage)
-        placeholderMessage = findViewById(R.id.placeholderMessage)
-        placeholderButton = findViewById(R.id.placeholderButton)
-        historyView = findViewById(R.id.historyViewList)
-        clearHistoryButton = findViewById(R.id.clearHistory)
-        historyRecycler = findViewById(R.id.historyRecycler)
-        progressBar = findViewById(R.id.progressBar)
+        backButton = activity.findViewById(R.id.back)
+        inputEditText = activity.findViewById(R.id.inputEditText)
+        clearButton = activity.findViewById(R.id.clearIcon)
+        recyclerView = activity.findViewById(R.id.recyclerView)
+        placeholderImage = activity.findViewById(R.id.placeholderImage)
+        placeholderMessage = activity.findViewById(R.id.placeholderMessage)
+        placeholderButton = activity.findViewById(R.id.placeholderButton)
+        historyView = activity.findViewById(R.id.historyViewList)
+        clearHistoryButton = activity.findViewById(R.id.clearHistory)
+        historyRecycler = activity.findViewById(R.id.historyRecycler)
+        progressBar = activity.findViewById(R.id.progressBar)
 
         inputText = ""
         input = inputEditText
 
         //var sharedPreferences = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
         //val history = SearchHistory(sharedPreferences).read()?.toCollection(ArrayList())
-        val searchHistoryProvider = Creator.provideSearchHistory(applicationContext)
+        val searchHistoryProvider = Creator.provideSearchHistory(activity.applicationContext)
         val history = searchHistoryProvider.read()
-
-
 
         adapter.tracks = trackList
         recyclerView.adapter = adapter
-        adapter.onItemClick ={
-            if (clickDebounce()) {
-                //sharedPreferences = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
-               // val history = SearchHistory(sharedPreferences)
-               // history.write(it)
-                searchHistoryProvider.write(it)
-                adapter.notifyDataSetChanged()
-                val intent = Intent(this, PlayerActivity::class.java)
-                putExtra(intent, it)
 
-                startActivity(intent)
-        }
-
-        }
-
-        adapterHistory.onItemClick = {
-            if (clickDebounce()) {
-                //sharedPreferences = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
-               // val history = SearchHistory(sharedPreferences)
-                //history.write(it)
-                searchHistoryProvider.write(it)
-                adapterHistory.tracks =
-                    //SearchHistory(sharedPreferences).read()?.toCollection(ArrayList())!!
-                    searchHistoryProvider.read()?.toCollection(ArrayList())!!
-                adapterHistory.notifyDataSetChanged()
-                val intent = Intent(this, PlayerActivity::class.java)//PlayerActivity
-
-                putExtra(intent, it)
-                putExtra(intent, it)
-                startActivity(intent)
-                //
-            }
-        }
 
         if (history != null && history.size != 0) {
             //sharedPreferences = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
             adapterHistory.tracks =
-                //SearchHistory(sharedPreferences).read()?.toCollection(ArrayList())!!
+                    //SearchHistory(sharedPreferences).read()?.toCollection(ArrayList())!!
                 searchHistoryProvider.read()?.toCollection(ArrayList())!!
             historyRecycler.adapter = adapterHistory
             historyView.visibility = View.VISIBLE
@@ -150,7 +107,7 @@ class SearchActivity : Activity() {
 
         }
         backButton.setOnClickListener {
-            finish()
+            activity.finish()
         }
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -168,7 +125,7 @@ class SearchActivity : Activity() {
             placeholderMessage.visibility = View.GONE
             placeholderButton.visibility = View.GONE
             //val sharedPref = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
-           // val history = SearchHistory(sharedPref).read()?.toCollection(ArrayList())
+            // val history = SearchHistory(sharedPref).read()?.toCollection(ArrayList())
             val history = searchHistoryProvider.read()?.toCollection(ArrayList())!!
 
             if (history == null || history.size == 0) {
@@ -183,9 +140,9 @@ class SearchActivity : Activity() {
             adapter.notifyDataSetChanged()
 
 
-            val view: View? = this.currentFocus
+            val view: View? = activity.currentFocus
             val inputMethodManager =
-                getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
 
             // on below line hiding our keyboard.
             if (view != null) {
@@ -236,7 +193,7 @@ class SearchActivity : Activity() {
         if (noDataFound) {
             progressBar.visibility = View.GONE
             placeholderImage.setImageResource(R.drawable.nothing_found_image)
-            placeholderMessage.text = getString(R.string.nothing_found)
+            placeholderMessage.text = activity.getString(R.string.nothing_found)
             placeholderImage.visibility = View.VISIBLE
             placeholderMessage.visibility = View.VISIBLE
             placeholderButton.visibility = View.GONE
@@ -247,7 +204,7 @@ class SearchActivity : Activity() {
         } else {
             progressBar.visibility = View.GONE
             placeholderImage.setImageResource(R.drawable.goes_wrong_image)
-            placeholderMessage.text = getString(R.string.something_went_wrong)
+            placeholderMessage.text = activity.getString(R.string.something_went_wrong)
             placeholderImage.visibility = View.VISIBLE
             placeholderMessage.visibility = View.VISIBLE
             placeholderButton.visibility = View.VISIBLE
@@ -291,8 +248,8 @@ class SearchActivity : Activity() {
                         if (foundTracks.isEmpty()) {
                             showMessage(true)
                         } //else {
-                          // Log.v(ContentValues.TAG, "Something here")
-                           // showMessage(false)
+                        // Log.v(ContentValues.TAG, "Something here")
+                        // showMessage(false)
                         //}
                     }
                 }
@@ -301,21 +258,6 @@ class SearchActivity : Activity() {
     }
 
 
-
-
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(SAVED_INPUT, inputText)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        inputText = savedInstanceState.getString(SAVED_INPUT).toString()
-        input.setText(inputText)
-
-    }
-
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
             View.GONE
@@ -323,4 +265,5 @@ class SearchActivity : Activity() {
             View.VISIBLE
         }
     }
+}
 }

@@ -1,38 +1,50 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.data.repository
 
-import android.content.ContentValues.TAG
+import android.app.Activity
+import android.app.Application
+import android.content.ContentValues
+import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.util.Log
 import com.example.playlistmaker.domain.Track
+import com.example.playlistmaker.domain.repository.SearchHistoryRepository
 import com.google.gson.Gson
 
-//const val TRACK_SEARCH_HISTORY = "track_search_history"
+
+const val TRACK_SEARCH_HISTORY = "track_search_history"
 const val TRACKS_LIST_KEY = "track_list_key"
 
-class SearchHistory(var sharedPref: SharedPreferences) {
+class SearchHistoryRepositoryImpl(context: Context) : SearchHistoryRepository {
+
     val listMaxSize = 10
-    fun read(): Array<Track>? {
+    private val sharedPref = context.getSharedPreferences(
+        TRACK_SEARCH_HISTORY,
+        Context.MODE_PRIVATE
+    )
+
+
+    override fun read(): Array<Track>? {
         val json = sharedPref.getString(TRACKS_LIST_KEY, null)
-        println(json+" json")
+        println(json + " json")
         return Gson().fromJson(json, Array<Track>::class.java)
     }
 
-
-    fun write(track: Track) {
-        var historyList = read()?:emptyArray()
+    override fun write(track: Track) {
+        var historyList = read() ?: emptyArray()
         println(historyList)
         val historyListMutable = historyList.toMutableList()
-        Log.v(TAG, "historyListMutable is $historyListMutable")
+        Log.v(ContentValues.TAG, "historyListMutable is $historyListMutable")
 
 
         var trackToRemove = false
 
         for (i in historyListMutable) {
             if (i.trackId == track.trackId) {
-                Log.v(TAG, "POVTORENIE " + i.trackName)
+                Log.v(ContentValues.TAG, "POVTORENIE " + i.trackName)
                 val indexElement = historyListMutable.indexOf(i)
 
-                Log.v(TAG, i.trackName + " DELETED from " + indexElement)
+                Log.v(ContentValues.TAG, i.trackName + " DELETED from " + indexElement)
                 trackToRemove = true
 
             }
@@ -43,15 +55,15 @@ class SearchHistory(var sharedPref: SharedPreferences) {
         }
 
         if (historyListMutable.size == listMaxSize) {
-            Log.v(TAG, "HISTORY achieved 10 tracks")
-            Log.v(TAG, historyListMutable[9].trackName + " REMOVED from 9")
+            Log.v(ContentValues.TAG, "HISTORY achieved 10 tracks")
+            Log.v(ContentValues.TAG, historyListMutable[9].trackName + " REMOVED from 9")
             historyListMutable.removeAt(9)
 
             historyListMutable.add(0, track)
-            Log.v(TAG, track.trackName + " ADDED to 0")
+            Log.v(ContentValues.TAG, track.trackName + " ADDED to 0")
         } else {
             historyListMutable.add(0, track)
-            Log.v(TAG, track.trackName + " ADDED to 0")
+            Log.v(ContentValues.TAG, track.trackName + " ADDED to 0")
         }
 
 
@@ -67,11 +79,10 @@ class SearchHistory(var sharedPref: SharedPreferences) {
             .apply()
 
 
-
     }
 
-    fun clear() {
-        val historyList = read()?:emptyArray()
+    override fun clear() {
+        val historyList = read() ?: emptyArray()
         val historyListMutable = historyList.toMutableList()
         historyListMutable.clear()
 
@@ -80,4 +91,9 @@ class SearchHistory(var sharedPref: SharedPreferences) {
             .putString(TRACKS_LIST_KEY, json)
             .apply()
     }
+
 }
+
+
+
+

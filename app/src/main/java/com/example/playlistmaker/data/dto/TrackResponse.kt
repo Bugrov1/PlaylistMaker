@@ -4,5 +4,5 @@ import com.example.playlistmaker.domain.Track
 
 class TrackResponse(
     val resultCount: Int,
-    val results: List<Track>//поменять на TrackDTO когда смогу реализовать поиск
+    val results: List<TrackDto>//поменять на TrackDTO когда смогу реализовать поиск
 ):Response()

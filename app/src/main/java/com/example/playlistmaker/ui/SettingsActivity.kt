@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import com.example.playlistmaker.App
 import com.example.playlistmaker.R
 import com.google.android.material.switchmaterial.SwitchMaterial
 

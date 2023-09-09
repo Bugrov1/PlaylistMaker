@@ -1,7 +1,9 @@
-package com.example.playlistmaker.ui
+package com.example.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.playlistmaker.ui.CHECKED_KEY
+import com.example.playlistmaker.ui.PLAYLISTMAKER_SWITCH_CHECK
 
 
 class App : Application() {
