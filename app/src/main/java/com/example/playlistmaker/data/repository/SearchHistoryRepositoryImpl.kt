@@ -22,8 +22,6 @@ class SearchHistoryRepositoryImpl(context: Context) : SearchHistoryRepository {
         TRACK_SEARCH_HISTORY,
         Context.MODE_PRIVATE
     )
-
-
     override fun read(): Array<Track>? {
         val json = sharedPref.getString(TRACKS_LIST_KEY, null)
         println(json + " json")

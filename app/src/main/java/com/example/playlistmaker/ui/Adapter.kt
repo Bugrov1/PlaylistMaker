@@ -19,17 +19,19 @@ class Adapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(tracks[position])
-        //val context = holder.itemView.context
-       //val sharedPreferences = context.getSharedPreferences(TRACK_SEARCH_HISTORY ,
-        //    Context.MODE_PRIVATE
-        //)
-        //val history = SearchHistory(sharedPreferences)
+
         holder.itemView.setOnClickListener {
-            //history.write(tracks[position])
-            //notifyDataSetChanged()
+
             onItemClick?.invoke(tracks[position])
+            //clickListener.onClick(tracks[position])
+            this.notifyDataSetChanged()
+
         }
 
+    }
+
+    fun interface TrackClickListener {
+        fun onClick(track: Track)
     }
     override fun getItemCount(): Int {
         return tracks.size
