@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.playlistmaker.ui.CHECKED_KEY
 import com.example.playlistmaker.ui.PLAYLISTMAKER_SWITCH_CHECK
+import com.example.playlistmaker.util.Creator
 
 
 class App : Application() {
@@ -19,6 +20,8 @@ class App : Application() {
         if (darkTheme) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
+
+        Creator.registryApplication(this)
 
     }
 

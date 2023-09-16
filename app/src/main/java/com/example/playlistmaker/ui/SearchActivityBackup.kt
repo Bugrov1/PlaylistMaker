@@ -21,6 +21,8 @@ import com.example.playlistmaker.util.Creator
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.Track
 import com.example.playlistmaker.domain.api.TrackInteractor
+import com.example.playlistmaker.ui.player.PlayerActivity
+import com.example.playlistmaker.ui.tracks.Adapter
 
 class SearchActivity2: Activity() {
 
@@ -78,7 +80,7 @@ class SearchActivity2: Activity() {
 
         //var sharedPreferences = getSharedPreferences(TRACK_SEARCH_HISTORY, MODE_PRIVATE)
         //val history = SearchHistory(sharedPreferences).read()?.toCollection(ArrayList())
-        val searchHistoryProvider = Creator.provideSearchHistory(this)
+       val searchHistoryProvider = Creator.provideSearchHistory()
         val history = searchHistoryProvider.read()
 
 

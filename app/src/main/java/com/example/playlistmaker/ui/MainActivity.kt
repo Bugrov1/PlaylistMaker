@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import com.example.playlistmaker.MediaActivity
 import com.example.playlistmaker.R
+import com.example.playlistmaker.ui.tracks.SearchActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
