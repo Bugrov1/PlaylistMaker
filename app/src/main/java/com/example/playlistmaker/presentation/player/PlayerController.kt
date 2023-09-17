@@ -15,14 +15,24 @@ import com.example.playlistmaker.util.Creator
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerController(private val activity: Activity) {
+class PlayerController(
+    private val view: PlayerView,
+    private val albumCoverUrl: String?,
+    private val url: String,
+    private val trackNameText: String?,
+    private val artistNameText: String?,
+    private val trackTime: String,
+    private val albumNameValueText: String,
+    private val yearValueText: CharSequence,
+    private val genreValueText: String,
+    private val countryValueText: String
+
+) {
 
 
     private var mainThreadHandler: Handler? = null
     private var mediaPlayer = Creator.providePlayerInteractor() //PlayerInteractor(PlayerImpl())
-    private lateinit var play: ImageButton
-    private lateinit var timer: TextView
-    private lateinit var url: String
+
 
     companion object {
         private const val STATE_DEFAULT = 0
@@ -38,81 +48,66 @@ class PlayerController(private val activity: Activity) {
 
         mainThreadHandler = Handler(Looper.getMainLooper())
 
-        val backButton = activity.findViewById<ImageButton>(R.id.playerBack)
-        val albumCover = activity.findViewById<ImageView>(R.id.albumCover)
-        val trackName = activity.findViewById<TextView>(R.id.trackName)
-        val artistName = activity.findViewById<TextView>(R.id.artistName)
-        val trackTimeValue = activity.findViewById<TextView>(R.id.trackTimeValue)
-        val albumNameValue = activity.findViewById<TextView>(R.id.albumNameValue)
-        val yearValue = activity.findViewById<TextView>(R.id.yearValue)
-        val genreValue = activity.findViewById<TextView>(R.id.genreValue)
-        val countryValue = activity.findViewById<TextView>(R.id.countryValue)
-
-        play = activity.findViewById(R.id.playPauseButton)
-        timer = activity.findViewById(R.id.playTime)
-        url = activity.intent.extras?.getString("previewUrl").toString()
-
-        trackName.text = activity.intent.extras?.getString("trackName")
-        artistName.text = activity.intent.extras?.getString("artistName")
-        val formatTrackTime = activity.intent.extras?.getLong("trackTimeMillis")
-        trackTimeValue.text =
-            SimpleDateFormat("mm:ss", Locale.getDefault()).format(formatTrackTime)
-        val roundingRadius = 10
-        val albumCoverUrl =
-            activity.intent.extras?.getString("artworkUrl100")
-                ?.replaceAfterLast('/', "512x512bb.jpg")
-        Glide.with(activity.applicationContext)
-            .load(albumCoverUrl)
-            .placeholder(R.drawable.placeholderbig)
-            .centerCrop()
-            .transform(RoundedCorners(roundingRadius))
-            .into(albumCover)
-
-        albumNameValue.text = activity.intent.extras?.getString("collectionName") ?: ""
-        yearValue.text = activity.intent.extras?.getString("releaseDate")?.subSequence(0, 4) ?: ""
-        genreValue.text = activity.intent.extras?.getString("primaryGenreName") ?: ""
-        countryValue.text = activity.intent.extras?.getString("country") ?: ""
-
+        view.setupAlbumCover(albumCoverUrl)
+        view.setupTextValues(
+            trackNameText = trackNameText,
+            artistNameText = artistNameText,
+            trackTime = trackTime,
+            albumNameValueText = albumNameValueText,
+            yearValueText = yearValueText,
+            genreValueText = genreValueText,
+            countryValueText = countryValueText
+        )
         preparePlayer()
 
 
 ///Buttons actions
-        backButton.setOnClickListener { activity.finish() }
 
-        play.setOnClickListener {
-            Log.v(ContentValues.TAG, "START PLAYING")
-            playbackControl()
+//        play.setOnClickListener {
+//            Log.v(ContentValues.TAG, "START PLAYING")
+//            playbackControl()
+//
+//            mainThreadHandler?.post(
+//                createUpdateTimerTask()
+//            )
+//        }
+        ///Buttons actions
+    }
 
-            mainThreadHandler?.post(
-                createUpdateTimerTask()
-            )
-        }
-    ///Buttons actions
+    fun playClickListen() {
+        Log.v(ContentValues.TAG, "START PLAYING")
+        playbackControl()
+
+        mainThreadHandler?.post(
+            createUpdateTimerTask()
+        )
     }
 
     fun onPause() {
         pausePlayer()
     }
 
-   fun onDestroy() {
+    fun onDestroy() {
         mediaPlayer.release()
         mainThreadHandler?.removeCallbacks(createUpdateTimerTask())
     }
-
 
 
     ///Functions
     private fun preparePlayer() {
         mediaPlayer.preparePlayer(url = url)
         mediaPlayer.setOnPreparedListener {
-            play.isEnabled = true
+            //play.isEnabled = true
+            view.setPlayButtonStatus(false)
             playerState = STATE_PREPARED
         }
         mediaPlayer.setOnCompletionListener {
             mainThreadHandler?.removeCallbacks(createUpdateTimerTask())
             playerState = STATE_PREPARED
-            timer.text = "00:00"
-            play.setBackgroundResource(R.drawable.playpausebutton)
+            //timer.text = "00:00"
+            view.setTimerText("00:00")
+            //play.setBackgroundResource(R.drawable.playpausebutton)
+            view.setPlayButtonStatus(false)
 
         }
     }
@@ -124,11 +119,13 @@ class PlayerController(private val activity: Activity) {
                 Log.v(ContentValues.TAG, "TIMER TASK")
                 when (playerState) {
                     STATE_PLAYING -> {
-                        timer.text = SimpleDateFormat(
+                        val timerText = SimpleDateFormat(
                             "mm:ss",
                             Locale.getDefault()
                         ).format(mediaPlayer.currentPosition())
                         mainThreadHandler?.postDelayed(this, 500)
+
+                        view.setTimerText(timerText)
 
                     }
 
@@ -142,6 +139,7 @@ class PlayerController(private val activity: Activity) {
             }
         }
     }
+
     private fun playbackControl() {
         when (playerState) {
             STATE_PLAYING -> {
@@ -156,14 +154,16 @@ class PlayerController(private val activity: Activity) {
 
     private fun startPlayer() {
         mediaPlayer.startPlayer()
-        play.setBackgroundResource(R.drawable.pausebutton)
+       //play.setBackgroundResource(R.drawable.pausebutton)
+        view.setPlayButtonStatus(true)
         playerState = STATE_PLAYING
     }
 
 
     private fun pausePlayer() {
         mediaPlayer.pausePlayer()
-        play.setBackgroundResource(R.drawable.playpausebutton)
+        //play.setBackgroundResource(R.drawable.playpausebutton)
+        view.setPlayButtonStatus(false)
         playerState = STATE_PAUSED
     }
 

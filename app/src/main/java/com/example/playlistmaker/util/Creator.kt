@@ -14,6 +14,7 @@ import com.example.playlistmaker.domain.api.TrackRepository
 import com.example.playlistmaker.domain.impl.TrackInteractorImpl
 import com.example.playlistmaker.domain.repository.SearchHistoryInteractor
 import com.example.playlistmaker.presentation.player.PlayerController
+import com.example.playlistmaker.presentation.player.PlayerView
 import com.example.playlistmaker.presentation.trackSearch.SearchPresenter
 import com.example.playlistmaker.presentation.trackSearch.SearchView
 import com.example.playlistmaker.ui.tracks.Adapter
@@ -48,8 +49,21 @@ object Creator {
     fun provideSearchPresenter(searchView: SearchView,context: Context): SearchPresenter {
         return SearchPresenter(view = searchView,context = context)
     }
-    fun providePlayerController(activity: Activity): PlayerController {
-        return PlayerController(activity)
+    fun providePlayerController(playerView: PlayerView,
+                                albumCoverUrl:String?,
+                                url:String,
+                                trackNameText:String?,
+                                artistNameText:String?,
+                                trackTime:String,
+                                albumNameValueText:String,
+                                yearValueText:CharSequence,
+                                genreValueText:String,
+                                countryValueText:String
+
+
+    ): PlayerController {
+        return PlayerController(playerView,albumCoverUrl,url,trackNameText,artistNameText,
+            trackTime,albumNameValueText,yearValueText,genreValueText,countryValueText)
     }
 
 
