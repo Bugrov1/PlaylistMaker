@@ -11,6 +11,7 @@ import com.example.playlistmaker.R
 
 import com.example.playlistmaker.domain.Track
 import com.example.playlistmaker.domain.api.TrackInteractor
+import com.example.playlistmaker.ui.tracks.models.SearchState
 
 import com.example.playlistmaker.util.Creator
 
@@ -60,10 +61,9 @@ class SearchPresenter(
 
     private fun searchRequest(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {
-
-            view.showProgressBar(true)
-            view.showPlaceholderMessage(false)
-            view.showRecyclerView(false)
+            view.render(
+                SearchState.Loading
+            )
 
             tracksInteractor.searchTracks(
                 newSearchText,
@@ -71,48 +71,30 @@ class SearchPresenter(
                     override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
                         handler.post {
                             if (foundTracks != null) {
-                                view.showProgressBar(false)
                                 trackList.clear()
                                 trackList.addAll(foundTracks)
-                                view.updateTracksList(trackList)
-                                view.showRecyclerView(true)
+//
+                            }
+                            when{
+                                errorMessage != null -> {
+                                    val message = context.getString(R.string.something_went_wrong)
+                                    view.render(SearchState.Error(message))
 
+                                }
+                                trackList.isEmpty() -> {
+                                    val message =context.getString(R.string.nothing_found)
+                                    view.render(SearchState.Empty(message))
+
+                                }
+                                else -> {
+                                    //view.showContent(trackList)
+                                    view.render(SearchState.Content(trackList))
+                                }
                             }
-                            if (errorMessage != null) {
-                                showMessage(false)
-                            } else if (trackList.isEmpty()) {
-                                //Log.v(ContentValues.TAG, "Something here")
-                                showMessage(true)
-                            }
+
                         }
                     }
                 })
-        }
-    }
-
-    private fun showMessage(noDataFound: Boolean) {
-        if (noDataFound) {
-            view.showProgressBar(false)
-            view.setPlaceholderImage(image = R.drawable.nothing_found_image)
-            view.changePlaceholderText(R.string.nothing_found)
-            view.showPlaceholderImage(true)
-            view.showPlaceholderMessage(true)
-            view.showPlaceholderButton(false)
-            view.showHistoryView(false)
-            trackList.clear()
-            view.updateTracksList(trackList)
-
-
-        } else {
-            view.showProgressBar(false)
-            view.setPlaceholderImage(image = R.drawable.goes_wrong_image)
-            view.changePlaceholderText(R.string.something_went_wrong)
-            view.showPlaceholderImage(true)
-            view.showPlaceholderMessage(true)
-            view.showPlaceholderButton(true)
-            view.showHistoryView(false)
-            trackList.clear()
-            view.updateTracksList(trackList)
         }
     }
 

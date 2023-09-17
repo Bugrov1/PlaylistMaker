@@ -23,6 +23,7 @@ import com.example.playlistmaker.domain.Track
 
 import com.example.playlistmaker.presentation.trackSearch.SearchView
 import com.example.playlistmaker.ui.player.PlayerActivity
+import com.example.playlistmaker.ui.tracks.models.SearchState
 
 class SearchActivity : AppCompatActivity(),
     SearchView {
@@ -84,23 +85,10 @@ class SearchActivity : AppCompatActivity(),
 
 
         val history = searchPresenter.read()
+        //historyLoad()
+        render(SearchState.History(history))
 
 
-        if (history != null && history.size != 0) {
-            //changed searchHistoryProvider via searchPresenter
-            adapterHistory.tracks = searchPresenter.read()?.toCollection(ArrayList())!!
-            historyRecycler.adapter = adapterHistory
-            historyView.visibility = View.VISIBLE
-        }
-
-
-        val view: View? = currentFocus
-        val inputMethodManager =
-            getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        // on below line hiding our keyboard.
-        if (view != null) {
-            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-        }
 
         simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -124,7 +112,7 @@ class SearchActivity : AppCompatActivity(),
             }
         }
         simpleTextWatcher?.let { inputEditText.addTextChangedListener(it) }
-        //inputEditText.addTextChangedListener(simpleTextWatcher)
+
 
 
         adapter.onItemClick = {
@@ -165,27 +153,26 @@ class SearchActivity : AppCompatActivity(),
         }
 
         placeholderButton.setOnClickListener {
-             searchPresenter.searchDebounce(inputText) }
+            searchPresenter.searchDebounce(inputText)
+        }
 
         clearButton.setOnClickListener {
             inputEditText.setText("")
             trackList.clear()
             updateTracksList(trackList)
-            showPlaceholderImage(false)
-            showPlaceholderMessage(false)
-            showPlaceholderButton(false)
-
-            val history = searchPresenter.read()?.toCollection(ArrayList())!!
-
-            if (history == null || history.size == 0) {
-                historyView.visibility = View.GONE
-            } else {
-                adapterHistory.tracks = history
-                historyRecycler.adapter = adapterHistory
-                adapterHistory.notifyDataSetChanged()
-                historyView.visibility = View.VISIBLE
-            }
+            placeholderImage.visibility = View.GONE
+            placeholderMessage.visibility = View.GONE
+            placeholderButton.visibility = View.GONE
+            //historyLoad()
+            render(SearchState.History(history=searchPresenter.read()))
             adapter.notifyDataSetChanged()
+            val view: View? = currentFocus
+            val inputMethodManager =
+                getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            // on below line hiding our keyboard.
+            if (view != null) {
+                inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+            }
 
         }
     }
@@ -240,43 +227,72 @@ class SearchActivity : AppCompatActivity(),
 
     }
 
-    override fun showPlaceholderMessage(isVisible: Boolean) {
-        placeholderMessage.visibility = if (isVisible) View.VISIBLE else View.GONE
+     fun showLoading() {
+        progressBar.visibility = View.VISIBLE
+        placeholderMessage.visibility = View.GONE
+        recyclerView.visibility = View.GONE
     }
 
-    override fun showPlaceholderButton(isVisible: Boolean) {
-        placeholderButton.visibility = if (isVisible) View.VISIBLE else View.GONE
+     fun showEmpty(message:String) {
+        progressBar.visibility = View.GONE
+        placeholderImage.setImageResource(R.drawable.nothing_found_image)
+        placeholderMessage.text = message
+        placeholderImage.visibility = View.VISIBLE
+        placeholderMessage.visibility = View.VISIBLE
+        placeholderButton.visibility = View.GONE
+        historyView.visibility = View.GONE
+        trackList.clear()
+        updateTracksList(trackList)
     }
 
-    override fun showPlaceholderImage(isVisible: Boolean) {
-        placeholderImage.visibility = if (isVisible) View.VISIBLE else View.GONE
+    fun showError(message:String) {
+        progressBar.visibility = View.GONE
+        placeholderImage.setImageResource(R.drawable.goes_wrong_image)
+        placeholderMessage.text = message
+        placeholderImage.visibility = View.VISIBLE
+        placeholderMessage.visibility = View.VISIBLE
+        placeholderButton.visibility = View.VISIBLE
+        historyView.visibility = View.GONE
+        trackList.clear()
+        updateTracksList(trackList)
     }
 
-    override fun showProgressBar(isVisible: Boolean) {
-        progressBar.visibility = if (isVisible) View.VISIBLE else View.GONE
+    fun showContent(foundTracks: List<Track>) {
+        progressBar.visibility = View.GONE
+        trackList.clear()
+        trackList.addAll(foundTracks)
+        updateTracksList(trackList)
+        recyclerView.visibility = View.VISIBLE
     }
 
-    override fun showHistoryView(isVisible: Boolean) {
-        historyView.visibility = if (isVisible) View.VISIBLE else View.GONE
-    }
 
-    override fun showRecyclerView(isVisible: Boolean) {
-        recyclerView.visibility = if (isVisible) View.VISIBLE else View.GONE
-    }
-
-    override fun changePlaceholderText(newMessage: Int) {
-        val text = this.getString(newMessage)
-        placeholderMessage.text = text
-    }
-
-    override fun setPlaceholderImage(image: Int) {
-        placeholderImage.setImageResource(image)
-    }
-
-    override fun updateTracksList(newTrackList: List<Track>) {
+     fun updateTracksList(newTrackList: List<Track>) {
         adapter.tracks.clear()
         adapter.tracks.addAll(newTrackList)
         adapter.notifyDataSetChanged()
+    }
+
+    override fun render(state: SearchState) {
+        when (state) {
+            is SearchState.Loading -> showLoading()
+            is SearchState.Content -> showContent(state.tracks)
+            is SearchState.Error -> showError(state.errorMessage)
+            is SearchState.Empty -> showEmpty(state.message)
+            is SearchState.History-> historyLoad(state.history)
+        }
+    }
+
+    fun historyLoad(history :Array<Track>?) {
+        //val history = searchPresenter.read()
+
+        if (history == null || history.isEmpty()) {
+            historyView.visibility = View.GONE
+        } else {
+            adapterHistory.tracks = history.toCollection(ArrayList())!!
+            historyRecycler.adapter = adapterHistory
+            adapterHistory.notifyDataSetChanged()
+            historyView.visibility = View.VISIBLE
+        }
     }
 
 
