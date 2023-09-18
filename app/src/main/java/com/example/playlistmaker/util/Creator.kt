@@ -1,23 +1,20 @@
 package com.example.playlistmaker.util
 
-import android.app.Activity
 import android.app.Application
 import android.content.Context
 import com.example.playlistmaker.data.PlayerImpl
 import com.example.playlistmaker.data.repository.TrackRepositoryImpl
 import com.example.playlistmaker.data.network.RetrofitNetworkClient
 import com.example.playlistmaker.data.repository.SearchHistoryRepositoryImpl
-import com.example.playlistmaker.data.repository.TRACK_SEARCH_HISTORY
 import com.example.playlistmaker.domain.PlayerInteractor
 import com.example.playlistmaker.domain.api.TrackInteractor
 import com.example.playlistmaker.domain.api.TrackRepository
 import com.example.playlistmaker.domain.impl.TrackInteractorImpl
 import com.example.playlistmaker.domain.repository.SearchHistoryInteractor
-import com.example.playlistmaker.presentation.player.PlayerController
+import com.example.playlistmaker.presentation.player.PlayerPresenter
 import com.example.playlistmaker.presentation.player.PlayerView
-import com.example.playlistmaker.presentation.trackSearch.SearchPresenter
+import com.example.playlistmaker.presentation.trackSearch.SearchViewModel
 import com.example.playlistmaker.presentation.trackSearch.SearchView
-import com.example.playlistmaker.ui.tracks.Adapter
 
 object Creator {
 
@@ -46,9 +43,9 @@ object Creator {
         return SearchHistoryInteractor(provideSearchHistoryRepositoryImpl())
     }
 
-    fun provideSearchPresenter(searchView: SearchView,context: Context): SearchPresenter {
-        return SearchPresenter(view = searchView,context = context)
-    }
+//    fun provideSearchPresenter(searchView: SearchView,context: Context): SearchViewModel {
+//        return SearchViewModel(view = searchView,context = context)
+//    }
     fun providePlayerController(playerView: PlayerView,
                                 albumCoverUrl:String?,
                                 url:String,
@@ -61,8 +58,8 @@ object Creator {
                                 countryValueText:String
 
 
-    ): PlayerController {
-        return PlayerController(playerView,albumCoverUrl,url,trackNameText,artistNameText,
+    ): PlayerPresenter {
+        return PlayerPresenter(playerView,albumCoverUrl,url,trackNameText,artistNameText,
             trackTime,albumNameValueText,yearValueText,genreValueText,countryValueText)
     }
 

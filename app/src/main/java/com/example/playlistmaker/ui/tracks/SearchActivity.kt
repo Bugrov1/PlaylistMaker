@@ -16,29 +16,26 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.util.Creator
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.Track
 
-import com.example.playlistmaker.presentation.trackSearch.SearchView
+import com.example.playlistmaker.presentation.trackSearch.SearchViewModel
 import com.example.playlistmaker.ui.player.PlayerActivity
 import com.example.playlistmaker.ui.tracks.models.SearchState
 
-class SearchActivity : AppCompatActivity(),
-    SearchView {
+class SearchActivity : AppCompatActivity() {//ComponentActivity()
+
 
     companion object {
         const val SAVED_INPUT = "SAVED_INPUT"
         private const val CLICK_DEBOUNCE_DELAY = 1000L
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+
     }
 
     private val adapter = Adapter()
     private val adapterHistory = Adapter()
-
-    private val searchPresenter =
-        Creator.provideSearchPresenter(this, this)
 
     private val trackList = arrayListOf<Track>()
 
@@ -59,13 +56,20 @@ class SearchActivity : AppCompatActivity(),
     private lateinit var clearHistoryButton: Button
     private lateinit var historyRecycler: RecyclerView
     private lateinit var progressBar: ProgressBar
-
+    private lateinit var history: Array<Track>
     private var simpleTextWatcher: TextWatcher? = null
+
+    private lateinit var viewModel: SearchViewModel
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+        viewModel = ViewModelProvider(
+            this,
+            SearchViewModel.getViewModelFactory()
+        )[SearchViewModel::class.java]
+
         backButton = findViewById(R.id.back)
         inputEditText = findViewById(R.id.inputEditText)
         clearButton = findViewById(R.id.clearIcon)
@@ -83,12 +87,15 @@ class SearchActivity : AppCompatActivity(),
         inputText = ""
         input = inputEditText
 
-
-        val history = searchPresenter.read()
-        //historyLoad()
-        render(SearchState.History(history))
-
-
+        viewModel.observeState().observe(this) {
+            render(it)
+        }
+        viewModel.historyload()
+        viewModel.historyData.observe(this) {
+            if (it != null) {
+                history = it
+            }
+        }
 
         simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -99,10 +106,10 @@ class SearchActivity : AppCompatActivity(),
 
                 clearButton.visibility = clearButtonVisibility(s)
                 inputText = inputEditText.text.toString()
-                searchPresenter.searchDebounce(changedText = s?.toString() ?: "")
+                viewModel.searchDebounce(changedText = s?.toString() ?: "")
                 historyView.visibility =
                     if (inputEditText.hasFocus() && s?.isEmpty() == true && history?.size != 0) View.VISIBLE else View.GONE
-                searchPresenter.searchDebounce(changedText = s?.toString() ?: "")
+                viewModel.searchDebounce(changedText = s?.toString() ?: "")
 
 
             }
@@ -117,7 +124,7 @@ class SearchActivity : AppCompatActivity(),
 
         adapter.onItemClick = {
             if (clickDebounce()) {
-                searchPresenter.write(it)
+                viewModel.write(it)
                 //adapter.notifyDataSetChanged()
                 val intent = Intent(this, PlayerActivity::class.java)
                 putExtra(intent, it)
@@ -128,14 +135,14 @@ class SearchActivity : AppCompatActivity(),
 
         adapterHistory.onItemClick = {
             if (clickDebounce()) {
-                searchPresenter.write(it)
+                viewModel.write(it)
                 // для обновления списка онлайн
                 adapterHistory.notifyDataSetChanged()
                 val intent = Intent(this, PlayerActivity::class.java)//PlayerActivity
                 putExtra(intent, it)
                 startActivity(intent)
                 adapterHistory.tracks =
-                    searchPresenter.read()?.toCollection(ArrayList())!!
+                    history?.toCollection(ArrayList())!!
 
             }
         }
@@ -146,25 +153,23 @@ class SearchActivity : AppCompatActivity(),
         }
 
         clearHistoryButton.setOnClickListener {
-            Log.v(ContentValues.TAG, "history is  $history");
-            searchPresenter.clear()
+           // Log.v("View", "history is  $history");
+            viewModel.clear()
             historyView.visibility = View.GONE
 
         }
 
         placeholderButton.setOnClickListener {
-            searchPresenter.searchDebounce(inputText)
+            viewModel.searchDebounce(inputText)
         }
 
         clearButton.setOnClickListener {
             inputEditText.setText("")
             trackList.clear()
             updateTracksList(trackList)
-            placeholderImage.visibility = View.GONE
-            placeholderMessage.visibility = View.GONE
-            placeholderButton.visibility = View.GONE
-            //historyLoad()
-            render(SearchState.History(history=searchPresenter.read()))
+
+            //render(SearchState.History(history = history))
+            viewModel.historyload()
             adapter.notifyDataSetChanged()
             val view: View? = currentFocus
             val inputMethodManager =
@@ -181,7 +186,7 @@ class SearchActivity : AppCompatActivity(),
     override fun onDestroy() {
         super.onDestroy()
         simpleTextWatcher?.let { inputEditText.removeTextChangedListener(it) }
-        searchPresenter.onDestroy()
+        //searchPresenter.onDestroy()
     }
 
     private fun clickDebounce(): Boolean {
@@ -227,13 +232,15 @@ class SearchActivity : AppCompatActivity(),
 
     }
 
-     fun showLoading() {
+    fun showLoading() {
         progressBar.visibility = View.VISIBLE
         placeholderMessage.visibility = View.GONE
         recyclerView.visibility = View.GONE
+        placeholderImage.visibility = View.GONE
+        placeholderButton.visibility = View.GONE
     }
 
-     fun showEmpty(message:String) {
+    fun showEmpty(message: String) {
         progressBar.visibility = View.GONE
         placeholderImage.setImageResource(R.drawable.nothing_found_image)
         placeholderMessage.text = message
@@ -245,7 +252,7 @@ class SearchActivity : AppCompatActivity(),
         updateTracksList(trackList)
     }
 
-    fun showError(message:String) {
+    fun showError(message: String) {
         progressBar.visibility = View.GONE
         placeholderImage.setImageResource(R.drawable.goes_wrong_image)
         placeholderMessage.text = message
@@ -266,25 +273,27 @@ class SearchActivity : AppCompatActivity(),
     }
 
 
-     fun updateTracksList(newTrackList: List<Track>) {
+    fun updateTracksList(newTrackList: List<Track>) {
         adapter.tracks.clear()
         adapter.tracks.addAll(newTrackList)
         adapter.notifyDataSetChanged()
     }
 
-    override fun render(state: SearchState) {
+    fun render(state: SearchState) {
         when (state) {
             is SearchState.Loading -> showLoading()
             is SearchState.Content -> showContent(state.tracks)
             is SearchState.Error -> showError(state.errorMessage)
             is SearchState.Empty -> showEmpty(state.message)
-            is SearchState.History-> historyLoad(state.history)
+            is SearchState.History -> historyLoad(state.history)
         }
     }
 
-    fun historyLoad(history :Array<Track>?) {
+    fun historyLoad(history: Array<Track>?) {
         //val history = searchPresenter.read()
-
+        placeholderImage.visibility = View.GONE
+        placeholderMessage.visibility = View.GONE
+        placeholderButton.visibility = View.GONE
         if (history == null || history.isEmpty()) {
             historyView.visibility = View.GONE
         } else {

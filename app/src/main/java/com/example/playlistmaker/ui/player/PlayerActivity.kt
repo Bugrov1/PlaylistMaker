@@ -1,11 +1,7 @@
 package com.example.playlistmaker.ui.player
 
-import android.content.ContentValues
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -15,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.util.Creator
 import com.example.playlistmaker.R
-import com.example.playlistmaker.presentation.player.PlayerController
+import com.example.playlistmaker.presentation.player.PlayerPresenter
 import com.example.playlistmaker.presentation.player.PlayerView
 
 import java.text.SimpleDateFormat
@@ -24,7 +20,7 @@ import java.util.Locale
 class PlayerActivity : AppCompatActivity(), PlayerView {
 
 
-    private lateinit var playerController: PlayerController
+    private lateinit var playerController: PlayerPresenter
     private lateinit var play: ImageButton
     private lateinit var timer: TextView
     private lateinit var url: String

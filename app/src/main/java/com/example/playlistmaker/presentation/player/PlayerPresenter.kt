@@ -1,21 +1,14 @@
 package com.example.playlistmaker.presentation.player
 
-import android.app.Activity
 import android.content.ContentValues
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.example.playlistmaker.R
 import com.example.playlistmaker.util.Creator
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerController(
+class PlayerPresenter(
     private val view: PlayerView,
     private val albumCoverUrl: String?,
     private val url: String,

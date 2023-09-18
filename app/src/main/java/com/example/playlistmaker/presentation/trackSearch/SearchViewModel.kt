@@ -1,0 +1,151 @@
+package com.example.playlistmaker.presentation.trackSearch
+
+import android.app.Application
+import android.content.Context
+import android.os.Handler
+import android.os.Looper
+import android.os.SystemClock
+import android.util.Log
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+
+import com.example.playlistmaker.R
+
+import com.example.playlistmaker.domain.Track
+import com.example.playlistmaker.domain.api.TrackInteractor
+import com.example.playlistmaker.ui.tracks.models.SearchState
+
+import com.example.playlistmaker.util.Creator
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+class SearchViewModel(application: Application): AndroidViewModel(application) {
+    companion object {
+        private val SEARCH_REQUEST_TOKEN = Any()
+        const val SAVED_INPUT = "SAVED_INPUT"
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+
+        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                SearchViewModel(this[APPLICATION_KEY] as Application)
+            }
+        }}
+
+
+        val searchHistoryProvider = Creator.provideSearchHistory()
+        init{}
+
+        private val stateLiveData = MutableLiveData<SearchState>()
+        fun observeState(): LiveData<SearchState> = stateLiveData
+
+        private val _historyData = MutableLiveData<Array<Track>?>()
+        val historyData: LiveData<Array<Track>?> = _historyData
+
+    private fun renderState(state: SearchState) {
+
+            stateLiveData.postValue(state)
+        }
+
+    fun startScreen(){
+        renderState(SearchState.History(searchHistoryProvider.read()))
+    }
+    fun historyload(){
+
+        renderState(SearchState.History(searchHistoryProvider.read()))
+        _historyData.value=searchHistoryProvider.read()
+    }
+
+        fun read() {
+            _historyData.value=searchHistoryProvider.read()
+        }
+
+        fun write(track: Track) {
+            searchHistoryProvider.write(track)
+            _historyData.value=searchHistoryProvider.read()
+
+        }
+
+        fun clear() {
+            searchHistoryProvider.clear()
+            _historyData.value=searchHistoryProvider.read()
+            Log.v("View","History cleared")
+           // Log.v("View","History read")
+        }
+
+        private val handler = Handler(Looper.getMainLooper())
+
+        private var lastSearchText: String? = null
+
+        private val tracksInteractor = Creator.provideTrackInteractor(getApplication<Application>())
+        private val trackList = arrayListOf<Track>()
+
+        override fun onCleared() {
+            handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
+        }
+
+
+        fun searchDebounce(changedText: String) {
+            if (lastSearchText == changedText) {
+                return
+            }
+
+            this.lastSearchText = changedText
+
+            val searchRunnable = Runnable { searchRequest(changedText) }
+            handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
+
+            val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
+            handler.postAtTime(
+                searchRunnable,
+                SEARCH_REQUEST_TOKEN,
+                postTime,
+            )
+
+
+        }
+
+        private fun searchRequest(newSearchText: String) {
+            if (newSearchText.isNotEmpty()) {
+                renderState(SearchState.Loading)
+                tracksInteractor.searchTracks(
+                    newSearchText,
+                    object : TrackInteractor.TracksConsumer {
+                        override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
+                            val trackList = mutableListOf<Track>()
+                            if (foundTracks != null) {
+                                trackList.clear()
+                                trackList.addAll(foundTracks)
+                            }
+                            when {
+                                errorMessage != null -> {
+                                    val message =
+                                        getApplication<Application>().getString(R.string.something_went_wrong)
+                                    renderState(SearchState.Error(message))
+
+                                }
+
+                                trackList.isEmpty() -> {
+                                    val message =
+                                        getApplication<Application>().getString(R.string.nothing_found)
+                                    renderState(SearchState.Empty(message))
+
+                                }
+
+                                else -> {
+                                    //view.showContent(trackList)
+                                    renderState(SearchState.Content(trackList))
+                                }
+                            }
+
+
+                        }
+                    })
+            }
+        }
+
+
+    }
