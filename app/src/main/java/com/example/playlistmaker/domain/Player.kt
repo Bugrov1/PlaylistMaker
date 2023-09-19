@@ -1,9 +1,10 @@
 package com.example.playlistmaker.domain
 
+import com.example.playlistmaker.ui.player.PlayerState
 
 
 interface Player {
-
+    var playerState: PlayerState
     fun preparePlayer(url:String,)
     fun startPlayer()
     fun pausePlayer()

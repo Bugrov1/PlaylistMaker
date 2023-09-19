@@ -24,6 +24,7 @@ import com.example.playlistmaker.domain.Track
 import com.example.playlistmaker.presentation.trackSearch.SearchViewModel
 import com.example.playlistmaker.ui.player.PlayerActivity
 import com.example.playlistmaker.ui.tracks.models.SearchState
+import com.google.gson.Gson
 
 class SearchActivity : AppCompatActivity() {//ComponentActivity()
 
@@ -65,11 +66,29 @@ class SearchActivity : AppCompatActivity() {//ComponentActivity()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
         viewModel = ViewModelProvider(
             this,
             SearchViewModel.getViewModelFactory()
         )[SearchViewModel::class.java]
 
+        initViews()
+        initListeners()
+        inputText = ""
+        input = inputEditText
+        viewModel.observeState().observe(this) {
+            render(it)
+        }
+        viewModel.historyload()
+        viewModel.historyData.observe(this) {
+            if (it != null) {
+                history = it
+            }
+        }
+
+    }
+
+    fun initViews(){
         backButton = findViewById(R.id.back)
         inputEditText = findViewById(R.id.inputEditText)
         clearButton = findViewById(R.id.clearIcon)
@@ -83,20 +102,9 @@ class SearchActivity : AppCompatActivity() {//ComponentActivity()
         progressBar = findViewById(R.id.progressBar)
 
         recyclerView.adapter = adapter
-
-        inputText = ""
-        input = inputEditText
-
-        viewModel.observeState().observe(this) {
-            render(it)
-        }
-        viewModel.historyload()
-        viewModel.historyData.observe(this) {
-            if (it != null) {
-                history = it
-            }
-        }
-
+        historyRecycler.adapter = adapterHistory
+    }
+    fun initListeners(){
         simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // empty
@@ -122,15 +130,16 @@ class SearchActivity : AppCompatActivity() {//ComponentActivity()
 
 
 
+
         adapter.onItemClick = {
             if (clickDebounce()) {
                 viewModel.write(it)
                 //adapter.notifyDataSetChanged()
                 val intent = Intent(this, PlayerActivity::class.java)
-                putExtra(intent, it)
+                intent.putExtra("track", Gson().toJson(it))
+                //putExtra(intent, it)
                 startActivity(intent)
             }
-
         }
 
         adapterHistory.onItemClick = {
@@ -139,7 +148,8 @@ class SearchActivity : AppCompatActivity() {//ComponentActivity()
                 // для обновления списка онлайн
                 adapterHistory.notifyDataSetChanged()
                 val intent = Intent(this, PlayerActivity::class.java)//PlayerActivity
-                putExtra(intent, it)
+                intent.putExtra("track", Gson().toJson(it))
+                //putExtra(intent, it)
                 startActivity(intent)
                 adapterHistory.tracks =
                     history?.toCollection(ArrayList())!!
@@ -147,13 +157,12 @@ class SearchActivity : AppCompatActivity() {//ComponentActivity()
             }
         }
 
-        //button actions
         backButton.setOnClickListener {
             finish()
         }
 
         clearHistoryButton.setOnClickListener {
-           // Log.v("View", "history is  $history");
+            // Log.v("View", "history is  $history");
             viewModel.clear()
             historyView.visibility = View.GONE
 
@@ -162,6 +171,7 @@ class SearchActivity : AppCompatActivity() {//ComponentActivity()
         placeholderButton.setOnClickListener {
             viewModel.searchDebounce(inputText)
         }
+
 
         clearButton.setOnClickListener {
             inputEditText.setText("")
@@ -286,6 +296,7 @@ class SearchActivity : AppCompatActivity() {//ComponentActivity()
             is SearchState.Error -> showError(state.errorMessage)
             is SearchState.Empty -> showEmpty(state.message)
             is SearchState.History -> historyLoad(state.history)
+            else -> {}
         }
     }
 
@@ -303,6 +314,10 @@ class SearchActivity : AppCompatActivity() {//ComponentActivity()
             historyView.visibility = View.VISIBLE
         }
     }
+
+
+
+
 
 
 }
