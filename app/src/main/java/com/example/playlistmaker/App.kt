@@ -2,8 +2,8 @@ package com.example.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.playlistmaker.ui.CHECKED_KEY
-import com.example.playlistmaker.ui.PLAYLISTMAKER_SWITCH_CHECK
+import com.example.playlistmaker.settings.ui.activity.CHECKED_KEY
+import com.example.playlistmaker.settings.ui.activity.PLAYLISTMAKER_SWITCH_CHECK
 import com.example.playlistmaker.util.Creator
 
 
