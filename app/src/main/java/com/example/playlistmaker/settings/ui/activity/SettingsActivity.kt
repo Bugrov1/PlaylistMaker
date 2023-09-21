@@ -7,65 +7,69 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.App
 import com.example.playlistmaker.R
+import com.example.playlistmaker.search.ui.viewmodel.SearchViewModel
+import com.example.playlistmaker.settings.ui.viewmodel.SettingsViewModel
 import com.google.android.material.switchmaterial.SwitchMaterial
 
-const val PLAYLISTMAKER_SWITCH_CHECK = "playlistmaker_switch_check"
-const val CHECKED_KEY = ""
 
 class SettingsActivity : AppCompatActivity() {
+
+    private lateinit var backButton: ImageButton
+    private lateinit var shareButton: FrameLayout
+    private lateinit var supportButton: FrameLayout
+    private lateinit var licenseButton: FrameLayout
+    private lateinit var themeSwitcher: SwitchMaterial
+
+    private lateinit var viewModel: SettingsViewModel
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        val backButton = findViewById<ImageButton>(R.id.back)
-        backButton.setOnClickListener {
 
-            finish()
+        InitViews()
+        viewModel = ViewModelProvider(
+            this,
+            SettingsViewModel.getViewModelFactory()
+        )[SettingsViewModel::class.java]
 
+        viewModel.themeSwitcherState.observe(this) { isChecked ->
+            themeSwitcher.isChecked = isChecked
         }
-        val shareButton = findViewById<FrameLayout>(R.id.share_button)
+
         shareButton.setOnClickListener {
-            val message = getString(R.string.share_button_message)
-            val shareIntent = Intent(Intent.ACTION_SEND)
-            shareIntent.type = "text/plain"
-            shareIntent.putExtra(Intent.EXTRA_TEXT, message)
-            startActivity(shareIntent)
+            viewModel.onShareAppClicked()
 
         }
-        val supportButton = findViewById<FrameLayout>(R.id.support_button)
+
         supportButton.setOnClickListener {
-            val mailAdress = getString(R.string.support_mail_to)
-            val mailTheme = getString(R.string.support_theme_message)
-            val mailText = getString(R.string.support_text_message)
-            val supportIntent = Intent(Intent.ACTION_SEND)
-            supportIntent.data = Uri.parse("mailto:")
-            supportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mailAdress))
-            supportIntent.putExtra(Intent.EXTRA_SUBJECT, mailTheme)
-            supportIntent.putExtra(Intent.EXTRA_TEXT, mailText)
-            startActivity(supportIntent)
+            viewModel.onSupportClicked()
         }
-        val licenseButton = findViewById<FrameLayout>(R.id.users_license)
+
         licenseButton.setOnClickListener {
-            val link = getString(R.string.users_licence_link)
-            val uri = Uri.parse(link)
-            val usersIntent = Intent(Intent.ACTION_VIEW, uri)
-            startActivity(usersIntent)
+            viewModel.onLicenseClicked()
 
         }
 
-        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
-        val sharedPrefs = getSharedPreferences(PLAYLISTMAKER_SWITCH_CHECK, MODE_PRIVATE)
-        themeSwitcher.isChecked = sharedPrefs.getString(CHECKED_KEY, false.toString()).toBoolean()
-
-        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
-            (applicationContext as App).switchTheme(checked)
-
-
+        backButton.setOnClickListener {
+            finish()
+        }
+        themeSwitcher.setOnCheckedChangeListener{ _, checked ->
+            viewModel.onSwitcherClicked(checked)
         }
 
+
+    }
+
+    fun InitViews() {
+        backButton = findViewById<ImageButton>(R.id.back)
+        shareButton = findViewById<FrameLayout>(R.id.share_button)
+        supportButton = findViewById<FrameLayout>(R.id.support_button)
+        licenseButton = findViewById<FrameLayout>(R.id.users_license)
+        themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
     }
 
 }

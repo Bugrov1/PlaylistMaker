@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.search.domain.models.Track
 
-import com.example.playlistmaker.search.ui.SearchViewModel
+import com.example.playlistmaker.search.ui.viewmodel.SearchViewModel
 import com.example.playlistmaker.player.ui.activity.PlayerActivity
 import com.example.playlistmaker.search.ui.Adapter
 import com.example.playlistmaker.search.ui.models.SearchState
@@ -87,7 +87,7 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-    fun initViews(){
+    fun initViews() {
         backButton = findViewById(R.id.back)
         inputEditText = findViewById(R.id.inputEditText)
         clearButton = findViewById(R.id.clearIcon)
@@ -101,10 +101,11 @@ class SearchActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.progressBar)
 
         recyclerView.adapter = adapter
-       historyRecycler.adapter = adapterHistory
+        historyRecycler.adapter = adapterHistory
 
     }
-    fun initListeners(){
+
+    fun initListeners() {
         simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // empty
@@ -134,10 +135,8 @@ class SearchActivity : AppCompatActivity() {
         adapter.onItemClick = {
             if (clickDebounce()) {
                 viewModel.write(it)
-
                 val intent = Intent(this, PlayerActivity::class.java)
                 intent.putExtra("track", Gson().toJson(it))
-                //putExtra(intent, it)
                 startActivity(intent)
             }
         }
@@ -149,7 +148,7 @@ class SearchActivity : AppCompatActivity() {
                 adapterHistory.notifyDataSetChanged()
                 val intent = Intent(this, PlayerActivity::class.java)//PlayerActivity
                 intent.putExtra("track", Gson().toJson(it))
-                //putExtra(intent, it)
+
                 startActivity(intent)
                 adapterHistory.tracks =
                     history?.toCollection(ArrayList())!!
@@ -177,8 +176,6 @@ class SearchActivity : AppCompatActivity() {
             inputEditText.setText("")
             trackList.clear()
             updateTracksList(trackList)
-
-            //render(SearchState.History(history = history))
             viewModel.historyload()
             adapter.notifyDataSetChanged()
             val view: View? = currentFocus
@@ -311,14 +308,10 @@ class SearchActivity : AppCompatActivity() {
             adapterHistory.tracks = history.toCollection(ArrayList())!!
             historyRecycler.adapter = adapterHistory//
             adapterHistory.notifyDataSetChanged()
-            recyclerView.visibility= View.VISIBLE
+            recyclerView.visibility = View.VISIBLE
             historyView.visibility = View.VISIBLE
         }
     }
-
-
-
-
 
 
 }

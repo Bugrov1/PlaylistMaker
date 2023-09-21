@@ -1,4 +1,4 @@
-package com.example.playlistmaker.search.ui
+package com.example.playlistmaker.search.ui.viewmodel
 
 import android.app.Application
 import android.os.Handler
@@ -135,7 +135,6 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
                             }
 
                             else -> {
-                                //view.showContent(trackList)
                                 renderState(SearchState.Content(trackList))
                             }
                         }

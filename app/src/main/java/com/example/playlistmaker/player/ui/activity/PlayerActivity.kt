@@ -15,7 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.player.ui.models.PlayerActivityState
-import com.example.playlistmaker.player.ui.PlayerViewModel
+import com.example.playlistmaker.player.ui.viewmodel.PlayerViewModel
 import com.google.gson.Gson
 
 import java.text.SimpleDateFormat

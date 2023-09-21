@@ -1,4 +1,4 @@
-package com.example.playlistmaker.player.ui
+package com.example.playlistmaker.player.ui.viewmodel
 
 import android.content.ContentValues
 import android.os.Handler
@@ -21,7 +21,9 @@ class PlayerViewModel(track: Track) : ViewModel() {
     private var mainThreadHandler: Handler? = Handler(Looper.getMainLooper())
     private var mediaPlayer = Creator.providePlayerInteractor()
 
+
     private var trackInit = track
+
     init {
         Log.d("TEST", "")
 
