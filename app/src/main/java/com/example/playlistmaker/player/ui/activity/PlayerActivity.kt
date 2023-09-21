@@ -55,7 +55,7 @@ class PlayerActivity : AppCompatActivity() {
             PlayerViewModel.getViewModelFactory(track = track)
         )[PlayerViewModel::class.java]
 
-        viewModel.trackInit()
+       // viewModel.trackInit()
         viewModel.track.observe(this) {
             setupDetails(it)
         }
@@ -138,7 +138,7 @@ class PlayerActivity : AppCompatActivity() {
 
 
     fun setPlayButton() {
-            play.isEnabled = true
+            //play.isEnabled = true
             play.setBackgroundResource(R.drawable.playpausebutton)
         }
 
@@ -150,7 +150,7 @@ class PlayerActivity : AppCompatActivity() {
     fun preparePlayer() {
         timer.text = "00:00"
         play.setBackgroundResource(R.drawable.playpausebutton)
-        play.isEnabled = true
+       play.isEnabled = true
 
     }
 

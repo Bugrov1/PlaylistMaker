@@ -34,18 +34,22 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
             }
         }
     }
-
+    private var history= emptyArray<Track>()
     val searchHistoryProvider = Creator.provideSearchHistory()
-
-    init {
-
-    }
 
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
 
     private val _historyData = MutableLiveData<Array<Track>?>()
     val historyData: LiveData<Array<Track>?> = _historyData
+
+    init {
+        history = searchHistoryProvider.read()!!
+        renderState(SearchState.History(searchHistoryProvider.read()))
+        _historyData.value = history
+    }
+
+
 
 
 

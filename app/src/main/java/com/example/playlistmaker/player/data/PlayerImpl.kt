@@ -31,10 +31,12 @@ class PlayerImpl() : Player {
 
     override fun setOnPreparedListener(listener: (() -> Unit)?) {
         mediaPlayer.setOnPreparedListener{ listener?.invoke()}
+
     }
 
     override fun setOnCompletionListener(listener: (() -> Unit)?) {
         mediaPlayer.setOnCompletionListener { listener?.invoke() }
+        playerState = PlayerState.READY
     }
 
     override fun release() {

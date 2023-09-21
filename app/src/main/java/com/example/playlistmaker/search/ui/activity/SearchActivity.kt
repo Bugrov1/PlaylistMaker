@@ -78,7 +78,7 @@ class SearchActivity : AppCompatActivity() {
         viewModel.observeState().observe(this) {
             render(it)
         }
-        viewModel.historyload()
+        //viewModel.historyload()
         viewModel.historyData.observe(this) {
             if (it != null) {
                 history = it

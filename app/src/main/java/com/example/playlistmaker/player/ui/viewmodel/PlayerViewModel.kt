@@ -24,9 +24,20 @@ class PlayerViewModel(track: Track) : ViewModel() {
 
     private var trackInit = track
 
+
+
+    private val _track= MutableLiveData<Track>()
+    val track: LiveData<Track> = _track
+
+    private val _state = MutableLiveData<PlayerActivityState>()
+    val state: LiveData<PlayerActivityState> = _state
+
+    private val _timer = MutableLiveData<String>()
+    val timer: LiveData<String> = _timer
+
     init {
         Log.d("TEST", "")
-
+        trackInit()
     }
 
     companion object {
@@ -42,14 +53,7 @@ class PlayerViewModel(track: Track) : ViewModel() {
             }
     }
 
-    private val _track= MutableLiveData<Track>()
-    val track: LiveData<Track> = _track
 
-    private val _state = MutableLiveData<PlayerActivityState>()
-    val state: LiveData<PlayerActivityState> = _state
-
-    private val _timer = MutableLiveData<String>()
-    val timer: LiveData<String> = _timer
 
 
     fun trackInit(){
@@ -87,9 +91,10 @@ class PlayerViewModel(track: Track) : ViewModel() {
             _state.postValue(PlayerActivityState.StatePlayerReady)
         }
         mediaPlayer.setOnCompletionListener {
+            _state.postValue(PlayerActivityState.StatePlayerReady)
             //mainThreadHandler?.removeCallbacks(createUpdateTimerTask())
             mainThreadHandler?.removeCallbacksAndMessages(null)
-            _state.postValue(PlayerActivityState.StatePlayerReady)
+
 
 
 
