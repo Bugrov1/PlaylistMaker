@@ -22,6 +22,8 @@ class App : Application() {
 //        darkTheme = sharedPrefs.getString(CHECKED_KEY, false.toString()).toBoolean()
        if (darkTheme) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }else{
+           AppCompatDelegate.MODE_NIGHT_NO
         }
 
         Creator.registryApplication(this)

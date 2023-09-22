@@ -44,7 +44,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     val historyData: LiveData<Array<Track>?> = _historyData
 
     init {
-        history = searchHistoryProvider.read()!!
+        history = searchHistoryProvider.read()?:emptyArray<Track>()
         renderState(SearchState.History(searchHistoryProvider.read()))
         _historyData.value = history
     }
