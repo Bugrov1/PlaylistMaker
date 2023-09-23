@@ -25,7 +25,8 @@ class SettingsRepositoryImpl(application: Application) : SettingsRepository {
             .putBoolean(CHECKED_KEY, settings.darkTheme)
             .apply()
     }
-companion object{const val PLAYLISTMAKER_SWITCH_CHECK = "playlistmaker_switch_check"
+companion object{
+    const val PLAYLISTMAKER_SWITCH_CHECK = "playlistmaker_switch_check"
     const val CHECKED_KEY = "isChecked"}
 
 }

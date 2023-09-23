@@ -87,7 +87,7 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-    fun initViews() {
+    private fun initViews() {
         backButton = findViewById(R.id.back)
         inputEditText = findViewById(R.id.inputEditText)
         clearButton = findViewById(R.id.clearIcon)
@@ -105,7 +105,7 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-    fun initListeners() {
+    private fun initListeners() {
         simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // empty

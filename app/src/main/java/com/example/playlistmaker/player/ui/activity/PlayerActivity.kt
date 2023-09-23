@@ -82,7 +82,7 @@ class PlayerActivity : AppCompatActivity() {
 
     }
 
-    fun initViews() {
+    private fun initViews() {
 
         backButton = findViewById(R.id.playerBack)
         albumCover = findViewById(R.id.albumCover)
@@ -107,21 +107,21 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.onDestroy()
     }
 
-    fun setupDetails(
+    private fun setupDetails(
         track: Track
     ) {
-        trackName.text = track?.trackName
-        artistName.text = track?.artistName
+        trackName.text = track.trackName
+        artistName.text = track.artistName
         trackTimeValue.text =
-            SimpleDateFormat("mm:ss", Locale.getDefault()).format(track?.trackTimeMillis)
-        albumNameValue.text = track?.collectionName ?: ""
-        yearValue.text = track?.releaseDate?.subSequence(0, 4) ?: ""
-        genreValue.text = track?.primaryGenreName ?: ""
-        countryValue.text = track?.country ?: ""
+            SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
+        albumNameValue.text = track.collectionName ?: ""
+        yearValue.text = track.releaseDate?.subSequence(0, 4) ?: ""
+        genreValue.text = track.primaryGenreName ?: ""
+        countryValue.text = track.country ?: ""
 
 
         val albumCoverUrl =
-            track?.artworkUrl100
+            track.artworkUrl100
                 ?.replaceAfterLast('/', "512x512bb.jpg")//done
 
         Glide.with(this)
@@ -132,7 +132,7 @@ class PlayerActivity : AppCompatActivity() {
             .into(albumCover)
     }
 
-    fun setTimerText(text: String) {
+    private fun setTimerText(text: String) {
         timer.text = text
     }
 
@@ -142,19 +142,19 @@ class PlayerActivity : AppCompatActivity() {
             play.setBackgroundResource(R.drawable.playpausebutton)
         }
 
-    fun setPauseButton() {
+    private fun setPauseButton() {
         play.setBackgroundResource(R.drawable.pausebutton)
         }
 
 
-    fun preparePlayer() {
+    private fun preparePlayer() {
         timer.text = "00:00"
         play.setBackgroundResource(R.drawable.playpausebutton)
        play.isEnabled = true
 
     }
 
-    fun render(state: PlayerActivityState) {
+    private fun render(state: PlayerActivityState) {
         when (state) {
             PlayerActivityState.StatePlayerReady -> preparePlayer()
             PlayerActivityState.StatePlayerPlay  -> setPauseButton()

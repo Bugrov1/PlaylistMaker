@@ -20,13 +20,14 @@ class SharingInteractorImpl(
     }
 
     private fun getShareAppLink(): String {
-    return "https://practicum.yandex.ru/profile/android-developer/"
+        return "https://practicum.yandex.ru/profile/android-developer/"
     }
 
     private fun getSupportEmailData(): EmailData {
-        return  EmailData( mailAdress = "px316@yandex.ru",
-        mailTheme = "px316@yandex.ru",
-         mailText ="Спасибо разработчикам и разработчицам за крутое приложение!"
+        return EmailData(
+            mailAdress = "px316@yandex.ru",
+            mailTheme = "px316@yandex.ru",
+            mailText = "Спасибо разработчикам и разработчицам за крутое приложение!"
         )
     }
 
@@ -35,33 +36,4 @@ class SharingInteractorImpl(
     }
 
 
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

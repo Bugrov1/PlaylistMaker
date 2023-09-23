@@ -57,8 +57,8 @@ class SettingsActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             finish()
         }
-        themeSwitcher.setOnCheckedChangeListener{ _, checked ->
-            viewModel.onSwitcherClicked(checked)
+        themeSwitcher.setOnCheckedChangeListener{ _, isChecked ->
+            viewModel.onSwitcherClicked(isChecked)
         }
 
 

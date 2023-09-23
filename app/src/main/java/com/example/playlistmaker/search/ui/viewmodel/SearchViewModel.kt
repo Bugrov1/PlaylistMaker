@@ -24,8 +24,7 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
     companion object {
         private val SEARCH_REQUEST_TOKEN = Any()
-        const val SAVED_INPUT = "SAVED_INPUT"
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
+
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
 
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
@@ -35,7 +34,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
     private var history= emptyArray<Track>()
-    val searchHistoryProvider = Creator.provideSearchHistory()
+    private val searchHistoryProvider = Creator.provideSearchHistory()
 
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
@@ -62,9 +61,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         _historyData.value = searchHistoryProvider.read()
     }
 
-    fun read() {
-        _historyData.value = searchHistoryProvider.read()
-    }
+
 
     fun write(track: Track) {
         searchHistoryProvider.write(track)

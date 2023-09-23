@@ -2,6 +2,7 @@ package com.example.playlistmaker.util
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
 import com.example.playlistmaker.player.data.PlayerImpl
 import com.example.playlistmaker.search.data.repository.TrackRepositoryImpl
 import com.example.playlistmaker.search.data.network.RetrofitNetworkClient
@@ -12,6 +13,7 @@ import com.example.playlistmaker.search.domain.api.TrackRepository
 import com.example.playlistmaker.search.domain.impl.TrackInteractorImpl
 import com.example.playlistmaker.search.domain.repository.SearchHistoryInteractor
 import com.example.playlistmaker.settings.data.repository.SettingsRepositoryImpl
+import com.example.playlistmaker.settings.data.repository.SettingsRepositoryImpl.Companion.PLAYLISTMAKER_SWITCH_CHECK
 import com.example.playlistmaker.settings.domain.api.SettingsInteractor
 import com.example.playlistmaker.settings.domain.api.SettingsRepository
 import com.example.playlistmaker.settings.domain.impl.SettingsInteractorImpl
@@ -24,9 +26,13 @@ object Creator {
 
     lateinit var application: Application
 
+
      fun registryApplication(application: Application){
          this.application = application
+
      }
+
+
 
     fun providePlayerInteractor(): PlayerInteractor {
         return PlayerInteractor(PlayerImpl())
@@ -46,9 +52,9 @@ object Creator {
     fun provideSearchHistory(): SearchHistoryInteractor {
         return SearchHistoryInteractor(provideSearchHistoryRepositoryImpl())
     }
-    fun provideSharingInteractor(context: Context): SharingInteractor {
+    fun provideSharingInteractor(): SharingInteractor {
         return SharingInteractorImpl(
-            externalNavigator = getExternalNavigator(context)
+            externalNavigator = getExternalNavigator(application)
         )
     }
 
@@ -56,7 +62,7 @@ object Creator {
         return ExternalNavigatorImpl(context = context)
     }
 
-    fun  provideSettingsInteractor(application: Application):SettingsInteractor{
+    fun  provideSettingsInteractor():SettingsInteractor{
 
         return SettingsInteractorImpl(getSettingsReository(application))
     }

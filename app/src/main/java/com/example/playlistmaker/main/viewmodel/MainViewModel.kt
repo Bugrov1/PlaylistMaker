@@ -14,6 +14,7 @@ import com.example.playlistmaker.util.Creator
 class MainViewModel: ViewModel() {
 
     private val _screenState = SingleLiveEvent<ScreenState>()
+    //private val _screenState = MutableLiveData<ScreenState>()
 
     val screenState: LiveData<ScreenState> = _screenState
     companion object {

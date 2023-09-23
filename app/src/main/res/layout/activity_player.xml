@@ -247,6 +247,7 @@
         style="@style/PlayerThirdText"
         app:layout_constraintBaseline_toBaselineOf = "@+id/country"
         android:textColor="@color/black_white"
+        android:gravity="end"
 
         />
 
