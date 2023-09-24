@@ -5,9 +5,7 @@ import com.example.playlistmaker.player.domain.models.PlayerState
 
 class PlayerInteractor(private val player: Player) {
 
-    fun preparePlayer(url:String){
-        player.preparePlayer(url=url)
-    }
+
     fun startPlayer(){
         player.startPlayer()
     }
@@ -35,6 +33,9 @@ class PlayerInteractor(private val player: Player) {
 
     fun getState(): PlayerState {
         return player.playerState
+    }
+    fun stop(){
+        player.stop()
     }
 
 }

@@ -8,8 +8,10 @@ import com.example.playlistmaker.search.data.repository.TrackRepositoryImpl
 import com.example.playlistmaker.search.data.network.RetrofitNetworkClient
 import com.example.playlistmaker.player.domain.PlayerInteractor
 import com.example.playlistmaker.search.data.repository.SearchHistoryRepositoryImp
+import com.example.playlistmaker.search.data.repository.TrackSearchDebounceImpl
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.api.TrackRepository
+import com.example.playlistmaker.search.domain.api.TrackSearchDebounce
 import com.example.playlistmaker.search.domain.impl.TrackInteractorImpl
 import com.example.playlistmaker.search.domain.repository.SearchHistoryInteractor
 import com.example.playlistmaker.settings.data.repository.SettingsRepositoryImpl
@@ -26,23 +28,20 @@ object Creator {
 
     lateinit var application: Application
 
-
      fun registryApplication(application: Application){
          this.application = application
 
      }
 
-
-
-    fun providePlayerInteractor(): PlayerInteractor {
-        return PlayerInteractor(PlayerImpl())
+    fun providePlayerInteractor(url:String): PlayerInteractor {
+        return PlayerInteractor(PlayerImpl(url=url ))
     }
-    private fun getTrackRepository(context: Context): TrackRepository {
-        return TrackRepositoryImpl(RetrofitNetworkClient(context))
+    private fun getTrackRepository(): TrackRepository {
+        return TrackRepositoryImpl(RetrofitNetworkClient(context= application))
     }
 
-    fun provideTrackInteractor(context: Context): TracksInteractor {
-        return TrackInteractorImpl(getTrackRepository(context))
+    fun provideTrackInteractor(): TracksInteractor {
+        return TrackInteractorImpl(getTrackRepository())
     }
 
     private fun provideSearchHistoryRepositoryImpl(): SearchHistoryRepositoryImp {
@@ -63,12 +62,15 @@ object Creator {
     }
 
     fun  provideSettingsInteractor():SettingsInteractor{
-
         return SettingsInteractorImpl(getSettingsReository(application))
     }
 
     private fun getSettingsReository(application: Application): SettingsRepository {
         return SettingsRepositoryImpl(application)
+    }
+
+     fun getSearchDebounce(): TrackSearchDebounce {
+        return TrackSearchDebounceImpl()
     }
 
 

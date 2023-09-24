@@ -5,20 +5,29 @@ import com.example.playlistmaker.player.domain.Player
 import com.example.playlistmaker.player.domain.models.PlayerState
 
 
-class PlayerImpl() : Player {
+class PlayerImpl(private val url: String) : Player {
     private var mediaPlayer = MediaPlayer()
 
     override var playerState = PlayerState.NOT_PREPARED
 
-    override fun preparePlayer(url:String
-    ) {
+
+    init {
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
-        playerState = PlayerState.READY
-
+        setOnPreparedListener {
+            playerState = PlayerState.READY
+        }
+        setOnPreparedListener {
+            playerState = PlayerState.READY
+        }
     }
 
+
+
     override fun startPlayer() {
+        if (playerState == PlayerState.NOT_PREPARED){
+            return
+        }
         mediaPlayer.start()
         playerState = PlayerState.PLAYING
     }
@@ -36,7 +45,6 @@ class PlayerImpl() : Player {
 
     override fun setOnCompletionListener(listener: (() -> Unit)?) {
         mediaPlayer.setOnCompletionListener { listener?.invoke() }
-        playerState = PlayerState.READY
     }
 
     override fun release() {
@@ -45,6 +53,10 @@ class PlayerImpl() : Player {
 
     override fun currentPosition(): Int {
         return mediaPlayer.currentPosition
+    }
+
+    override fun stop() {
+        mediaPlayer.stop()
     }
 
 

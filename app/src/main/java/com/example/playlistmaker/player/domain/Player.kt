@@ -5,7 +5,7 @@ import com.example.playlistmaker.player.domain.models.PlayerState
 
 interface Player {
     var playerState: PlayerState
-    fun preparePlayer(url:String,)
+
     fun startPlayer()
     fun pausePlayer()
 
@@ -16,5 +16,7 @@ interface Player {
     fun release()
 
    fun currentPosition():Int
+
+   fun stop()
 
 }

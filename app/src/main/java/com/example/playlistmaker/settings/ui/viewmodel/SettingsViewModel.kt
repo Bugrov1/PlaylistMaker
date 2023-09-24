@@ -1,8 +1,6 @@
 package com.example.playlistmaker.settings.ui.viewmodel
 
-import android.app.Application
-import android.content.ContentValues
-import android.util.Log
+
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -18,11 +16,12 @@ import com.example.playlistmaker.settings.domain.api.SettingsInteractor
 import com.example.playlistmaker.settings.domain.model.ThemeSettings
 import com.example.playlistmaker.sharing.domain.api.SharingInteractor
 import com.example.playlistmaker.util.Creator
+import com.example.playlistmaker.util.Creator.application
 
 class SettingsViewModel(
     private val sharingInteractor: SharingInteractor,
     private val settingsInteractor: SettingsInteractor,
-    private val application: App
+
 ) : AndroidViewModel(application) {
 
     private var darkTheme = false
@@ -31,7 +30,7 @@ class SettingsViewModel(
 
     init {
         darkTheme = settingsInteractor.getThemeSettings().darkTheme
-        Log.v(ContentValues.TAG, "App created is $darkTheme")
+        //Log.v(ContentValues.TAG, "App created is $darkTheme")
         _themeSwitcherState.value = darkTheme
     }
 
@@ -68,11 +67,9 @@ class SettingsViewModel(
     companion object {
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val application = this[APPLICATION_KEY] as App
                 SettingsViewModel(
                     settingsInteractor = Creator.provideSettingsInteractor(),
                     sharingInteractor = Creator.provideSharingInteractor(),
-                    application = application,
                 )
             }
         }

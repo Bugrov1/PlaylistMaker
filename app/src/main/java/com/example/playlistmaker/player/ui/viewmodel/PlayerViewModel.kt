@@ -19,7 +19,7 @@ import java.util.Locale
 class PlayerViewModel(track: Track) : ViewModel() {
 
     private var mainThreadHandler: Handler? = Handler(Looper.getMainLooper())
-    private var mediaPlayer = Creator.providePlayerInteractor()
+    private var mediaPlayer = track.previewUrl?.let { Creator.providePlayerInteractor(url= it) }
 
 
     private var trackInit = track
@@ -38,6 +38,8 @@ class PlayerViewModel(track: Track) : ViewModel() {
     init {
         Log.d("TEST", "")
         trackInit()
+
+
     }
 
     companion object {
@@ -58,12 +60,29 @@ class PlayerViewModel(track: Track) : ViewModel() {
 
     fun trackInit(){
         _track.postValue(trackInit)
-        preparePlayer(trackInit.previewUrl!!)
+//        preparePlayer(trackInit.previewUrl!!)
+        mediaPlayer?.setOnCompletionListener {
+            _state.postValue(PlayerActivityState.StatePlayerReady)
+            //mainThreadHandler?.removeCallbacks(createUpdateTimerTask())
+            mainThreadHandler?.removeCallbacksAndMessages(null)
+
+
+        }
     }
 
     fun playClickListen() {
         Log.v(ContentValues.TAG, "START PLAYING")
-        playbackControl()
+        when (mediaPlayer?.getState()) {
+            PlayerState.PLAYING -> {
+                pausePlayer()
+            }
+
+            PlayerState.READY, PlayerState.PAUSED -> {
+                startPlayer()
+            }
+
+            else -> {}
+        }
         mainThreadHandler?.post(
             createUpdateTimerTask()
         )
@@ -72,46 +91,36 @@ class PlayerViewModel(track: Track) : ViewModel() {
     fun onPause() {
         pausePlayer()
     }
+    fun playerStop() {
+        mediaPlayer?.stop()
+        mainThreadHandler?.removeCallbacks(createUpdateTimerTask())
+    }
 
     fun onDestroy() {
-        mediaPlayer.release()
+        mediaPlayer?.release()
         mainThreadHandler?.removeCallbacks(createUpdateTimerTask())
     }
 
     override fun onCleared() {
         super.onCleared()
-       mediaPlayer.pausePlayer()
-        mediaPlayer.release()
+        mediaPlayer?.pausePlayer()
+        mediaPlayer?.stop()
+        mediaPlayer?.release()
         mainThreadHandler?.removeCallbacksAndMessages(null)
   }
 
-    private fun preparePlayer(url:String) {
-        mediaPlayer.preparePlayer(url = url)
-        mediaPlayer.setOnPreparedListener {
-            _state.postValue(PlayerActivityState.StatePlayerReady)
-        }
-        mediaPlayer.setOnCompletionListener {
-            _state.postValue(PlayerActivityState.StatePlayerReady)
-            //mainThreadHandler?.removeCallbacks(createUpdateTimerTask())
-            mainThreadHandler?.removeCallbacksAndMessages(null)
-
-
-
-
-        }
-    }
 
     private fun createUpdateTimerTask(): Runnable {
         return object : Runnable {
 
             override fun run() {
                 Log.v(ContentValues.TAG, "TIMER TASK")
-                when (mediaPlayer.getState()) {
+                when (mediaPlayer?.getState()) {
                     PlayerState.PLAYING -> {
                         val timerText = SimpleDateFormat(
                             "mm:ss",
                             Locale.getDefault()
-                        ).format(mediaPlayer.currentPosition())
+                        ).format(mediaPlayer!!.currentPosition())
                         mainThreadHandler?.postDelayed(this, 500)
                         _timer.value = timerText
 
@@ -130,30 +139,15 @@ class PlayerViewModel(track: Track) : ViewModel() {
         }
     }
 
-    private fun playbackControl() {
-        when (mediaPlayer.getState()) {
-            PlayerState.PLAYING -> {
-                pausePlayer()
-            }
-
-            PlayerState.READY, PlayerState.PAUSED -> {
-                startPlayer()
-            }
-
-            else -> {}
-        }
-    }
 
     private fun startPlayer() {
-        mediaPlayer.startPlayer()
-
+        mediaPlayer?.startPlayer()
         _state.postValue(PlayerActivityState.StatePlayerPlay)
     }
 
 
     fun pausePlayer() {
-        mediaPlayer.pausePlayer()
-
+        mediaPlayer?.pausePlayer()
         _state.postValue(PlayerActivityState.StatePlayerPause)
     }
 

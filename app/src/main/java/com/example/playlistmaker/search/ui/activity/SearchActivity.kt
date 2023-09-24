@@ -115,10 +115,10 @@ class SearchActivity : AppCompatActivity() {
 
                 clearButton.visibility = clearButtonVisibility(s)
                 inputText = inputEditText.text.toString()
-                viewModel.searchDebounce(changedText = s?.toString() ?: "")
+                viewModel.searchDebounce2(changedText = s?.toString() ?: "")
                 historyView.visibility =
                     if (inputEditText.hasFocus() && s?.isEmpty() == true && history?.size != 0) View.VISIBLE else View.GONE
-                viewModel.searchDebounce(changedText = s?.toString() ?: "")
+                viewModel.searchDebounce2(changedText = s?.toString() ?: "")
 
 
             }
@@ -168,7 +168,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         placeholderButton.setOnClickListener {
-            viewModel.searchDebounce(inputText)
+            viewModel.searchDebounce2(inputText)
         }
 
 

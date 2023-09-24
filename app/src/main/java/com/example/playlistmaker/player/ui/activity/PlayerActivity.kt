@@ -36,7 +36,6 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var countryValue: TextView
     private lateinit var play: ImageButton
     private lateinit var timer: TextView
-    private lateinit var url: String
 
     private lateinit var viewModel: PlayerViewModel
 
@@ -73,7 +72,7 @@ class PlayerActivity : AppCompatActivity() {
     fun setListeners(){
         backButton.setOnClickListener {
             finish()
-            viewModel.onPause()
+            viewModel.playerStop()
         }
 
         play.setOnClickListener {
@@ -138,7 +137,7 @@ class PlayerActivity : AppCompatActivity() {
 
 
     fun setPlayButton() {
-            //play.isEnabled = true
+
             play.setBackgroundResource(R.drawable.playpausebutton)
         }
 
@@ -149,8 +148,9 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun preparePlayer() {
         timer.text = "00:00"
+        play.isEnabled = true
         play.setBackgroundResource(R.drawable.playpausebutton)
-       play.isEnabled = true
+
 
     }
 
