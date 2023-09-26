@@ -23,7 +23,6 @@ import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
 
-
     private val roundingRadius = 10
     private lateinit var backButton: ImageButton
     private lateinit var albumCover: ImageView
@@ -36,7 +35,6 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var countryValue: TextView
     private lateinit var play: ImageButton
     private lateinit var timer: TextView
-
     private lateinit var viewModel: PlayerViewModel
 
 
@@ -54,22 +52,13 @@ class PlayerActivity : AppCompatActivity() {
             PlayerViewModel.getViewModelFactory(track = track)
         )[PlayerViewModel::class.java]
 
-       // viewModel.trackInit()
-        viewModel.track.observe(this) {
-            setupDetails(it)
-        }
         viewModel.state.observe(this) {
             render(it)
             Log.v(ContentValues.TAG, "$it")
         }
-//        viewModel.timer.observe(this) {
-//            setTimerText(it)
-//            Log.v(ContentValues.TAG, "$it")
-//        }
-
     }
 
-    fun setListeners(){
+    fun setListeners() {
         backButton.setOnClickListener {
             finish()
             viewModel.playerStop()
@@ -78,11 +67,9 @@ class PlayerActivity : AppCompatActivity() {
         play.setOnClickListener {
             viewModel.playClickListen()
         }
-
     }
 
     private fun initViews() {
-
         backButton = findViewById(R.id.playerBack)
         albumCover = findViewById(R.id.albumCover)
         trackName = findViewById(R.id.trackName)
@@ -118,10 +105,10 @@ class PlayerActivity : AppCompatActivity() {
         genreValue.text = track.primaryGenreName ?: ""
         countryValue.text = track.country ?: ""
 
-
         val albumCoverUrl =
             track.artworkUrl100
-                ?.replaceAfterLast('/', "512x512bb.jpg")//done
+                .replaceAfterLast('/', "512x512bb.jpg")//done
+        println(albumCoverUrl)
 
         Glide.with(this)
             .load(albumCoverUrl)
@@ -131,39 +118,29 @@ class PlayerActivity : AppCompatActivity() {
             .into(albumCover)
     }
 
-    private fun setTimerText(text: String) {
-        timer.text = text
+    fun setPlayButton() {
+        play.setBackgroundResource(R.drawable.playpausebutton)
     }
 
-
-    fun setPlayButton() {
-
-            play.setBackgroundResource(R.drawable.playpausebutton)
-        }
-
-    private fun setPauseButton(timer:String) {
+    private fun setPauseButton(timer: String) {
         play.setBackgroundResource(R.drawable.pausebutton)
         this.timer.text = timer
-        }
+    }
 
-
-    private fun preparePlayer() {
+    private fun preparePlayer(track: Track) {
         timer.text = "00:00"
         play.isEnabled = true
         play.setBackgroundResource(R.drawable.playpausebutton)
-
-
+        setupDetails(track)
     }
 
     private fun render(state: PlayerActivityState) {
         when (state) {
-            is PlayerActivityState.StatePlayerReady -> preparePlayer()
-            is  PlayerActivityState.StatePlayerPlay  -> setPauseButton(state.timer)
-            is  PlayerActivityState.StatePlayerPause -> setPlayButton()
+            is PlayerActivityState.StatePlayerReady -> preparePlayer(state.track)
+            is PlayerActivityState.StatePlayerPlay -> setPauseButton(state.timer)
+            is PlayerActivityState.StatePlayerPause -> setPlayButton()
 
             else -> {}
         }
     }
-
-
 }

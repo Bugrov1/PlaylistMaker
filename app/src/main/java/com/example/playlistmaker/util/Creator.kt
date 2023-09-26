@@ -6,13 +6,16 @@ import com.example.playlistmaker.player.data.PlayerImpl
 import com.example.playlistmaker.search.data.repository.TrackRepositoryImpl
 import com.example.playlistmaker.search.data.network.RetrofitNetworkClient
 import com.example.playlistmaker.player.domain.PlayerInteractorImpl
+import com.example.playlistmaker.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.search.data.repository.SearchHistoryRepositoryImp
 import com.example.playlistmaker.search.data.repository.TrackSearchDebounceImpl
+import com.example.playlistmaker.search.domain.api.SearchHistoryInteractor
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.api.TrackRepository
 import com.example.playlistmaker.search.domain.api.TrackSearchDebounce
 import com.example.playlistmaker.search.domain.impl.TrackInteractorImpl
 import com.example.playlistmaker.search.domain.repository.SearchHistoryInteractorImpl
+import com.example.playlistmaker.search.domain.repository.SearchHistoryRepository
 import com.example.playlistmaker.settings.data.repository.SettingsRepositoryImpl
 import com.example.playlistmaker.settings.domain.api.SettingsInteractor
 import com.example.playlistmaker.settings.domain.api.SettingsRepository
@@ -31,7 +34,7 @@ object Creator {
 
      }
 
-    fun providePlayerInteractor(url:String): PlayerInteractorImpl {
+    fun providePlayerInteractor(url:String): PlayerInteractor {
         return PlayerInteractorImpl(PlayerImpl(url=url ))
     }
     private fun getTrackRepository(): TrackRepository {
@@ -42,11 +45,11 @@ object Creator {
         return TrackInteractorImpl(getTrackRepository())
     }
 
-    private fun provideSearchHistoryRepositoryImpl(): SearchHistoryRepositoryImp {
+    private fun provideSearchHistoryRepositoryImpl(): SearchHistoryRepository {
         return SearchHistoryRepositoryImp(application)
     }
 
-    fun provideSearchHistory(): SearchHistoryInteractorImpl {
+    fun provideSearchHistory(): SearchHistoryInteractor {
         return SearchHistoryInteractorImpl(provideSearchHistoryRepositoryImpl())
     }
     fun provideSharingInteractor(): SharingInteractor {
@@ -70,6 +73,10 @@ object Creator {
      fun getSearchDebounce(): TrackSearchDebounce {
         return TrackSearchDebounceImpl()
     }
+
+//    fun getHandler(): PlayerHandler {
+//        return PlayerHandlerImpl()
+//    }
 
 
 }

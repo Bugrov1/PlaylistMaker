@@ -34,6 +34,4 @@ class SharingInteractorImpl(
     private fun getTermsLink(): String {
         return "https://yandex.ru/legal/practicum_offer/"
     }
-
-
 }

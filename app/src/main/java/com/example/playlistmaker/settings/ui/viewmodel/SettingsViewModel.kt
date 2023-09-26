@@ -23,7 +23,7 @@ class SettingsViewModel(
     private val sharingInteractor: SharingInteractor,
     private val settingsInteractor: SettingsInteractor,
 
-) : ViewModel() {
+    ) : ViewModel() {
 
     private var darkTheme = false
     private val _themeSwitcherState = MutableLiveData<Boolean>()

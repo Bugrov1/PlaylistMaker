@@ -19,6 +19,7 @@ class SearchHistoryRepositoryImp(application: Application) : SearchHistoryReposi
         TRACK_SEARCH_HISTORY,
         Context.MODE_PRIVATE
     )
+
     override fun read(): Array<Track>? {
         val json = sharedPref.getString(TRACKS_LIST_KEY, null)
         println("$json json")
@@ -31,17 +32,14 @@ class SearchHistoryRepositoryImp(application: Application) : SearchHistoryReposi
         val historyListMutable = historyList.toMutableList()
         Log.v(ContentValues.TAG, "historyListMutable is $historyListMutable")
 
-
         var trackToRemove = false
 
         for (i in historyListMutable) {
             if (i.trackId == track.trackId) {
                 Log.v(ContentValues.TAG, "repeated " + i.trackName)
                 val indexElement = historyListMutable.indexOf(i)
-
                 Log.v(ContentValues.TAG, i.trackName + " DELETED from " + indexElement)
                 trackToRemove = true
-
             }
         }
 
@@ -61,7 +59,6 @@ class SearchHistoryRepositoryImp(application: Application) : SearchHistoryReposi
             Log.v(ContentValues.TAG, track.trackName + " ADDED to 0")
         }
 
-
         println("Current List")
         for (i in historyListMutable) {
             println(i.trackName)
@@ -72,8 +69,6 @@ class SearchHistoryRepositoryImp(application: Application) : SearchHistoryReposi
         sharedPref.edit()
             .putString(TRACKS_LIST_KEY, json)
             .apply()
-
-
     }
 
     override fun clear() {
@@ -86,7 +81,6 @@ class SearchHistoryRepositoryImp(application: Application) : SearchHistoryReposi
             .putString(TRACKS_LIST_KEY, json)
             .apply()
     }
-
 }
 
 

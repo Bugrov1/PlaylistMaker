@@ -27,18 +27,14 @@ import com.google.gson.Gson
 
 class SearchActivity : AppCompatActivity() {
 
-
     companion object {
         const val SAVED_INPUT = "SAVED_INPUT"
         private const val CLICK_DEBOUNCE_DELAY = 1000L
-
     }
 
     private val adapter = Adapter()
     private val adapterHistory = Adapter()
-
     private val trackList = arrayListOf<Track>()
-
     private val handler = Handler(Looper.getMainLooper())
 
     private var isClickAllowed = true
@@ -78,12 +74,6 @@ class SearchActivity : AppCompatActivity() {
         viewModel.observeState().observe(this) {
             render(it)
         }
-//        viewModel.historyData.observe(this) {
-//            if (it != null) {
-//                history = it
-//            }
-//        }
-
     }
 
     private fun initViews() {
@@ -128,9 +118,6 @@ class SearchActivity : AppCompatActivity() {
         }
         simpleTextWatcher?.let { inputEditText.addTextChangedListener(it) }
 
-
-
-
         adapter.onItemClick = {
             if (clickDebounce()) {
                 viewModel.write(it)
@@ -147,8 +134,6 @@ class SearchActivity : AppCompatActivity() {
                 val intent = Intent(this, PlayerActivity::class.java)//PlayerActivity
                 intent.putExtra("track", Gson().toJson(it))
                 startActivity(intent)
-//                adapterHistory.tracks =
-//                    history?.toCollection(ArrayList())!!
 
             }
         }
@@ -168,7 +153,6 @@ class SearchActivity : AppCompatActivity() {
             viewModel.searchDebounce2(inputText)
         }
 
-
         clearButton.setOnClickListener {
             inputEditText.setText("")
             trackList.clear()
@@ -178,19 +162,15 @@ class SearchActivity : AppCompatActivity() {
             val view: View? = currentFocus
             val inputMethodManager =
                 getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-            // on below line hiding our keyboard.
             if (view != null) {
                 inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
             }
-
         }
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
         simpleTextWatcher?.let { inputEditText.removeTextChangedListener(it) }
-
     }
 
     private fun clickDebounce(): Boolean {
@@ -202,8 +182,6 @@ class SearchActivity : AppCompatActivity() {
         return current
     }
 
-
-
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
             View.GONE
@@ -211,7 +189,6 @@ class SearchActivity : AppCompatActivity() {
             View.VISIBLE
         }
     }
-
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -222,7 +199,6 @@ class SearchActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
         inputText = savedInstanceState.getString(SAVED_INPUT).toString()
         input.setText(inputText)
-
     }
 
     fun showLoading() {
@@ -265,17 +241,16 @@ class SearchActivity : AppCompatActivity() {
         recyclerView.visibility = View.VISIBLE
     }
 
-
     fun updateTracksList(newTrackList: List<Track>) {
         adapter.tracks.clear()
         adapter.tracks.addAll(newTrackList)
         adapter.notifyDataSetChanged()
     }
 
-    fun updateHistory(history:  Array<Track>?) {
+    fun updateHistory(history: Array<Track>?) {
         if (history != null) {
             this.history = history
-            adapterHistory.tracks =history.toCollection(ArrayList())!!
+            adapterHistory.tracks = history.toCollection(ArrayList())
             adapterHistory.notifyDataSetChanged()
         }
     }
@@ -288,7 +263,6 @@ class SearchActivity : AppCompatActivity() {
             is SearchState.Empty -> showEmpty(state.message)
             is SearchState.History -> historyLoad(state.history)
             is SearchState.Update -> updateHistory(state.history)
-            else -> {}
         }
     }
 
@@ -302,13 +276,11 @@ class SearchActivity : AppCompatActivity() {
 
         } else {
             this.history = history
-            adapterHistory.tracks = history.toCollection(ArrayList())!!
+            adapterHistory.tracks = history.toCollection(ArrayList())
             historyRecycler.adapter = adapterHistory
             adapterHistory.notifyDataSetChanged()
             recyclerView.visibility = View.VISIBLE
             historyView.visibility = View.VISIBLE
         }
     }
-
-
 }

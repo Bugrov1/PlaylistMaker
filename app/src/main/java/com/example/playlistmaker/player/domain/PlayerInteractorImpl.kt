@@ -4,39 +4,30 @@ import com.example.playlistmaker.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.player.domain.models.PlayerState
 
 
-class PlayerInteractorImpl(private val player: Player):PlayerInteractor {
+class PlayerInteractorImpl(private val player: Player) : PlayerInteractor {
 
-
-    override fun startPlayer(){
+    override fun startPlayer() {
         player.startPlayer()
     }
-    override fun pausePlayer(){
+    override fun pausePlayer() {
         player.pausePlayer()
     }
-
-
-    override  fun setOnPreparedListener(listener: (() -> Unit)?) {
+    override fun setOnPreparedListener(listener: (() -> Unit)?) {
         player.setOnPreparedListener(listener)
     }
-
-
     override fun setOnCompletionListener(listener: (() -> Unit)?) {
         player.setOnCompletionListener(listener)
     }
-
-    override  fun release(){
+    override fun release() {
         player.release()
     }
-
     override fun currentPosition(): String {
         return player.currentPosition()
     }
-
-     override fun getState(): PlayerState {
+    override fun getState(): PlayerState {
         return player.playerState
     }
-    override fun stop(){
+    override fun stop() {
         player.stop()
     }
-
 }

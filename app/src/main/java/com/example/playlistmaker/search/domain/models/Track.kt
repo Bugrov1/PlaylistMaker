@@ -13,5 +13,4 @@ data class Track(
     val primaryGenreName: String?,
     val country: String?,
     val previewUrl: String?
-
 )

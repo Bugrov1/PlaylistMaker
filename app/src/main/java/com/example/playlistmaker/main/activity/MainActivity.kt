@@ -11,7 +11,7 @@ import com.example.playlistmaker.main.domain.model.ScreenState
 import com.example.playlistmaker.main.viewmodel.MainViewModel
 import com.example.playlistmaker.settings.ui.activity.SettingsActivity
 import com.example.playlistmaker.search.ui.activity.SearchActivity
-import com.example.playlistmaker.search.ui.viewmodel.SearchViewModel
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity() {
         settingsButton.setOnClickListener {
             viewModel.onSettingsButtonClicked()
         }
-
     }
 
     fun loadScreen(state: ScreenState) {

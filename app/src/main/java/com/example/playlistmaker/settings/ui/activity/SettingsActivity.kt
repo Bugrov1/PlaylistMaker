@@ -1,16 +1,13 @@
 package com.example.playlistmaker.settings.ui.activity
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
+
 import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.playlistmaker.App
 import com.example.playlistmaker.R
-import com.example.playlistmaker.search.ui.viewmodel.SearchViewModel
 import com.example.playlistmaker.settings.ui.viewmodel.SettingsViewModel
 import com.google.android.material.switchmaterial.SwitchMaterial
 
@@ -57,11 +54,9 @@ class SettingsActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             finish()
         }
-        themeSwitcher.setOnCheckedChangeListener{ _, isChecked ->
+        themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
             viewModel.onSwitcherClicked(isChecked)
         }
-
-
     }
 
     fun InitViews() {
