@@ -25,17 +25,10 @@ class ExternalNavigatorImpl(
         context.startActivity(usersIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
-    override fun openEmail(Email: EmailData) {
-        val mailAdress = Email.mailAdress
-        val mailTheme = Email.mailTheme
-        val mailText = Email.mailText
-//        val supportIntent = Intent(Intent.ACTION_SENDTO)
-//        supportIntent.data = Uri.parse( "mailto:")
-//        supportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(mailAdress))
-//        supportIntent.putExtra(Intent.EXTRA_SUBJECT, mailTheme)
-//        supportIntent.putExtra(Intent.EXTRA_TEXT, mailText)
-//          context.startActivity(supportIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-
+    override fun openEmail(supportEmail: EmailData) {
+        val mailAdress = supportEmail.mailAdress
+        val mailTheme = supportEmail.mailTheme
+        val mailText = supportEmail.mailText
 
         val supportIntent = Intent.createChooser(Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:")

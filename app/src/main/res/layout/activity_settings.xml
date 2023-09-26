@@ -73,7 +73,7 @@
             android:layout_marginTop="@dimen/settings_margin_top_icon"
             android:layout_marginBottom="@dimen/settings_margin_bot_icon"
             android:contentDescription="Share"
-            android:src="@drawable/share" />
+            android:src="@drawable/sharebutton" />
 
 
     </FrameLayout>
@@ -119,7 +119,7 @@
             android:layout_marginBottom="@dimen/settings_margin_bot_icon"
             android:layout_gravity="end"
             style="@style/SettingsIcon"
-            android:src="@drawable/arrow_forward" />
+            android:src="@drawable/arrowforward" />
 
 
     </FrameLayout>

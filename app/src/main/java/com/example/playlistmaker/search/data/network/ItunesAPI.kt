@@ -10,6 +10,4 @@ interface ItunesAPI {
     @GET("/search?entity=song")
     fun search(@Query("term") text: String): Call<TrackResponse>
 
-    @GET("/search?entity=song")
-    fun getDetails(@Query("term") text: String): Call<TrackResponse>
 }

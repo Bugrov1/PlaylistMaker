@@ -1,7 +1,6 @@
 package com.example.playlistmaker.search.ui.viewmodel
 
 
-
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,21 +24,16 @@ class SearchViewModel : ViewModel() {
             }
         }
     }
-    private var history= emptyArray<Track>()
+
     private val searchHistoryProvider = Creator.provideSearchHistory()
 
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
 
-    private val _historyData = MutableLiveData<Array<Track>?>()
-    val historyData: LiveData<Array<Track>?> = _historyData
 
     init {
-        history = searchHistoryProvider.read()?:emptyArray<Track>()
         renderState(SearchState.History(searchHistoryProvider.read()))
-        _historyData.value = history
     }
-
 
 
     private fun renderState(state: SearchState) {
@@ -48,31 +42,30 @@ class SearchViewModel : ViewModel() {
 
     fun historyload() {
         renderState(SearchState.History(searchHistoryProvider.read()))
-        _historyData.value = searchHistoryProvider.read()
+
     }
 
     fun write(track: Track) {
         searchHistoryProvider.write(track)
-        _historyData.value = searchHistoryProvider.read()
+        renderState(SearchState.Update(searchHistoryProvider.read()))
 
     }
 
     fun clear() {
         searchHistoryProvider.clear()
-        _historyData.value = searchHistoryProvider.read()
 
     }
 
 
-    private val trackSearchDebounce  = Creator.getSearchDebounce()
-    fun searchDebounce2(changedText: String){
+    private val trackSearchDebounce = Creator.getSearchDebounce()
+    fun searchDebounce2(changedText: String) {
 
         if (lastSearchText == changedText) {
             return
         }
         this.lastSearchText = changedText
 
-        trackSearchDebounce.searchDebounce {searchRequest(changedText)}
+        trackSearchDebounce.searchDebounce { searchRequest(changedText) }
 
     }
 
@@ -85,7 +78,6 @@ class SearchViewModel : ViewModel() {
         trackSearchDebounce.onCleared()
 
     }
-
 
 
     private fun searchRequest(newSearchText: String) {
@@ -102,14 +94,15 @@ class SearchViewModel : ViewModel() {
                         }
                         when {
                             errorMessage != null -> {
-                                val message ="Проблемы со связью Загрузка не удалась. Проверьте подключение к интернету"
+                                val message =
+                                    "Проблемы со связью Загрузка не удалась. Проверьте подключение к интернету"
 //                                    getApplication<Application>().getString(R.string.something_went_wrong)
                                 renderState(SearchState.Error(message))
 
                             }
 
                             trackList.isEmpty() -> {
-                                val message ="Ничего не нашлось"
+                                val message = "Ничего не нашлось"
 //                                    getApplication<Application>().getString(R.string.nothing_found)
                                 renderState(SearchState.Empty(message))
 

@@ -26,7 +26,7 @@ class SharingInteractorImpl(
     private fun getSupportEmailData(): EmailData {
         return EmailData(
             mailAdress = "px316@yandex.ru",
-            mailTheme = "px316@yandex.ru",
+            mailTheme = "Сообщение разработчикам и разработчицам приложения Playlist Maker",
             mailText = "Спасибо разработчикам и разработчицам за крутое приложение!"
         )
     }

@@ -14,14 +14,14 @@ const val TRACKS_LIST_KEY = "track_list_key"
 
 class SearchHistoryRepositoryImp(application: Application) : SearchHistoryRepository {
 
-    val listMaxSize = 10
+    private val listMaxSize = 10
     private val sharedPref = application.getSharedPreferences(
         TRACK_SEARCH_HISTORY,
         Context.MODE_PRIVATE
     )
     override fun read(): Array<Track>? {
         val json = sharedPref.getString(TRACKS_LIST_KEY, null)
-        println(json + " json")
+        println("$json json")
         return Gson().fromJson(json, Array<Track>::class.java)
     }
 
@@ -36,7 +36,7 @@ class SearchHistoryRepositoryImp(application: Application) : SearchHistoryReposi
 
         for (i in historyListMutable) {
             if (i.trackId == track.trackId) {
-                Log.v(ContentValues.TAG, "POVTORENIE " + i.trackName)
+                Log.v(ContentValues.TAG, "repeated " + i.trackName)
                 val indexElement = historyListMutable.indexOf(i)
 
                 Log.v(ContentValues.TAG, i.trackName + " DELETED from " + indexElement)
@@ -68,7 +68,7 @@ class SearchHistoryRepositoryImp(application: Application) : SearchHistoryReposi
         }
 
         historyList = historyListMutable.toTypedArray()
-        val json = Gson().toJson(historyList) //перевод в текст и сохранение в файл
+        val json = Gson().toJson(historyList)
         sharedPref.edit()
             .putString(TRACKS_LIST_KEY, json)
             .apply()
@@ -81,7 +81,7 @@ class SearchHistoryRepositoryImp(application: Application) : SearchHistoryReposi
         val historyListMutable = historyList.toMutableList()
         historyListMutable.clear()
 
-        val json = Gson().toJson(historyListMutable) //перевод в текст и сохранение в файл
+        val json = Gson().toJson(historyListMutable)
         sharedPref.edit()
             .putString(TRACKS_LIST_KEY, json)
             .apply()

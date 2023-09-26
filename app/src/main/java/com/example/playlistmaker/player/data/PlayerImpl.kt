@@ -1,14 +1,20 @@
 package com.example.playlistmaker.player.data
 
 import android.media.MediaPlayer
+import android.os.Handler
+import android.os.Looper
 import com.example.playlistmaker.player.domain.Player
 import com.example.playlistmaker.player.domain.models.PlayerState
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 class PlayerImpl(private val url: String) : Player {
     private var mediaPlayer = MediaPlayer()
 
     override var playerState = PlayerState.NOT_PREPARED
+
+    private val handler: Handler? = Handler(Looper.getMainLooper())
 
 
     init {
@@ -51,8 +57,13 @@ class PlayerImpl(private val url: String) : Player {
         mediaPlayer.release()
     }
 
-    override fun currentPosition(): Int {
-        return mediaPlayer.currentPosition
+    override fun currentPosition():String {
+        val timerText = SimpleDateFormat(
+            "mm:ss",
+            Locale.getDefault()
+        ).format(mediaPlayer!!.currentPosition)
+//        return mediaPlayer.currentPosition
+        return timerText
     }
 
     override fun stop() {

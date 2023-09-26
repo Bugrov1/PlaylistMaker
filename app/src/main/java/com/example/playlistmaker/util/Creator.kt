@@ -2,20 +2,18 @@ package com.example.playlistmaker.util
 
 import android.app.Application
 import android.content.Context
-import android.content.SharedPreferences
 import com.example.playlistmaker.player.data.PlayerImpl
 import com.example.playlistmaker.search.data.repository.TrackRepositoryImpl
 import com.example.playlistmaker.search.data.network.RetrofitNetworkClient
-import com.example.playlistmaker.player.domain.PlayerInteractor
+import com.example.playlistmaker.player.domain.PlayerInteractorImpl
 import com.example.playlistmaker.search.data.repository.SearchHistoryRepositoryImp
 import com.example.playlistmaker.search.data.repository.TrackSearchDebounceImpl
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.api.TrackRepository
 import com.example.playlistmaker.search.domain.api.TrackSearchDebounce
 import com.example.playlistmaker.search.domain.impl.TrackInteractorImpl
-import com.example.playlistmaker.search.domain.repository.SearchHistoryInteractor
+import com.example.playlistmaker.search.domain.repository.SearchHistoryInteractorImpl
 import com.example.playlistmaker.settings.data.repository.SettingsRepositoryImpl
-import com.example.playlistmaker.settings.data.repository.SettingsRepositoryImpl.Companion.PLAYLISTMAKER_SWITCH_CHECK
 import com.example.playlistmaker.settings.domain.api.SettingsInteractor
 import com.example.playlistmaker.settings.domain.api.SettingsRepository
 import com.example.playlistmaker.settings.domain.impl.SettingsInteractorImpl
@@ -33,8 +31,8 @@ object Creator {
 
      }
 
-    fun providePlayerInteractor(url:String): PlayerInteractor {
-        return PlayerInteractor(PlayerImpl(url=url ))
+    fun providePlayerInteractor(url:String): PlayerInteractorImpl {
+        return PlayerInteractorImpl(PlayerImpl(url=url ))
     }
     private fun getTrackRepository(): TrackRepository {
         return TrackRepositoryImpl(RetrofitNetworkClient(context= application))
@@ -48,8 +46,8 @@ object Creator {
         return SearchHistoryRepositoryImp(application)
     }
 
-    fun provideSearchHistory(): SearchHistoryInteractor {
-        return SearchHistoryInteractor(provideSearchHistoryRepositoryImpl())
+    fun provideSearchHistory(): SearchHistoryInteractorImpl {
+        return SearchHistoryInteractorImpl(provideSearchHistoryRepositoryImpl())
     }
     fun provideSharingInteractor(): SharingInteractor {
         return SharingInteractorImpl(

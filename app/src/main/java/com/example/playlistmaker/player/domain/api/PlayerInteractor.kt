@@ -1,10 +1,8 @@
-package com.example.playlistmaker.player.domain
+package com.example.playlistmaker.player.domain.api
 
 import com.example.playlistmaker.player.domain.models.PlayerState
 
-
-interface Player {
-    var playerState: PlayerState
+interface PlayerInteractor {
 
     fun startPlayer()
     fun pausePlayer()
@@ -15,8 +13,10 @@ interface Player {
 
     fun release()
 
-   fun currentPosition():String
+    fun currentPosition(): String
 
-   fun stop()
 
+    fun getState(): PlayerState
+
+    fun stop()
 }

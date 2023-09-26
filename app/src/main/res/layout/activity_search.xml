@@ -59,17 +59,19 @@
                 android:inputType="text"
                 android:textColorHint="@color/search_hint_color"
                 android:textColor="@color/edit_text"
-
+                android:layout_marginRight="40dp"
                 android:background="@drawable/search_corners"
                 android:imeOptions="actionDone"
                 android:singleLine="true"
                 />
             <ImageView
                 android:layout_gravity="center|end"
+                android:layout_marginLeft="12dp"
                 android:id="@+id/clearIcon"
-                android:layout_width="40dp"
-                android:layout_height="@dimen/search_edit_height"
-                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginRight="@dimen/dp_12"
+                android:src="@drawable/buttonclear"
                 android:visibility="gone"
                 app:tint="@color/search_hint_color"
                 />
@@ -135,37 +137,38 @@
         android:id="@+id/historyViewList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginTop="@dimen/search_recycler_margin"
+        android:orientation="vertical"
         android:visibility="gone"
 
 
         >
-       <FrameLayout
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           >
-           <TextView
 
-               android:layout_marginTop="@dimen/search_top_margin"
-               android:layout_marginBottom="@dimen/search_bot_margin"
-               android:layout_marginStart="@dimen/search_left_right_margin"
-               android:layout_marginEnd="@dimen/search_left_right_margin"
-               android:gravity="center"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_gravity="center"
-               android:textAlignment="center"
-               android:text="@string/search_history"
-               android:textFontWeight="500"
-               android:fontFamily="@font/ys_display_medium"
-               android:textSize="@dimen/search_placeholder_textsize"
-               android:textColor="@color/settings_text"
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
 
-               />
+            <TextView
 
-       </FrameLayout>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/search_left_right_margin"
+                android:layout_marginTop="@dimen/search_top_margin"
+                android:layout_marginEnd="@dimen/search_left_right_margin"
+                android:layout_marginBottom="@dimen/search_bot_margin"
+                android:fontFamily="@font/ys_display_medium"
+                android:gravity="center"
+                android:text="@string/search_history"
+                android:textAlignment="center"
+                android:textColor="@color/settings_text"
+                android:textFontWeight="500"
+                android:textSize="@dimen/search_placeholder_textsize"
 
+                />
+
+        </FrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/historyRecycler"
@@ -173,21 +176,22 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="5"
+            tools:itemCount="6"
             tools:listitem="@layout/track_view"
             android:clickable="false"
-            android:layout_weight="0.4"
-            />
+            android:layout_weight="0.4" />
 
         <Button
             android:id="@+id/clearHistory"
             style="@style/RefreshButtonStyle"
+            android:layout_width="148dp"
+
             android:layout_marginTop="@dimen/search_recycler_margin"
             android:text="@string/clean_button"
             android:visibility="visible" />
 
-    </LinearLayout>
 
+    </LinearLayout>
 
 
 </LinearLayout>

@@ -78,12 +78,11 @@ class SearchActivity : AppCompatActivity() {
         viewModel.observeState().observe(this) {
             render(it)
         }
-        //viewModel.historyload()
-        viewModel.historyData.observe(this) {
-            if (it != null) {
-                history = it
-            }
-        }
+//        viewModel.historyData.observe(this) {
+//            if (it != null) {
+//                history = it
+//            }
+//        }
 
     }
 
@@ -144,14 +143,12 @@ class SearchActivity : AppCompatActivity() {
         adapterHistory.onItemClick = {
             if (clickDebounce()) {
                 viewModel.write(it)
-                // для обновления списка онлайн
-                adapterHistory.notifyDataSetChanged()
+
                 val intent = Intent(this, PlayerActivity::class.java)//PlayerActivity
                 intent.putExtra("track", Gson().toJson(it))
-
                 startActivity(intent)
-                adapterHistory.tracks =
-                    history?.toCollection(ArrayList())!!
+//                adapterHistory.tracks =
+//                    history?.toCollection(ArrayList())!!
 
             }
         }
@@ -161,7 +158,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         clearHistoryButton.setOnClickListener {
-            // Log.v("View", "history is  $history");
+
             viewModel.clear()
             historyView.visibility = View.GONE
 
@@ -206,17 +203,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
 
-    private fun putExtra(intent: Intent, track: Track) {
-        intent.putExtra("trackName", track.trackName)
-        intent.putExtra("artistName", track.artistName)
-        intent.putExtra("trackTimeMillis", track.trackTimeMillis)
-        intent.putExtra("artworkUrl100", track.artworkUrl100)
-        intent.putExtra("collectionName", track.collectionName)
-        intent.putExtra("releaseDate", track.releaseDate)
-        intent.putExtra("primaryGenreName", track.primaryGenreName)
-        intent.putExtra("country", track.country)
-        intent.putExtra("previewUrl", track.previewUrl)
-    }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
@@ -286,6 +272,14 @@ class SearchActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
     }
 
+    fun updateHistory(history:  Array<Track>?) {
+        if (history != null) {
+            this.history = history
+            adapterHistory.tracks =history.toCollection(ArrayList())!!
+            adapterHistory.notifyDataSetChanged()
+        }
+    }
+
     fun render(state: SearchState) {
         when (state) {
             is SearchState.Loading -> showLoading()
@@ -293,6 +287,7 @@ class SearchActivity : AppCompatActivity() {
             is SearchState.Error -> showError(state.errorMessage)
             is SearchState.Empty -> showEmpty(state.message)
             is SearchState.History -> historyLoad(state.history)
+            is SearchState.Update -> updateHistory(state.history)
             else -> {}
         }
     }
@@ -304,9 +299,11 @@ class SearchActivity : AppCompatActivity() {
         placeholderButton.visibility = View.GONE
         if (history == null || history.isEmpty()) {
             historyView.visibility = View.GONE
+
         } else {
+            this.history = history
             adapterHistory.tracks = history.toCollection(ArrayList())!!
-            historyRecycler.adapter = adapterHistory//
+            historyRecycler.adapter = adapterHistory
             adapterHistory.notifyDataSetChanged()
             recyclerView.visibility = View.VISIBLE
             historyView.visibility = View.VISIBLE

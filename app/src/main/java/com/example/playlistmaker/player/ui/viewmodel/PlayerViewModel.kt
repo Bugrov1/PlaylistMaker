@@ -18,13 +18,11 @@ import java.util.Locale
 
 class PlayerViewModel(track: Track) : ViewModel() {
 
-    private var mainThreadHandler: Handler? = Handler(Looper.getMainLooper())
-    private var mediaPlayer = track.previewUrl?.let { Creator.providePlayerInteractor(url= it) }
+    private val mainThreadHandler: Handler? = Handler(Looper.getMainLooper())
+    private val mediaPlayer = track.previewUrl?.let { Creator.providePlayerInteractor(url= it) }
 
 
     private var trackInit = track
-
-
 
     private val _track= MutableLiveData<Track>()
     val track: LiveData<Track> = _track
@@ -38,32 +36,13 @@ class PlayerViewModel(track: Track) : ViewModel() {
     init {
         Log.d("TEST", "")
         trackInit()
-
-
     }
-
-    companion object {
-        fun getViewModelFactory(track: Track): ViewModelProvider.Factory =
-            object : ViewModelProvider.Factory {
-                // 1
-                @Suppress("UNCHECKED_CAST")
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return PlayerViewModel(
-                        track = track
-                    ) as T
-                }
-            }
-    }
-
-
 
 
     fun trackInit(){
         _track.postValue(trackInit)
-//        preparePlayer(trackInit.previewUrl!!)
         mediaPlayer?.setOnCompletionListener {
             _state.postValue(PlayerActivityState.StatePlayerReady)
-            //mainThreadHandler?.removeCallbacks(createUpdateTimerTask())
             mainThreadHandler?.removeCallbacksAndMessages(null)
 
 
@@ -88,9 +67,7 @@ class PlayerViewModel(track: Track) : ViewModel() {
         )
     }
 
-    fun onPause() {
-        pausePlayer()
-    }
+
     fun playerStop() {
         mediaPlayer?.stop()
         mainThreadHandler?.removeCallbacks(createUpdateTimerTask())
@@ -117,12 +94,10 @@ class PlayerViewModel(track: Track) : ViewModel() {
                 Log.v(ContentValues.TAG, "TIMER TASK")
                 when (mediaPlayer?.getState()) {
                     PlayerState.PLAYING -> {
-                        val timerText = SimpleDateFormat(
-                            "mm:ss",
-                            Locale.getDefault()
-                        ).format(mediaPlayer!!.currentPosition())
+                        val timerText = mediaPlayer.currentPosition()
                         mainThreadHandler?.postDelayed(this, 500)
-                        _timer.value = timerText
+//                        _timer.value = timerText
+                        _state.value = PlayerActivityState.StatePlayerPlay(timerText)
 
                     }
 
@@ -142,13 +117,26 @@ class PlayerViewModel(track: Track) : ViewModel() {
 
     private fun startPlayer() {
         mediaPlayer?.startPlayer()
-        _state.postValue(PlayerActivityState.StatePlayerPlay)
+        _state.postValue(mediaPlayer?.let { PlayerActivityState.StatePlayerPlay(it.currentPosition()) })
     }
 
 
     fun pausePlayer() {
         mediaPlayer?.pausePlayer()
         _state.postValue(PlayerActivityState.StatePlayerPause)
+    }
+
+    companion object {
+        fun getViewModelFactory(track: Track): ViewModelProvider.Factory =
+            object : ViewModelProvider.Factory {
+                // 1
+                @Suppress("UNCHECKED_CAST")
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return PlayerViewModel(
+                        track = track
+                    ) as T
+                }
+            }
     }
 
 }

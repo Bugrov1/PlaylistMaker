@@ -10,7 +10,6 @@ import com.example.playlistmaker.main.domain.model.ScreenState
 class MainViewModel: ViewModel() {
 
     private val _screenState = NavigationEvents<ScreenState>()
-    //private val _screenState = MutableLiveData<ScreenState>()
 
     val screenState: LiveData<ScreenState> = _screenState
     companion object {

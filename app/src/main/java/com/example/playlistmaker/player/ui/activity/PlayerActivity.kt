@@ -62,10 +62,10 @@ class PlayerActivity : AppCompatActivity() {
             render(it)
             Log.v(ContentValues.TAG, "$it")
         }
-        viewModel.timer.observe(this) {
-            setTimerText(it)
-            Log.v(ContentValues.TAG, "$it")
-        }
+//        viewModel.timer.observe(this) {
+//            setTimerText(it)
+//            Log.v(ContentValues.TAG, "$it")
+//        }
 
     }
 
@@ -141,8 +141,9 @@ class PlayerActivity : AppCompatActivity() {
             play.setBackgroundResource(R.drawable.playpausebutton)
         }
 
-    private fun setPauseButton() {
+    private fun setPauseButton(timer:String) {
         play.setBackgroundResource(R.drawable.pausebutton)
+        this.timer.text = timer
         }
 
 
@@ -156,9 +157,9 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun render(state: PlayerActivityState) {
         when (state) {
-            PlayerActivityState.StatePlayerReady -> preparePlayer()
-            PlayerActivityState.StatePlayerPlay  -> setPauseButton()
-            PlayerActivityState.StatePlayerPause -> setPlayButton()
+            is PlayerActivityState.StatePlayerReady -> preparePlayer()
+            is  PlayerActivityState.StatePlayerPlay  -> setPauseButton(state.timer)
+            is  PlayerActivityState.StatePlayerPause -> setPlayButton()
 
             else -> {}
         }

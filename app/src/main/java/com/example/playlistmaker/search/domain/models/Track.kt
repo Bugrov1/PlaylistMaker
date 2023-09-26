@@ -3,10 +3,10 @@ package com.example.playlistmaker.search.domain.models
 
 
 data class Track(
-    val trackName: String, // Название композиции
-    val artistName: String, // Имя исполнителя
-    val trackTimeMillis: Long, // Продолжительность трек
-    val artworkUrl100: String,// Ссылка на изображение обложк
+    val trackName: String,
+    val artistName: String,
+    val trackTimeMillis: Long,
+    val artworkUrl100: String,
     val trackId: Int,
     val collectionName: String?,
     val releaseDate: String?,

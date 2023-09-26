@@ -22,4 +22,8 @@ sealed interface SearchState{
         val history: Array<Track>?
     ) : SearchState
 
+    data class Update(
+        val history: Array<Track>?
+    ) : SearchState
+
 }
