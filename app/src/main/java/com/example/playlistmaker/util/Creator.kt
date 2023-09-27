@@ -29,16 +29,17 @@ object Creator {
 
     lateinit var application: Application
 
-     fun registryApplication(application: Application){
-         this.application = application
+    fun registryApplication(application: Application) {
+        this.application = application
 
-     }
-
-    fun providePlayerInteractor(url:String): PlayerInteractor {
-        return PlayerInteractorImpl(PlayerImpl(url=url ))
     }
+
+    fun providePlayerInteractor(url: String): PlayerInteractor {
+        return PlayerInteractorImpl(PlayerImpl(url = url))
+    }
+
     private fun getTrackRepository(): TrackRepository {
-        return TrackRepositoryImpl(RetrofitNetworkClient(context= application))
+        return TrackRepositoryImpl(RetrofitNetworkClient(context = application))
     }
 
     fun provideTrackInteractor(): TracksInteractor {
@@ -52,6 +53,7 @@ object Creator {
     fun provideSearchHistory(): SearchHistoryInteractor {
         return SearchHistoryInteractorImpl(provideSearchHistoryRepositoryImpl())
     }
+
     fun provideSharingInteractor(): SharingInteractor {
         return SharingInteractorImpl(
             externalNavigator = getExternalNavigator(application)
@@ -62,7 +64,7 @@ object Creator {
         return ExternalNavigatorImpl(context = context)
     }
 
-    fun  provideSettingsInteractor():SettingsInteractor{
+    fun provideSettingsInteractor(): SettingsInteractor {
         return SettingsInteractorImpl(getSettingsReository(application))
     }
 
@@ -70,13 +72,8 @@ object Creator {
         return SettingsRepositoryImpl(application)
     }
 
-     fun getSearchDebounce(): TrackSearchDebounce {
+    fun getSearchDebounce(): TrackSearchDebounce {
         return TrackSearchDebounceImpl()
     }
-
-//    fun getHandler(): PlayerHandler {
-//        return PlayerHandlerImpl()
-//    }
-
 
 }
