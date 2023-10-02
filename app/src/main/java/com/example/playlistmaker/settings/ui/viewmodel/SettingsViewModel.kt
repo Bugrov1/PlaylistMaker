@@ -2,21 +2,12 @@ package com.example.playlistmaker.settings.ui.viewmodel
 
 
 import androidx.appcompat.app.AppCompatDelegate
-
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-
-import androidx.lifecycle.ViewModelProvider
-
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-
-
 import com.example.playlistmaker.settings.domain.api.SettingsInteractor
 import com.example.playlistmaker.settings.domain.model.ThemeSettings
 import com.example.playlistmaker.sharing.domain.api.SharingInteractor
-import com.example.playlistmaker.util.Creator
 
 
 class SettingsViewModel(
@@ -64,14 +55,4 @@ class SettingsViewModel(
         )
     }
 
-    companion object {
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SettingsViewModel(
-                    settingsInteractor = Creator.provideSettingsInteractor(),
-                    sharingInteractor = Creator.provideSharingInteractor(),
-                )
-            }
-        }
-    }
 }

@@ -4,7 +4,6 @@ package com.example.playlistmaker.search.ui.activity
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,16 +13,15 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.search.domain.models.Track
-
-import com.example.playlistmaker.search.ui.viewmodel.SearchViewModel
 import com.example.playlistmaker.player.ui.activity.PlayerActivity
+import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.ui.Adapter
 import com.example.playlistmaker.search.ui.models.SearchState
+import com.example.playlistmaker.search.ui.viewmodel.SearchViewModel
 import com.google.gson.Gson
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
@@ -62,10 +60,8 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        viewModel = ViewModelProvider(
-            this,
-            SearchViewModel.getViewModelFactory()
-        )[SearchViewModel::class.java]
+         val viewModelKoin:SearchViewModel by viewModel()
+        viewModel = viewModelKoin
 
         initViews()
         initListeners()

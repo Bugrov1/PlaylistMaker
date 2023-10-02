@@ -6,6 +6,10 @@ import com.example.playlistmaker.player.domain.models.PlayerState
 
 class PlayerInteractorImpl(private val player: Player) : PlayerInteractor {
 
+    override fun setDataSource(url:String){
+        player.setDataSource(url)
+    }
+
     override fun startPlayer() {
         player.startPlayer()
     }

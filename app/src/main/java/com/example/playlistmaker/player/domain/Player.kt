@@ -6,6 +6,7 @@ import com.example.playlistmaker.player.domain.models.PlayerState
 interface Player {
     var playerState: PlayerState
 
+    fun setDataSource(url:String)
     fun startPlayer()
     fun pausePlayer()
     fun setOnPreparedListener(listener: (() -> Unit)?)

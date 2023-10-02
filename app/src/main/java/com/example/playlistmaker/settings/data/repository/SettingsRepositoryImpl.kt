@@ -2,7 +2,6 @@ package com.example.playlistmaker.settings.data.repository
 
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
-import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.settings.domain.api.SettingsRepository
 import com.example.playlistmaker.settings.domain.model.ThemeSettings
 
@@ -13,6 +12,8 @@ class SettingsRepositoryImpl(application: Application) : SettingsRepository {
         PLAYLISTMAKER_SWITCH_CHECK,
         MODE_PRIVATE
     )
+
+
     override fun getThemeSettings(): ThemeSettings {
         return ThemeSettings(
             darkTheme = sharedPreferences.getBoolean(CHECKED_KEY, false)

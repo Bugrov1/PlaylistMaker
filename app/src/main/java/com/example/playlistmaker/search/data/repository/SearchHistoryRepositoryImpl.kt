@@ -12,7 +12,7 @@ import com.google.gson.Gson
 const val TRACK_SEARCH_HISTORY = "track_search_history"
 const val TRACKS_LIST_KEY = "track_list_key"
 
-class SearchHistoryRepositoryImp(application: Application) : SearchHistoryRepository {
+class SearchHistoryRepositoryImpl(application: Application) : SearchHistoryRepository {
 
     private val listMaxSize = 10
     private val sharedPref = application.getSharedPreferences(

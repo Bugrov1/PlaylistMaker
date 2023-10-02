@@ -1,16 +1,16 @@
 package com.example.playlistmaker.main.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import androidx.lifecycle.ViewModelProvider
+import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.MediaActivity
 import com.example.playlistmaker.R
 import com.example.playlistmaker.main.domain.model.ScreenState
 import com.example.playlistmaker.main.viewmodel.MainViewModel
-import com.example.playlistmaker.settings.ui.activity.SettingsActivity
 import com.example.playlistmaker.search.ui.activity.SearchActivity
+import com.example.playlistmaker.settings.ui.activity.SettingsActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,10 +22,7 @@ class MainActivity : AppCompatActivity() {
         val mediaButton = findViewById<Button>(R.id.media)
         val settingsButton = findViewById<Button>(R.id.settings)
 
-        val viewModel = ViewModelProvider(
-            this,
-            MainViewModel.getViewModelFactory()
-        )[MainViewModel::class.java]
+        val viewModel: MainViewModel by viewModel()
 
         viewModel.screenState.observe(this) {
             loadScreen(it)

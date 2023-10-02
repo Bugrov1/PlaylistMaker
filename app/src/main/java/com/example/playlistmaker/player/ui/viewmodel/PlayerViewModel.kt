@@ -6,13 +6,11 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.player.domain.models.PlayerState
 import com.example.playlistmaker.player.ui.models.PlayerActivityState
 
-import com.example.playlistmaker.util.Creator
 
 
 class PlayerViewModel(track: Track, private val mediaPlayer: PlayerInteractor) : ViewModel() {
@@ -22,7 +20,9 @@ class PlayerViewModel(track: Track, private val mediaPlayer: PlayerInteractor) :
     private val _state = MutableLiveData<PlayerActivityState>()
     val state: LiveData<PlayerActivityState> = _state
     init {
+        trackInit.previewUrl?.let { mediaPlayer.setDataSource(it) }
         trackInit()
+
     }
     fun trackInit() {
         _state.postValue(PlayerActivityState.StatePlayerReady(trackInit))
@@ -95,20 +95,4 @@ class PlayerViewModel(track: Track, private val mediaPlayer: PlayerInteractor) :
         _state.postValue(PlayerActivityState.StatePlayerPause)
     }
 
-    companion object {
-        fun getViewModelFactory(track: Track): ViewModelProvider.Factory =
-            object : ViewModelProvider.Factory {
-
-                @Suppress("UNCHECKED_CAST")
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return track.previewUrl?.let { Creator.providePlayerInteractor(url = it) }
-                        ?.let {
-                            PlayerViewModel(
-                                track = track,
-                                mediaPlayer = it
-                            )
-                        } as T
-                }
-            }
-    }
 }

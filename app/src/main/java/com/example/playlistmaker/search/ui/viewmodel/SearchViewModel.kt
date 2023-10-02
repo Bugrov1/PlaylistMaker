@@ -4,21 +4,15 @@ package com.example.playlistmaker.search.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.search.domain.api.SearchHistoryInteractor
+import com.example.playlistmaker.search.domain.api.TrackInteractor
 import com.example.playlistmaker.search.domain.api.TrackSearchDebounce
-
 import com.example.playlistmaker.search.domain.models.Track
-import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.ui.models.SearchState
-
-import com.example.playlistmaker.util.Creator
 
 
 class SearchViewModel(val searchHistoryProvider:SearchHistoryInteractor,
-                      private val tracksInteractor:TracksInteractor,
+                      private val tracksInteractor:TrackInteractor,
                       private val trackSearchDebounce:TrackSearchDebounce) : ViewModel() {
 
 
@@ -66,7 +60,7 @@ class SearchViewModel(val searchHistoryProvider:SearchHistoryInteractor,
             renderState(SearchState.Loading)
             tracksInteractor.searchTracks(
                 newSearchText,
-                object : TracksInteractor.TracksConsumer {
+                object : TrackInteractor.TracksConsumer {
                     override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
                         val trackList = mutableListOf<Track>()
                         if (foundTracks != null) {
@@ -94,15 +88,4 @@ class SearchViewModel(val searchHistoryProvider:SearchHistoryInteractor,
         }
     }
 
-    companion object {
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SearchViewModel(
-                    searchHistoryProvider = Creator.provideSearchHistory(),
-                    tracksInteractor = Creator.provideTrackInteractor(),
-                    trackSearchDebounce = Creator.getSearchDebounce()
-                )
-            }
-        }
-    }
 }

@@ -2,9 +2,6 @@ package com.example.playlistmaker.main.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.main.domain.model.ScreenState
 
 class MainViewModel : ViewModel() {
@@ -26,11 +23,4 @@ class MainViewModel : ViewModel() {
         _screenState.value = ScreenState.Settings
     }
 
-    companion object {
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                MainViewModel()
-            }
-        }
-    }
 }

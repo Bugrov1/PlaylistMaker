@@ -8,14 +8,18 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 
-class PlayerImpl(private val url: String) : Player {
-    private var mediaPlayer = MediaPlayer()
+class PlayerImpl() : Player {
 
+    private var mediaPlayer = MediaPlayer()
     override var playerState = PlayerState.NOT_PREPARED
 
-    init {
+
+    override fun setDataSource(url: String) {
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
+    }
+
+    init {
         setOnPreparedListener {
             playerState = PlayerState.READY
         }

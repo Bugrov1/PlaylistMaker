@@ -6,10 +6,10 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.R
 import com.example.playlistmaker.settings.ui.viewmodel.SettingsViewModel
 import com.google.android.material.switchmaterial.SwitchMaterial
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -20,7 +20,6 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var licenseButton: FrameLayout
     private lateinit var themeSwitcher: SwitchMaterial
 
-    private lateinit var viewModel: SettingsViewModel
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,10 +27,7 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         InitViews()
-        viewModel = ViewModelProvider(
-            this,
-            SettingsViewModel.getViewModelFactory()
-        )[SettingsViewModel::class.java]
+        val viewModel:SettingsViewModel by viewModel()
 
         viewModel.themeSwitcherState.observe(this) { isChecked ->
             themeSwitcher.isChecked = isChecked

@@ -9,15 +9,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
-import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.player.ui.models.PlayerActivityState
 import com.example.playlistmaker.player.ui.viewmodel.PlayerViewModel
+import com.example.playlistmaker.search.domain.models.Track
 import com.google.gson.Gson
-
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -47,10 +47,11 @@ class PlayerActivity : AppCompatActivity() {
         setListeners()
 
         val track: Track = Gson().fromJson((intent.getStringExtra("track")), Track::class.java)
-        viewModel = ViewModelProvider(
-            this,
-            PlayerViewModel.getViewModelFactory(track = track)
-        )[PlayerViewModel::class.java]
+
+        val viewModelKoin: PlayerViewModel by viewModel {
+            parametersOf(track)
+        }
+        viewModel = viewModelKoin
 
         viewModel.state.observe(this) {
             render(it)
