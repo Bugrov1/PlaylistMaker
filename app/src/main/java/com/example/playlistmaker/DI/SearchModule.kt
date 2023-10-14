@@ -1,9 +1,13 @@
 package com.example.playlistmaker.DI
 
+import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import com.example.playlistmaker.search.data.NetworkClient
 import com.example.playlistmaker.search.data.network.ItunesAPI
 import com.example.playlistmaker.search.data.network.RetrofitNetworkClient
 import com.example.playlistmaker.search.data.repository.SearchHistoryRepositoryImpl
+import com.example.playlistmaker.search.data.repository.TRACK_SEARCH_HISTORY
 import com.example.playlistmaker.search.data.repository.TrackRepositoryImpl
 import com.example.playlistmaker.search.data.repository.TrackSearchDebounceImpl
 import com.example.playlistmaker.search.domain.api.SearchHistoryInteractor
@@ -14,8 +18,10 @@ import com.example.playlistmaker.search.domain.impl.TrackInteractorImpl
 import com.example.playlistmaker.search.domain.repository.SearchHistoryInteractorImpl
 import com.example.playlistmaker.search.domain.repository.SearchHistoryRepository
 import com.example.playlistmaker.search.ui.viewmodel.SearchViewModel
+import com.example.playlistmaker.settings.data.repository.SettingsRepositoryImpl
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -23,8 +29,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 val searchModule = module {
 
 
+    single<SharedPreferences>(named("history_pref")) {
+        val application = get<Application>()
+        application.getSharedPreferences(
+            TRACK_SEARCH_HISTORY,
+            Context.MODE_PRIVATE
+        )}
+
+
     single<SearchHistoryRepository> {
-        SearchHistoryRepositoryImpl(application = get())
+        SearchHistoryRepositoryImpl(sharedPref = get(named("history_pref")))
     }
 
     single<SearchHistoryInteractor> {

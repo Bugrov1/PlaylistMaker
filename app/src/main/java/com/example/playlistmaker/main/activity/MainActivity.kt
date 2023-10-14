@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.example.playlistmaker.MediaActivity
+import com.example.playlistmaker.mediateka.ui.activity.MediaActivity
 import com.example.playlistmaker.R
 import com.example.playlistmaker.main.domain.model.ScreenState
 import com.example.playlistmaker.main.viewmodel.MainViewModel

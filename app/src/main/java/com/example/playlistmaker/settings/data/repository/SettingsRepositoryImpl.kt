@@ -2,16 +2,12 @@ package com.example.playlistmaker.settings.data.repository
 
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import com.example.playlistmaker.settings.domain.api.SettingsRepository
 import com.example.playlistmaker.settings.domain.model.ThemeSettings
 
 
-class SettingsRepositoryImpl(application: Application) : SettingsRepository {
-
-    val sharedPreferences = application.getSharedPreferences(
-        PLAYLISTMAKER_SWITCH_CHECK,
-        MODE_PRIVATE
-    )
+class SettingsRepositoryImpl(val sharedPreferences: SharedPreferences) : SettingsRepository {
 
 
     override fun getThemeSettings(): ThemeSettings {
@@ -26,8 +22,10 @@ class SettingsRepositoryImpl(application: Application) : SettingsRepository {
             .putBoolean(CHECKED_KEY, settings.darkTheme)
             .apply()
     }
-companion object{
-    const val PLAYLISTMAKER_SWITCH_CHECK = "playlistmaker_switch_check"
-    const val CHECKED_KEY = "isChecked"}
+
+    companion object {
+        const val PLAYLISTMAKER_SWITCH_CHECK = "playlistmaker_switch_check"
+        const val CHECKED_KEY = "isChecked"
+    }
 
 }

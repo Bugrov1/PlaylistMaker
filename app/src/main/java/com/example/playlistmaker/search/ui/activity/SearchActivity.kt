@@ -53,15 +53,16 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var history: Array<Track>
     private var simpleTextWatcher: TextWatcher? = null
 
-    private lateinit var viewModel: SearchViewModel
+//    private lateinit var viewModel: SearchViewModel
+    private val viewModel:SearchViewModel by viewModel()
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-         val viewModelKoin:SearchViewModel by viewModel()
-        viewModel = viewModelKoin
+//         val viewModelKoin:SearchViewModel by viewModel()
+//        viewModel = viewModelKoin
 
         initViews()
         initListeners()

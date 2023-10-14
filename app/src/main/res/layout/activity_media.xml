@@ -1,9 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MediaActivity">
+    android:background="@color/settings_background"
+    android:orientation="vertical"
+    android:theme="@style/Theme.PlaylistMaker"
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    >
+
+    <LinearLayout style="@style/TopLayoutBack">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            style="@style/BackButton"
+            android:contentDescription="@string/back_button" />
+
+        <TextView
+            android:text="@string/mediateka"
+            style="@style/TopText" />
+
+    </LinearLayout>
+
+    <com.google.android.material.tabs.TabLayout
+
+        android:backgroundTint="@color/white_black"
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabBackground="@color/white_black"
+        app:tabSelectedTextAppearance="@color/white_black"
+        app:tabTextAppearance="@style/Tablayouttext"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/black_white"
+        app:tabIndicatorFullWidth="true"
+        app:tabIndicatorHeight="2dp"
+        app:tabIndicatorColor="@color/black_white" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</LinearLayout>
+
