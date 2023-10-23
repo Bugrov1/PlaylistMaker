@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_background"
@@ -8,7 +9,9 @@
     android:paddingLeft="@dimen/all_pad"
     android:paddingRight="@dimen/all_pad"
     android:paddingBottom="28dp"
-    android:paddingTop="@dimen/top_screen">
+    android:paddingTop="@dimen/top_screen"
+    tools:context="com.example.playlistmaker.main.fragments.MainFragment"
+   >
 
     <TextView
         android:layout_width="wrap_content"

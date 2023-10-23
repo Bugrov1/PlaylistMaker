@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     android:background="@color/settings_background"
     android:orientation="vertical"
+    tools:context="com.example.playlistmaker.search.ui.fragments.SearchFragment"
     >
+
 
     <LinearLayout
         style="@style/TopLayoutBack"

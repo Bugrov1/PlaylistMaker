@@ -11,7 +11,7 @@ class MainViewModel : ViewModel() {
     val screenState: LiveData<ScreenState> = _screenState
 
 
-    fun onSeachButtonClicked() {
+    fun onSearchButtonClicked() {
         _screenState.value = ScreenState.Search
     }
 

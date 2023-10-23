@@ -1,4 +1,4 @@
-package com.example.playlistmaker.search.ui.activity
+package com.example.playlistmaker.search.ui.fragments
 
 
 import android.annotation.SuppressLint
@@ -9,12 +9,15 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
+import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.ui.activity.PlayerActivity
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.ui.Adapter
@@ -23,7 +26,7 @@ import com.example.playlistmaker.search.ui.viewmodel.SearchViewModel
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
 
     companion object {
         const val SAVED_INPUT = "SAVED_INPUT"
@@ -34,6 +37,8 @@ class SearchActivity : AppCompatActivity() {
     private val adapterHistory = Adapter()
     private val trackList = arrayListOf<Track>()
     private val handler = Handler(Looper.getMainLooper())
+
+    private lateinit var binding: FragmentSearchBinding
 
     private var isClickAllowed = true
 
@@ -53,38 +58,45 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var history: Array<Track>
     private var simpleTextWatcher: TextWatcher? = null
 
-//    private lateinit var viewModel: SearchViewModel
-    private val viewModel:SearchViewModel by viewModel()
+
+    private val viewModel: SearchViewModel by viewModel()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     @SuppressLint("MissingInflatedId")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-//         val viewModelKoin:SearchViewModel by viewModel()
-//        viewModel = viewModelKoin
+
 
         initViews()
         initListeners()
         inputText = ""
         input = inputEditText
-        viewModel.observeState().observe(this) {
+        viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
     }
 
     private fun initViews() {
-        backButton = findViewById(R.id.back)
-        inputEditText = findViewById(R.id.inputEditText)
-        clearButton = findViewById(R.id.clearIcon)
-        recyclerView = findViewById(R.id.recyclerView)
-        placeholderImage = findViewById(R.id.placeholderImage)
-        placeholderMessage = findViewById(R.id.placeholderMessage)
-        placeholderButton = findViewById(R.id.placeholderButton)
-        historyView = findViewById(R.id.historyViewList)
-        clearHistoryButton = findViewById(R.id.clearHistory)
-        historyRecycler = findViewById(R.id.historyRecycler)
-        progressBar = findViewById(R.id.progressBar)
+        backButton = binding.back
+        inputEditText = binding.inputEditText
+        clearButton = binding.clearIcon
+        recyclerView = binding.recyclerView
+        placeholderImage = binding.placeholderImage
+        placeholderMessage = binding.placeholderMessage
+        placeholderButton = binding.placeholderButton
+        historyView = binding.historyViewList
+        clearHistoryButton = binding.clearHistory
+        historyRecycler = binding.historyRecycler
+        progressBar = binding.progressBar
 
         recyclerView.adapter = adapter
         historyRecycler.adapter = adapterHistory
@@ -118,7 +130,7 @@ class SearchActivity : AppCompatActivity() {
         adapter.onItemClick = {
             if (clickDebounce()) {
                 viewModel.write(it)
-                val intent = Intent(this, PlayerActivity::class.java)
+                val intent = Intent(requireContext(), PlayerActivity::class.java)
                 intent.putExtra("track", Gson().toJson(it))
                 startActivity(intent)
             }
@@ -128,7 +140,7 @@ class SearchActivity : AppCompatActivity() {
             if (clickDebounce()) {
                 viewModel.write(it)
 
-                val intent = Intent(this, PlayerActivity::class.java)//PlayerActivity
+                val intent = Intent(requireContext(), PlayerActivity::class.java)//PlayerActivity
                 intent.putExtra("track", Gson().toJson(it))
                 startActivity(intent)
 
@@ -136,7 +148,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         backButton.setOnClickListener {
-            finish()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
         clearHistoryButton.setOnClickListener {
@@ -156,9 +168,9 @@ class SearchActivity : AppCompatActivity() {
             updateTracksList(trackList)
             viewModel.historyload()
             adapter.notifyDataSetChanged()
-            val view: View? = currentFocus
+            val view: View? = requireActivity().currentFocus
             val inputMethodManager =
-                getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
             if (view != null) {
                 inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
             }
@@ -192,11 +204,6 @@ class SearchActivity : AppCompatActivity() {
         outState.putString(SAVED_INPUT, inputText)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        inputText = savedInstanceState.getString(SAVED_INPUT).toString()
-        input.setText(inputText)
-    }
 
     fun showLoading() {
         progressBar.visibility = View.VISIBLE

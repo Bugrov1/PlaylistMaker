@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
@@ -37,7 +38,7 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var play: ImageButton
     private lateinit var timer: TextView
     private lateinit var track: Track
-//    private lateinit var viewModel: PlayerViewModel
+
     val viewModel: PlayerViewModel by viewModel{parametersOf(track)}
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -49,10 +50,7 @@ class PlayerActivity : AppCompatActivity() {
         setListeners()
 
          track = Gson().fromJson((intent.getStringExtra("track")), Track::class.java)
-//        val viewModelKoin: PlayerViewModel by viewModel {
-//            parametersOf(track)
-//        }
-//        viewModel = viewModelKoin
+
 
         viewModel.state.observe(this) {
             render(it)

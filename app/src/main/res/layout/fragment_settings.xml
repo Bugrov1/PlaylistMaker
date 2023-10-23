@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/settings_background"
     android:orientation="vertical"
+    tools:context="com.example.playlistmaker.settings.ui.fragments.SettingsFragment"
+
 
 
     >
