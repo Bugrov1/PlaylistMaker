@@ -33,7 +33,11 @@ class SearchViewModel(val searchHistoryProvider:SearchHistoryInteractor,
 
     fun write(track: Track) {
         searchHistoryProvider.write(track)
-        renderState(SearchState.Update(searchHistoryProvider.read()))
+
+    }
+
+    fun update(){
+        renderState(SearchState.History(searchHistoryProvider.read()))
     }
 
     fun clear() {

@@ -9,6 +9,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,20 +69,20 @@ class SearchFragment : Fragment() {
     ): View? {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 
     @SuppressLint("MissingInflatedId")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-
+       Log.v("TESSSSSSSSSSST","onViewCreated")
         initViews()
         initListeners()
         inputText = ""
         input = inputEditText
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
+            Log.v("TESSSSSSSSSSST","$it")
         }
     }
 
@@ -131,18 +132,20 @@ class SearchFragment : Fragment() {
                 viewModel.write(it)
                 val intent = Intent(requireContext(), PlayerActivity::class.java)
                 intent.putExtra("track", Gson().toJson(it))
+
                 startActivity(intent)
+
             }
         }
 
         adapterHistory.onItemClick = {
             if (clickDebounce()) {
                 viewModel.write(it)
-
-                val intent = Intent(requireContext(), PlayerActivity::class.java)//PlayerActivity
+                viewModel.update()
+                val intent = Intent(requireContext(), PlayerActivity::class.java)
                 intent.putExtra("track", Gson().toJson(it))
-                startActivity(intent)
 
+                startActivity(intent)
             }
         }
 
@@ -174,6 +177,7 @@ class SearchFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.v("TESSSSSSSSSSST","onDestroy")
         simpleTextWatcher?.let { inputEditText.removeTextChangedListener(it) }
     }
 
@@ -256,11 +260,11 @@ class SearchFragment : Fragment() {
             is SearchState.Empty -> showEmpty(state.message)
             is SearchState.History -> historyLoad(state.history)
             is SearchState.Update -> updateHistory(state.history)
+            else -> {}
         }
     }
 
     fun historyLoad(history: Array<Track>?) {
-
         placeholderImage.visibility = View.GONE
         placeholderMessage.visibility = View.GONE
         placeholderButton.visibility = View.GONE
