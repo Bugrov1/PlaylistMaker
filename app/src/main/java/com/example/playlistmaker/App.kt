@@ -30,7 +30,7 @@ class App : Application() {
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@App)
-            modules(listOf(settingsModule, mainModule, playerModule, searchModule, mediaModule))
+            modules(listOf(settingsModule, playerModule, searchModule, mediaModule))
         }
         val settingsInteractor: SettingsInteractor by inject()
         darkTheme = settingsInteractor.getThemeSettings().darkTheme

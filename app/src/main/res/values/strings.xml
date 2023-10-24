@@ -51,6 +51,7 @@
     <string name="newPlylist">Новый плейлист</string>
     <string name="favourites">Избранные треки</string>
     <string name="playlists">Плейлисты</string>
+    <string name="share">Share</string>
 
 
 </resources>

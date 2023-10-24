@@ -26,7 +26,7 @@ class MediaFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.viewPager.adapter = MediaViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)//check manager
-
+        binding.viewPager.isSaveEnabled = false
         tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when(position) {
                 0 -> tab.text =  getString(R.string.favourites)
