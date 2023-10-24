@@ -39,7 +39,7 @@ class MainFragment : Fragment() {
         val viewModel: MainViewModel by viewModel()
 
         viewModel.screenState.observe(viewLifecycleOwner) {
-            loadScreen(it)
+//            loadScreen(it)
         }
 
         searchButton.setOnClickListener {
@@ -53,39 +53,6 @@ class MainFragment : Fragment() {
         }
     }
 
-    fun loadScreen(state: ScreenState) {
-        when (state) {
-            ScreenState.Search -> {
 
-                findNavController().navigate(R.id.action_mainFragment_to_searchFragment)
-//                activity?.supportFragmentManager?.beginTransaction()
-//                    ?.replace(R.id.rootFragmentContainerView, SearchFragment())
-//                    ?.setReorderingAllowed(true)
-//                    ?.addToBackStack("main")
-//                    ?.commit()
-            }
-
-            ScreenState.Mediateka -> {
-                findNavController().navigate(R.id.action_mainFragment_to_mediaFragment)
-//                activity?.supportFragmentManager?.beginTransaction()
-//                    ?.replace(R.id.rootFragmentContainerView, MediaFragment())
-//                    ?.setReorderingAllowed(true)
-//                    ?.addToBackStack("main")
-//                    ?.commit()
-            }
-
-            ScreenState.Settings -> {
-                findNavController().navigate(R.id.action_mainFragment_to_settingsFragment)
-//                activity?.supportFragmentManager?.beginTransaction()
-//                    ?.replace(R.id.rootFragmentContainerView, SettingsFragment())
-//                    ?.setReorderingAllowed(true)
-//                    ?.addToBackStack("main")
-//                    ?.commit()
-
-            }
-
-            else -> {}
-        }
-    }
 
 }

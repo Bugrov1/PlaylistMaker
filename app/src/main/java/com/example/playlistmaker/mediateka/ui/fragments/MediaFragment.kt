@@ -26,7 +26,6 @@ class MediaFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.viewPager.adapter = MediaViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)//check manager
-        setListeners()
 
         tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when(position) {
@@ -42,9 +41,5 @@ class MediaFragment: Fragment() {
         super.onDestroyView()
         tabMediator.detach()
     }
-    fun setListeners() {
-        binding .backButton.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
-    }
+
 }

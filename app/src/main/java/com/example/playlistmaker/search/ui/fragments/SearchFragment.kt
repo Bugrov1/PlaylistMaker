@@ -46,7 +46,7 @@ class SearchFragment : Fragment() {
     private lateinit var input: EditText
     private lateinit var placeholderImage: ImageView
     private lateinit var placeholderMessage: TextView
-    private lateinit var backButton: ImageButton
+
     private lateinit var inputEditText: EditText
     private lateinit var clearButton: ImageView
     private lateinit var recyclerView: RecyclerView
@@ -86,7 +86,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun initViews() {
-        backButton = binding.back
         inputEditText = binding.inputEditText
         clearButton = binding.clearIcon
         recyclerView = binding.recyclerView
@@ -147,10 +146,6 @@ class SearchFragment : Fragment() {
             }
         }
 
-        backButton.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
-
         clearHistoryButton.setOnClickListener {
 
             viewModel.clear()
@@ -198,12 +193,6 @@ class SearchFragment : Fragment() {
             View.VISIBLE
         }
     }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(SAVED_INPUT, inputText)
-    }
-
 
     fun showLoading() {
         progressBar.visibility = View.VISIBLE

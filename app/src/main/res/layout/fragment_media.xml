@@ -12,14 +12,12 @@
 
     >
 
-    <LinearLayout style="@style/TopLayoutBack">
-
-        <ImageButton
-            android:id="@+id/backButton"
-            style="@style/BackButton"
-            android:contentDescription="@string/back_button" />
+    <LinearLayout
+        android:layout_height="@dimen/dp_48"
+        style="@style/TopLayoutBack">
 
         <TextView
+            android:layout_marginStart="@dimen/dp_12"
             android:text="@string/mediateka"
             style="@style/TopText" />
 
@@ -32,13 +30,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabBackground="@color/white_black"
-        app:tabSelectedTextAppearance="@color/white_black"
+
         app:tabTextAppearance="@style/Tablayouttext"
         app:tabMode="fixed"
         app:tabSelectedTextColor="@color/black_white"
         app:tabIndicatorFullWidth="true"
         app:tabIndicatorHeight="2dp"
-        app:tabIndicatorColor="@color/black_white" />
+        app:tabIndicatorColor="@color/black_white"
+        app:tabTextColor="@color/black_white"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"

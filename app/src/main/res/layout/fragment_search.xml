@@ -12,13 +12,11 @@
 
     <LinearLayout
         style="@style/TopLayoutBack"
+        android:layout_height="@dimen/dp_48"
         >
-        <ImageButton
-            android:id="@+id/back"
-            style="@style/BackButton"
-            android:contentDescription="@string/back_button" />
 
         <TextView
+            android:layout_marginStart="@dimen/dp_12"
             android:text="@string/search"
             style="@style/TopText"
 

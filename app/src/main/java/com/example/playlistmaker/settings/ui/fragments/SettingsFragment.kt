@@ -21,7 +21,6 @@ class SettingsFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingsBinding
 
-    private lateinit var backButton: ImageButton
     private lateinit var shareButton: FrameLayout
     private lateinit var supportButton: FrameLayout
     private lateinit var licenseButton: FrameLayout
@@ -56,16 +55,12 @@ class SettingsFragment : Fragment() {
 
         }
 
-        backButton.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
         themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
             viewModel.onSwitcherClicked(isChecked)
         }
     }
 
     fun InitViews() {
-        backButton = binding.back
         shareButton = binding.shareButton
         supportButton = binding.supportButton
         licenseButton = binding.usersLicense

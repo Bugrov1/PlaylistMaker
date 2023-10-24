@@ -53,6 +53,7 @@
     <dimen name="dp_106">106dp</dimen>
     <dimen name="dp_16">16dp</dimen>
     <dimen name="sp_19">19sp</dimen>
+    <dimen name="dp_48">48dp</dimen>
 
 
 </resources>
