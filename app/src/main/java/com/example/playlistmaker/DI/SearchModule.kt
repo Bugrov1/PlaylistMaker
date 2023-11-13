@@ -18,7 +18,6 @@ import com.example.playlistmaker.search.domain.impl.TrackInteractorImpl
 import com.example.playlistmaker.search.domain.repository.SearchHistoryInteractorImpl
 import com.example.playlistmaker.search.domain.repository.SearchHistoryRepository
 import com.example.playlistmaker.search.ui.viewmodel.SearchViewModel
-import com.example.playlistmaker.settings.data.repository.SettingsRepositoryImpl
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -75,7 +74,7 @@ val searchModule = module {
         SearchViewModel(
             searchHistoryProvider = get(),
             tracksInteractor = get(),
-            trackSearchDebounce = get()
+
         )
     }
 

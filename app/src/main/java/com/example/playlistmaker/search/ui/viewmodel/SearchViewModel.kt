@@ -4,20 +4,25 @@ package com.example.playlistmaker.search.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.search.domain.api.SearchHistoryInteractor
 import com.example.playlistmaker.search.domain.api.TrackInteractor
-import com.example.playlistmaker.search.domain.api.TrackSearchDebounce
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.ui.models.SearchState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class SearchViewModel(val searchHistoryProvider:SearchHistoryInteractor,
-                      private val tracksInteractor:TrackInteractor,
-                      private val trackSearchDebounce:TrackSearchDebounce) : ViewModel() {
+                      private val tracksInteractor:TrackInteractor) : ViewModel() {
 
 
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
+    companion object {
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+    }
 
     init {
         renderState(SearchState.History(searchHistoryProvider.read()))
@@ -43,20 +48,21 @@ class SearchViewModel(val searchHistoryProvider:SearchHistoryInteractor,
     fun clear() {
         searchHistoryProvider.clear()
     }
+    private var searchJob: Job? = null
 
+    private var lastSearchText: String? = null
     fun searchDebounce2(changedText: String) {
         if (lastSearchText == changedText) {
             return
         }
         this.lastSearchText = changedText
-        trackSearchDebounce.searchDebounce { searchRequest(changedText) }
-    }
+        searchJob?.cancel()
+//        trackSearchDebounce.searchDebounce { searchRequest(changedText) }
 
-    private var lastSearchText: String? = null
-
-    override fun onCleared() {
-        super.onCleared()
-        trackSearchDebounce.onCleared()
+        searchJob =viewModelScope.launch {
+            delay(SEARCH_DEBOUNCE_DELAY)
+            searchRequest(changedText)
+        }
     }
 
     private fun searchRequest(newSearchText: String) {
