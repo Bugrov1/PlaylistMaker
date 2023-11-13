@@ -14,12 +14,15 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class SearchViewModel(val searchHistoryProvider:SearchHistoryInteractor,
-                      private val tracksInteractor:TrackInteractor) : ViewModel() {
+class SearchViewModel(
+    val searchHistoryProvider: SearchHistoryInteractor,
+    private val tracksInteractor: TrackInteractor
+) : ViewModel() {
 
 
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
+
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
@@ -41,13 +44,14 @@ class SearchViewModel(val searchHistoryProvider:SearchHistoryInteractor,
 
     }
 
-    fun update(){
+    fun update() {
         renderState(SearchState.History(searchHistoryProvider.read()))
     }
 
     fun clear() {
         searchHistoryProvider.clear()
     }
+
     private var searchJob: Job? = null
 
     private var lastSearchText: String? = null
@@ -57,9 +61,9 @@ class SearchViewModel(val searchHistoryProvider:SearchHistoryInteractor,
         }
         this.lastSearchText = changedText
         searchJob?.cancel()
-//        trackSearchDebounce.searchDebounce { searchRequest(changedText) }
 
-        searchJob =viewModelScope.launch {
+
+        searchJob = viewModelScope.launch {
             delay(SEARCH_DEBOUNCE_DELAY)
             searchRequest(changedText)
         }
@@ -68,33 +72,42 @@ class SearchViewModel(val searchHistoryProvider:SearchHistoryInteractor,
     private fun searchRequest(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {
             renderState(SearchState.Loading)
-            tracksInteractor.searchTracks(
-                newSearchText,
-                object : TrackInteractor.TracksConsumer {
-                    override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
-                        val trackList = mutableListOf<Track>()
-                        if (foundTracks != null) {
-                            trackList.clear()
-                            trackList.addAll(foundTracks)
-                        }
-                        when {
-                            errorMessage != null -> {
-                                val message =
-                                    "Проблемы со связью Загрузка не удалась. Проверьте подключение к интернету"
-                                renderState(SearchState.Error(message))
-                            }
 
-                            trackList.isEmpty() -> {
-                                val message = "Ничего не нашлось"
-                                renderState(SearchState.Empty(message))
-                            }
+            viewModelScope.launch {
+                tracksInteractor
+                    .searchTracks(newSearchText)
+                    .collect { pair ->
+                        processResult(pair.first, pair.second)
 
-                            else -> {
-                                renderState(SearchState.Content(trackList))
-                            }
-                        }
                     }
-                })
+            }
+        }
+    }
+
+    private fun processResult(foundTracks: List<Track>?, errorMessage: String?) {
+        val trackList = mutableListOf<Track>()
+        if (foundTracks != null) {
+            trackList.clear()
+            trackList.addAll(foundTracks)
+        }
+
+        when {
+            errorMessage != null -> {
+                val message =
+                    "Проблемы со связью Загрузка не удалась. Проверьте подключение к интернету"
+                renderState(SearchState.Error(message))
+
+            }
+
+            trackList.isEmpty() -> {
+                val message = "Ничего не нашлось"
+                renderState(SearchState.Empty(message))
+
+            }
+
+            else -> {
+                renderState(SearchState.Content(trackList))
+            }
         }
     }
 

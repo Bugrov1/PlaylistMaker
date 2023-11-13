@@ -9,11 +9,9 @@ import com.example.playlistmaker.search.data.network.RetrofitNetworkClient
 import com.example.playlistmaker.search.data.repository.SearchHistoryRepositoryImpl
 import com.example.playlistmaker.search.data.repository.TRACK_SEARCH_HISTORY
 import com.example.playlistmaker.search.data.repository.TrackRepositoryImpl
-import com.example.playlistmaker.search.data.repository.TrackSearchDebounceImpl
 import com.example.playlistmaker.search.domain.api.SearchHistoryInteractor
 import com.example.playlistmaker.search.domain.api.TrackInteractor
 import com.example.playlistmaker.search.domain.api.TrackRepository
-import com.example.playlistmaker.search.domain.api.TrackSearchDebounce
 import com.example.playlistmaker.search.domain.impl.TrackInteractorImpl
 import com.example.playlistmaker.search.domain.repository.SearchHistoryInteractorImpl
 import com.example.playlistmaker.search.domain.repository.SearchHistoryRepository
@@ -44,9 +42,6 @@ val searchModule = module {
         SearchHistoryInteractorImpl(historyRepository = get())
     }
 
-    single<TrackSearchDebounce> {
-        TrackSearchDebounceImpl()
-    }
 
     single<ItunesAPI> {
 
