@@ -1,10 +1,8 @@
 package com.example.playlistmaker.player.domain
 
-import com.example.playlistmaker.player.domain.models.PlayerState
-
 
 interface Player {
-    var playerState: PlayerState
+
 
     fun setDataSource(url:String)
     fun startPlayer()
@@ -14,4 +12,6 @@ interface Player {
     fun release()
     fun currentPosition(): String
     fun stop()
+
+    fun isPlaying():Boolean
 }

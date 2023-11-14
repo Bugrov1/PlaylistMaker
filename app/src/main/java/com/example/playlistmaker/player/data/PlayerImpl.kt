@@ -3,7 +3,6 @@ package com.example.playlistmaker.player.data
 import android.media.MediaPlayer
 
 import com.example.playlistmaker.player.domain.Player
-import com.example.playlistmaker.player.domain.models.PlayerState
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -11,34 +10,19 @@ import java.util.Locale
 class PlayerImpl() : Player {
 
     private var mediaPlayer = MediaPlayer()
-    override var playerState = PlayerState.NOT_PREPARED
-
 
     override fun setDataSource(url: String) {
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
     }
 
-    init {
-        setOnPreparedListener {
-            playerState = PlayerState.READY
-        }
-        setOnPreparedListener {
-            playerState = PlayerState.READY
-        }
-    }
-
     override fun startPlayer() {
-        if (playerState == PlayerState.NOT_PREPARED) {
-            return
-        }
         mediaPlayer.start()
-        playerState = PlayerState.PLAYING
+
     }
 
     override fun pausePlayer() {
         mediaPlayer.pause()
-        playerState = PlayerState.PAUSED
 
     }
 
@@ -65,6 +49,9 @@ class PlayerImpl() : Player {
 
     override fun stop() {
         mediaPlayer.stop()
+    }
+    override fun isPlaying():Boolean{
+       return  mediaPlayer.isPlaying
     }
 
 

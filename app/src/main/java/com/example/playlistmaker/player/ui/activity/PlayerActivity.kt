@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
-import com.example.playlistmaker.player.ui.models.PlayerActivityState
+
 import com.example.playlistmaker.player.ui.viewmodel.PlayerViewModel
 import com.example.playlistmaker.search.domain.models.Track
 import com.google.gson.Gson
@@ -37,21 +37,23 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var timer: TextView
     private lateinit var track: Track
 
-    val viewModel: PlayerViewModel by viewModel{parametersOf(track)}
+    val viewModel: PlayerViewModel by viewModel { parametersOf(track) }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
 
+
+        track = Gson().fromJson((intent.getStringExtra("track")), Track::class.java)
         initViews()
         setListeners()
 
-         track = Gson().fromJson((intent.getStringExtra("track")), Track::class.java)
 
-
-        viewModel.state.observe(this) {
-            render(it)
+        viewModel.observePlayerState().observe(this) {
+            play.isEnabled = it.isPlayButtonEnabled
+            buttonStatus(it.buttonText)
+            timer.text = it.progress
             Log.v(ContentValues.TAG, "$it")
         }
     }
@@ -79,6 +81,8 @@ class PlayerActivity : AppCompatActivity() {
         countryValue = findViewById(R.id.countryValue)
         play = findViewById(R.id.playPauseButton)
         timer = findViewById(R.id.playTime)
+
+        setupDetails(track)
     }
 
     override fun onPause() {
@@ -88,7 +92,7 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.onDestroy()
+//        viewModel.onDestroy()
     }
 
     private fun setupDetails(
@@ -116,27 +120,12 @@ class PlayerActivity : AppCompatActivity() {
             .into(albumCover)
     }
 
-    fun setPlayButton() {
-        play.setBackgroundResource(R.drawable.playpausebutton)
-    }
 
-    private fun setPauseButton(timer: String) {
-        play.setBackgroundResource(R.drawable.pausebutton)
-        this.timer.text = timer
-    }
+    private fun buttonStatus(buttonStatus: String) {
+        when (buttonStatus) {
+            "PAUSE" -> play.setBackgroundResource(R.drawable.pausebutton)
+            "PLAY" -> play.setBackgroundResource(R.drawable.playpausebutton)
 
-    private fun preparePlayer(track: Track) {
-        timer.text = "00:00"
-        play.isEnabled = true
-        play.setBackgroundResource(R.drawable.playpausebutton)
-        setupDetails(track)
-    }
-
-    private fun render(state: PlayerActivityState) {
-        when (state) {
-            is PlayerActivityState.StatePlayerReady -> preparePlayer(state.track)
-            is PlayerActivityState.StatePlayerPlay -> setPauseButton(state.timer)
-            is PlayerActivityState.StatePlayerPause -> setPlayButton()
 
         }
     }

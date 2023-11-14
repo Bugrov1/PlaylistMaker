@@ -24,5 +24,9 @@ val playerModule = module {
         PlayerViewModel(track, mediaPlayer = get())
     }
 
+//    viewModel<PlayerViewModel> { (track: Track) ->
+//        PlayerViewModel(track, mediaPlayer = get())
+//    }
+
 
 }
