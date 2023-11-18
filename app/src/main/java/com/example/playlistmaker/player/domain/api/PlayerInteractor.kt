@@ -1,5 +1,7 @@
 package com.example.playlistmaker.player.domain.api
 
+import com.example.playlistmaker.player.domain.models.State
+import kotlinx.coroutines.flow.Flow
 
 
 interface PlayerInteractor {
@@ -14,4 +16,6 @@ interface PlayerInteractor {
 
     fun stop()
     fun isPlaying():Boolean
+
+    suspend fun getState(): Flow<State>
 }

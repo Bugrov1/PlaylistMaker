@@ -3,11 +3,16 @@ package com.example.playlistmaker.player.data
 import android.media.MediaPlayer
 
 import com.example.playlistmaker.player.domain.Player
+import com.example.playlistmaker.player.domain.models.State
+import com.example.playlistmaker.player.ui.models.PlayerState
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 
 class PlayerImpl() : Player {
+
+    override var state = State.NOT_PREPARED
+
 
     private var mediaPlayer = MediaPlayer()
 

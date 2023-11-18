@@ -1,24 +1,29 @@
 package com.example.playlistmaker.player.ui.viewmodel
 
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.player.domain.api.PlayerInteractor
+import com.example.playlistmaker.player.domain.models.State
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.player.ui.models.PlayerState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
-
-class PlayerViewModel(track: Track,private val mediaPlayer: PlayerInteractor) : ViewModel() {
+class PlayerViewModel(track: Track, private val mediaPlayer: PlayerInteractor) : ViewModel() {
 
     private var trackInit = track
-    private val playerState = MutableLiveData<PlayerState>(PlayerState.Default())
-    fun observePlayerState(): LiveData<PlayerState> = playerState
+    private val _playerState = MutableStateFlow<PlayerState>(PlayerState.Default())
+    val playerState = _playerState.asStateFlow()
 
     init {
         trackInit.previewUrl?.let { mediaPlayer.setDataSource(it) }
@@ -29,13 +34,14 @@ class PlayerViewModel(track: Track,private val mediaPlayer: PlayerInteractor) : 
     fun playerInit() {
 
         mediaPlayer.setOnPreparedListener {
-            playerState.postValue(PlayerState.Prepared())
+            _playerState.value = PlayerState.Prepared()
 
         }
         mediaPlayer.setOnCompletionListener {
-            playerState.postValue(PlayerState.Prepared())
+            _playerState.value = PlayerState.Prepared()
             timerJob?.cancel()
-
+            Log.v("STATUS", "Isplaying ---${mediaPlayer.isPlaying()}")
+            Log.v("STATUS", "endtime ---${getCurrentPlayerPosition()}")
 
         }
     }
@@ -64,14 +70,15 @@ class PlayerViewModel(track: Track,private val mediaPlayer: PlayerInteractor) : 
     }
 
 
-
     private fun startTimer() {
 
         timerJob = viewModelScope.launch {
-            while (mediaPlayer.isPlaying() ) {
+            while (mediaPlayer.isPlaying()) {
                 delay(300L)
-                playerState.postValue(PlayerState.Playing(getCurrentPlayerPosition()))
+                Log.v("STATUS", "current time ---${getCurrentPlayerPosition()}")
+                _playerState.value = PlayerState.Playing(getCurrentPlayerPosition())
             }
+
         }
     }
 
@@ -83,14 +90,14 @@ class PlayerViewModel(track: Track,private val mediaPlayer: PlayerInteractor) : 
 
     private fun startPlayer() {
         mediaPlayer.startPlayer()
-        playerState.postValue(PlayerState.Playing(getCurrentPlayerPosition()))
+        _playerState.value = PlayerState.Playing(getCurrentPlayerPosition())
 
     }
 
     fun pausePlayer() {
         mediaPlayer.pausePlayer()
         timerJob?.cancel()
-        playerState.postValue(PlayerState.Paused(getCurrentPlayerPosition()))
+        _playerState.value = PlayerState.Paused(getCurrentPlayerPosition())
 
     }
 
@@ -98,7 +105,7 @@ class PlayerViewModel(track: Track,private val mediaPlayer: PlayerInteractor) : 
         mediaPlayer.stop()
         mediaPlayer.release()
         timerJob?.cancel()
-        playerState.value = PlayerState.Default()
+        _playerState.value = PlayerState.Default()
     }
 
     fun playerStop() {

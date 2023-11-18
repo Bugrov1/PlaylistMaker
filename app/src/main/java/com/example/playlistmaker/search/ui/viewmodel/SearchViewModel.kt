@@ -24,7 +24,7 @@ class SearchViewModel(
     fun observeState(): LiveData<SearchState> = stateLiveData
 
     companion object {
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val SEARCH_DEBOUNCE_DELAY = 300L
     }
 
     init {

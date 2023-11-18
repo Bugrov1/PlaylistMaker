@@ -1,8 +1,10 @@
 package com.example.playlistmaker.player.domain
 
+import com.example.playlistmaker.player.domain.models.State
+
 
 interface Player {
-
+    var state: State
 
     fun setDataSource(url:String)
     fun startPlayer()
