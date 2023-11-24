@@ -41,7 +41,7 @@ class PlayerInteractorImpl(private val player: Player) : PlayerInteractor {
        return player.isPlaying()
     }
 
-    override suspend fun getState(): Flow<State> =flow{
-       emit(player.state)
+    override suspend fun getState(): State {
+       return player.state
     }
 }

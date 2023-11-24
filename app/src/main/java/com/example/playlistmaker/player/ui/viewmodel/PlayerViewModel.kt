@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.mediateka.domain.db.FavoritesInteractor
 import com.example.playlistmaker.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.player.domain.models.State
 import com.example.playlistmaker.search.domain.models.Track
@@ -19,10 +20,13 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
-class PlayerViewModel(track: Track, private val mediaPlayer: PlayerInteractor) : ViewModel() {
+class PlayerViewModel(
+    track: Track,
+    private val mediaPlayer: PlayerInteractor,
+    private val favoritesInteractor: FavoritesInteractor) : ViewModel() {
 
     private var trackInit = track
-    private val _playerState = MutableStateFlow<PlayerState>(PlayerState.Default())
+    private val _playerState = MutableStateFlow<PlayerState>(PlayerState.Default(trackInit.isFavorite))
     val playerState = _playerState.asStateFlow()
 
     init {
@@ -34,15 +38,28 @@ class PlayerViewModel(track: Track, private val mediaPlayer: PlayerInteractor) :
     fun playerInit() {
 
         mediaPlayer.setOnPreparedListener {
-            _playerState.value = PlayerState.Prepared()
+            _playerState.value = PlayerState.Prepared(trackInit.isFavorite)
 
         }
         mediaPlayer.setOnCompletionListener {
-            _playerState.value = PlayerState.Prepared()
+            _playerState.value = PlayerState.Prepared(trackInit.isFavorite)
             timerJob?.cancel()
             Log.v("STATUS", "Isplaying ---${mediaPlayer.isPlaying()}")
             Log.v("STATUS", "endtime ---${getCurrentPlayerPosition()}")
 
+        }
+    }
+
+    fun onFavoriteClicked(){
+        if(!trackInit.isFavorite){
+            favoritesInteractor.addToFavorites(trackInit)
+            trackInit.isFavorite=true
+            _playerState.value.inFavorites =true
+        }
+        else{
+            favoritesInteractor.deleteFromFavorites(trackInit)
+            trackInit.isFavorite=false
+            _playerState.value.inFavorites =false
         }
     }
 
@@ -73,11 +90,12 @@ class PlayerViewModel(track: Track, private val mediaPlayer: PlayerInteractor) :
     private fun startTimer() {
 
         timerJob = viewModelScope.launch {
-            while (mediaPlayer.isPlaying()) {
+            while (mediaPlayer.getState() ==State.PLAYING) {
                 delay(300L)
                 Log.v("STATUS", "current time ---${getCurrentPlayerPosition()}")
-                _playerState.value = PlayerState.Playing(getCurrentPlayerPosition())
+                _playerState.value = PlayerState.Playing(getCurrentPlayerPosition(),trackInit.isFavorite)
             }
+
 
         }
     }
@@ -90,14 +108,14 @@ class PlayerViewModel(track: Track, private val mediaPlayer: PlayerInteractor) :
 
     private fun startPlayer() {
         mediaPlayer.startPlayer()
-        _playerState.value = PlayerState.Playing(getCurrentPlayerPosition())
+        _playerState.value = PlayerState.Playing(getCurrentPlayerPosition(),trackInit.isFavorite)
 
     }
 
     fun pausePlayer() {
         mediaPlayer.pausePlayer()
         timerJob?.cancel()
-        _playerState.value = PlayerState.Paused(getCurrentPlayerPosition())
+        _playerState.value = PlayerState.Paused(getCurrentPlayerPosition(),trackInit.isFavorite)
 
     }
 
@@ -105,7 +123,7 @@ class PlayerViewModel(track: Track, private val mediaPlayer: PlayerInteractor) :
         mediaPlayer.stop()
         mediaPlayer.release()
         timerJob?.cancel()
-        _playerState.value = PlayerState.Default()
+        _playerState.value = PlayerState.Default(trackInit.isFavorite)
     }
 
     fun playerStop() {

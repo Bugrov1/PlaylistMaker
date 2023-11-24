@@ -1,5 +1,7 @@
 package com.example.playlistmaker.DI
 
+import com.example.playlistmaker.mediateka.domain.FavoritesInteractorImpl
+import com.example.playlistmaker.mediateka.domain.db.FavoritesInteractor
 import com.example.playlistmaker.player.data.PlayerImpl
 import com.example.playlistmaker.player.domain.Player
 import com.example.playlistmaker.player.domain.PlayerInteractorImpl
@@ -21,7 +23,7 @@ val playerModule = module {
     }
 
     viewModel<PlayerViewModel> { (track: Track) ->
-        PlayerViewModel(track, mediaPlayer = get())
+        PlayerViewModel(track, mediaPlayer = get(),favoritesInteractor=get())
     }
 
 //    viewModel<PlayerViewModel> { (track: Track) ->

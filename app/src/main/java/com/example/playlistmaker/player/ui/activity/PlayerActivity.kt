@@ -38,6 +38,7 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var play: ImageButton
     private lateinit var timer: TextView
     private lateinit var track: Track
+    private lateinit var likebutton: ImageButton
 
     val viewModel: PlayerViewModel by viewModel { parametersOf(track) }
 
@@ -56,6 +57,7 @@ class PlayerActivity : AppCompatActivity() {
                 play.isEnabled = it.isPlayButtonEnabled
                 buttonStatus(it.buttonText)
                 timer.text = it.progress
+                renderFavoritebutton(it.inFavorites)
                 Log.v(ContentValues.TAG, "$it")
                 Log.v(ContentValues.TAG, "timer ui ---${it.progress}")
             }
@@ -93,6 +95,7 @@ class PlayerActivity : AppCompatActivity() {
         countryValue = findViewById(R.id.countryValue)
         play = findViewById(R.id.playPauseButton)
         timer = findViewById(R.id.playTime)
+        likebutton = findViewById(R.id.likeButton)
 
         setupDetails(track)
     }
@@ -139,6 +142,15 @@ class PlayerActivity : AppCompatActivity() {
             "PLAY" -> play.setBackgroundResource(R.drawable.playpausebutton)
 
 
+        }
+    }
+    private fun renderFavoritebutton(inFavorites:Boolean){
+        if(true){
+            likebutton.setBackgroundResource(R.drawable.likebuttontrue)
+        }
+
+        else{
+            likebutton.setBackgroundResource(R.drawable.likebutton)
         }
     }
 

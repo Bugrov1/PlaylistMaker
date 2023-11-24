@@ -3,6 +3,8 @@ package com.example.playlistmaker.DI
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.room.Room
+import com.example.playlistmaker.mediateka.data.db.AppDatabase
 import com.example.playlistmaker.search.data.NetworkClient
 import com.example.playlistmaker.search.data.network.ItunesAPI
 import com.example.playlistmaker.search.data.network.RetrofitNetworkClient
@@ -17,6 +19,7 @@ import com.example.playlistmaker.search.domain.repository.SearchHistoryInteracto
 import com.example.playlistmaker.search.domain.repository.SearchHistoryRepository
 import com.example.playlistmaker.search.ui.viewmodel.SearchViewModel
 import com.google.gson.Gson
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -34,8 +37,9 @@ val searchModule = module {
         )}
 
 
+
     single<SearchHistoryRepository> {
-        SearchHistoryRepositoryImpl(sharedPref = get(named("history_pref")))
+        SearchHistoryRepositoryImpl(sharedPref = get(named("history_pref")), appDatabase = get())
     }
 
     single<SearchHistoryInteractor> {
@@ -58,7 +62,7 @@ val searchModule = module {
     }
 
     single<TrackRepository> {
-        TrackRepositoryImpl(networkClient = get())
+        TrackRepositoryImpl(networkClient = get(), appDatabase = get())
     }
 
     single<TrackInteractor> {

@@ -17,5 +17,5 @@ interface PlayerInteractor {
     fun stop()
     fun isPlaying():Boolean
 
-    suspend fun getState(): Flow<State>
+    suspend fun getState(): State
 }

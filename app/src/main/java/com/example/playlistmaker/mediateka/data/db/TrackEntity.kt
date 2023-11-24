@@ -1,17 +1,18 @@
-package com.example.playlistmaker.search.domain.models
+package com.example.playlistmaker.mediateka.data.db
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-
-data class Track(
+@Entity(tableName = "favorites_table")
+data class TrackEntity(
+@PrimaryKey
+    val trackId: Int,
     val trackName: String,
     val artistName: String,
     val trackTimeMillis: Long,
     val artworkUrl100: String,
-    val trackId: Int,
     val collectionName: String?,
     val releaseDate: String?,
     val primaryGenreName: String?,
     val country: String?,
-    val previewUrl: String?,
-    var isFavorite: Boolean = false
-)
+    val previewUrl: String?)

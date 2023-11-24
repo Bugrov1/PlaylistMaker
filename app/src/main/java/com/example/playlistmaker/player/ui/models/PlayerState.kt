@@ -4,14 +4,14 @@ sealed class PlayerState(
     val isPlayButtonEnabled: Boolean,
     val buttonText: String,
     val progress: String,
-
+    var inFavorites:Boolean
 ) {
 
-    class Default : PlayerState(false, "PLAY", "00:00")
+    class Default(inFavorites:Boolean) : PlayerState(false, "PLAY", "00:00",inFavorites)
 
-    class Prepared : PlayerState(true, "PLAY", "00:00")
+    class Prepared(inFavorites:Boolean) : PlayerState(true, "PLAY", "00:00",inFavorites)
 
-    class Playing(progress: String) : PlayerState(true, "PAUSE", progress)
+    class Playing(progress: String,inFavorites:Boolean) : PlayerState(true, "PAUSE", progress,inFavorites)
 
-    class Paused(progress: String) : PlayerState(true, "PLAY", progress)
+    class Paused(progress: String,inFavorites:Boolean) : PlayerState(true, "PLAY", progress,inFavorites)
 }

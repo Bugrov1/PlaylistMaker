@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.ContentValues
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.playlistmaker.DI.dataModule
 import com.example.playlistmaker.DI.mainModule
 import com.example.playlistmaker.DI.mediaModule
 import com.example.playlistmaker.DI.playerModule
@@ -30,7 +31,7 @@ class App : Application() {
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@App)
-            modules(listOf(settingsModule, playerModule, searchModule, mediaModule))
+            modules(listOf(settingsModule, playerModule, searchModule, mediaModule,dataModule))
         }
         val settingsInteractor: SettingsInteractor by inject()
         darkTheme = settingsInteractor.getThemeSettings().darkTheme

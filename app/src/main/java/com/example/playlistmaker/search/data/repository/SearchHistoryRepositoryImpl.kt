@@ -5,6 +5,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import com.example.playlistmaker.mediateka.data.db.AppDatabase
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.domain.repository.SearchHistoryRepository
 import com.google.gson.Gson
@@ -13,15 +14,36 @@ import com.google.gson.Gson
 const val TRACK_SEARCH_HISTORY = "track_search_history"
 const val TRACKS_LIST_KEY = "track_list_key"
 
-class SearchHistoryRepositoryImpl(val sharedPref: SharedPreferences) : SearchHistoryRepository {
+class SearchHistoryRepositoryImpl(
+    val sharedPref: SharedPreferences,
+    private val appDatabase: AppDatabase
+) : SearchHistoryRepository {
 
     private val listMaxSize = 10
 
 
     override fun read(): Array<Track>? {
+        val tracks = appDatabase.trackDao().getTracksId()
         val json = sharedPref.getString(TRACKS_LIST_KEY, null)
         println("$json json")
-        return Gson().fromJson(json, Array<Track>::class.java)
+        val tracksArray = Gson().fromJson(json, Array<Track>::class.java)
+        val listTracks = tracksArray.map { Track(
+            it.trackName,
+            it.artistName,
+            it.trackTimeMillis,
+            it.artworkUrl100,
+            it.trackId,
+            it.collectionName,
+            it.releaseDate,
+            it.primaryGenreName,
+            it.country,
+            it.previewUrl,
+            isFavorite = it.trackId  in tracks
+        )
+
+        }
+        return listTracks.toTypedArray()
+
     }
 
     override fun write(track: Track) {
