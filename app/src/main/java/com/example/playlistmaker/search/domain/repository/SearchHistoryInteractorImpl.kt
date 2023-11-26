@@ -6,13 +6,13 @@ import com.example.playlistmaker.search.domain.models.Track
 class SearchHistoryInteractorImpl (private val historyRepository: SearchHistoryRepository)
     :SearchHistoryInteractor{
 
-    override fun read(): Array<Track>? {
+    override  fun read(): Array<Track>? {
         return historyRepository.read()
     }
-    override fun write(track: Track){
+    override  fun write(track: Track){
         historyRepository.write(track)
     }
-    override fun clear(){
+    override  fun clear(){
         historyRepository.clear()
     }
 }

@@ -72,6 +72,8 @@ class SearchFragment : Fragment() {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
 
+        Log.v("TESSSSSSSSSSST","onCreateView")
+
     }
 
     @SuppressLint("MissingInflatedId")
@@ -80,12 +82,20 @@ class SearchFragment : Fragment() {
        Log.v("TESSSSSSSSSSST","onViewCreated")
         initViews()
         initListeners()
+
         inputText = ""
         input = inputEditText
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
             Log.v("TESSSSSSSSSSST","$it")
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.v("TESSSSSSSSSSST","RESUMED")
+        viewModel.refresh()
+
     }
 
     private fun initViews() {
@@ -273,8 +283,10 @@ class SearchFragment : Fragment() {
         placeholderImage.visibility = View.GONE
         placeholderMessage.visibility = View.GONE
         placeholderButton.visibility = View.GONE
+
         if (history == null || history.isEmpty()) {
             historyView.visibility = View.GONE
+            this.history = emptyArray()
 
         } else {
             this.history = history

@@ -14,4 +14,5 @@ sealed class PlayerState(
     class Playing(progress: String,inFavorites:Boolean) : PlayerState(true, "PAUSE", progress,inFavorites)
 
     class Paused(progress: String,inFavorites:Boolean) : PlayerState(true, "PLAY", progress,inFavorites)
+    class Neutral(  buttonText: String,progress: String,inFavorites:Boolean) : PlayerState(true, buttonText, progress,inFavorites)
 }

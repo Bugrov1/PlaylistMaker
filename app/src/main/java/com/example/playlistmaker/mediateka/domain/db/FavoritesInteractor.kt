@@ -4,7 +4,9 @@ import com.example.playlistmaker.search.domain.models.Track
 
 interface FavoritesInteractor {
 
-    fun addToFavorites(track: Track)
-    fun deleteFromFavorites(track: Track)
+    suspend fun addToFavorites(track: Track)
+    suspend fun deleteFromFavorites(track: Track)
     fun getTracks(): kotlinx.coroutines.flow.Flow<List<Track>>
+
+    suspend fun getIds():List<Int>
 }

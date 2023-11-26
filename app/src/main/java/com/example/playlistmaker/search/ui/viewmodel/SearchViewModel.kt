@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.mediateka.domain.db.FavoritesInteractor
 import com.example.playlistmaker.search.domain.api.SearchHistoryInteractor
 import com.example.playlistmaker.search.domain.api.TrackInteractor
 import com.example.playlistmaker.search.domain.models.Track
@@ -16,8 +17,10 @@ import kotlinx.coroutines.launch
 
 class SearchViewModel(
     val searchHistoryProvider: SearchHistoryInteractor,
-    private val tracksInteractor: TrackInteractor
+    private val tracksInteractor: TrackInteractor,private val favoritesInteractor: FavoritesInteractor
+
 ) : ViewModel() {
+
 
 
     private val stateLiveData = MutableLiveData<SearchState>()
@@ -28,7 +31,8 @@ class SearchViewModel(
     }
 
     init {
-        renderState(SearchState.History(searchHistoryProvider.read()))
+        checkFavorites()
+//          renderState(SearchState.History(searchHistoryProvider.read()))
     }
 
     private fun renderState(state: SearchState) {
@@ -36,25 +40,67 @@ class SearchViewModel(
     }
 
     fun historyload() {
-        renderState(SearchState.History(searchHistoryProvider.read()))
+     checkFavorites()
+//        renderState(SearchState.History(searchHistoryProvider.read()))
+
+    }
+
+    fun checkFavorites(){
+        val history = searchHistoryProvider.read()
+        viewModelScope.launch {
+            val ids  = favoritesInteractor.getIds()
+             if (history != null) {
+                 val checked=
+                  history.map { Track(
+                    it.trackName,
+                    it.artistName,
+                    it.trackTimeMillis,
+                    it.artworkUrl100,
+                    it.trackId,
+                    it.collectionName,
+                    it.releaseDate,
+                    it.primaryGenreName,
+                    it.country,
+                    it.previewUrl,
+                    isFavorite = it.trackId  in ids
+                )
+                 }
+                 renderState(SearchState.History(checked.toTypedArray()))
+            }
+        }
     }
 
     fun write(track: Track) {
-        searchHistoryProvider.write(track)
+
+            searchHistoryProvider.write(track)
+//        searchHistoryProvider.write(track)
+    }
+    fun read() {
+        viewModelScope.launch {
+            searchHistoryProvider.read()
+        }
 
     }
 
     fun update() {
+
+//        checkFavorites()
         renderState(SearchState.History(searchHistoryProvider.read()))
+
     }
 
+
+
     fun clear() {
-        searchHistoryProvider.clear()
+
+            searchHistoryProvider.clear()
+            renderState(SearchState.History(searchHistoryProvider.read()))
+
     }
 
     private var searchJob: Job? = null
-
-    private var lastSearchText: String? = null
+    private var searchJob2: Job? = null
+     var lastSearchText: String? = null
     fun searchDebounce2(changedText: String) {
         if (lastSearchText == changedText) {
             return
@@ -68,6 +114,18 @@ class SearchViewModel(
             searchRequest(changedText)
         }
     }
+    fun refresh(){
+        when(stateLiveData.value){
+            is SearchState.History -> historyload()
+            is SearchState.Content -> viewModelScope.launch {
+                lastSearchText?.let { searchRequest(it) }
+            }
+            else -> {}
+        }
+
+
+    }
+
 
     private fun searchRequest(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {

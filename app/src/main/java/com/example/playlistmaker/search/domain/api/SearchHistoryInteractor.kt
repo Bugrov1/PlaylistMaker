@@ -6,9 +6,9 @@ interface SearchHistoryInteractor {
 
     fun read() :Array<Track>?
 
-    fun write(track: Track)
+     fun write(track: Track)
 
-    fun clear()
+     fun clear()
 
 
 }

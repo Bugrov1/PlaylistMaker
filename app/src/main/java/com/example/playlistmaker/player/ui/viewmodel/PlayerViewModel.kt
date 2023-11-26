@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
@@ -32,6 +33,10 @@ class PlayerViewModel(
     init {
         trackInit.previewUrl?.let { mediaPlayer.setDataSource(it) }
         playerInit()
+        Log.v("State", "State ---${ _playerState}")
+        Log.v("Fav Track", "Fav Track ---${ trackInit.isFavorite}")
+
+
     }
 
     private var timerJob: Job? = null
@@ -52,14 +57,22 @@ class PlayerViewModel(
 
     fun onFavoriteClicked(){
         if(!trackInit.isFavorite){
-            favoritesInteractor.addToFavorites(trackInit)
+            viewModelScope.launch {favoritesInteractor.addToFavorites(trackInit)
+            }
             trackInit.isFavorite=true
-            _playerState.value.inFavorites =true
+            _playerState.value=
+            PlayerState.Neutral(buttonText = _playerState.value.buttonText ,
+                progress  = _playerState.value.progress,
+               inFavorites =  trackInit.isFavorite)
+
         }
         else{
-            favoritesInteractor.deleteFromFavorites(trackInit)
-            trackInit.isFavorite=false
-            _playerState.value.inFavorites =false
+            viewModelScope.launch {favoritesInteractor.deleteFromFavorites(trackInit)}
+                trackInit.isFavorite=false
+                _playerState.value = PlayerState.Neutral(buttonText = _playerState.value.buttonText ,
+                    progress  = _playerState.value.progress,
+                    inFavorites =  trackInit.isFavorite)
+
         }
     }
 
@@ -69,7 +82,7 @@ class PlayerViewModel(
                 pausePlayer()
             }
 
-            is PlayerState.Prepared, is PlayerState.Paused -> {
+            is PlayerState.Prepared, is PlayerState.Paused,is PlayerState.Neutral -> {
                 startPlayer()
             }
 
@@ -113,9 +126,10 @@ class PlayerViewModel(
     }
 
     fun pausePlayer() {
+        _playerState.value = PlayerState.Paused(getCurrentPlayerPosition(),trackInit.isFavorite)
         mediaPlayer.pausePlayer()
         timerJob?.cancel()
-        _playerState.value = PlayerState.Paused(getCurrentPlayerPosition(),trackInit.isFavorite)
+
 
     }
 

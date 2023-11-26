@@ -39,7 +39,7 @@ val searchModule = module {
 
 
     single<SearchHistoryRepository> {
-        SearchHistoryRepositoryImpl(sharedPref = get(named("history_pref")), appDatabase = get())
+        SearchHistoryRepositoryImpl(sharedPref = get(named("history_pref")) )
     }
 
     single<SearchHistoryInteractor> {
@@ -73,6 +73,7 @@ val searchModule = module {
         SearchViewModel(
             searchHistoryProvider = get(),
             tracksInteractor = get(),
+            favoritesInteractor = get()
 
         )
     }

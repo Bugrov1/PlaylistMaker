@@ -11,15 +11,15 @@ import com.example.playlistmaker.search.domain.models.Track
 @Dao
 interface TrackDao {
     @Insert(entity = TrackEntity::class, onConflict = OnConflictStrategy.REPLACE)
-    fun insertTrack(trackEntity: TrackEntity)
+    suspend fun insertTrack(trackEntity: TrackEntity)
 
     @Delete(entity = TrackEntity::class)
-    fun deleteTrack(trackEntity: TrackEntity)
+    suspend fun deleteTrack(trackEntity: TrackEntity)
 
     @Query("SELECT * FROM favorites_table")
-    fun getTracks(): List<TrackEntity>
+    suspend fun getTracks(): List<TrackEntity>
 
     @Query("SELECT trackId FROM favorites_table")
-    fun getTracksId(): List<Int>
+    suspend fun getTracksId(): List<Int>
 
 }

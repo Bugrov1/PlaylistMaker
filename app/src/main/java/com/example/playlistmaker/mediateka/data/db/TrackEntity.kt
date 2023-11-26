@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "favorites_table")
 data class TrackEntity(
-@PrimaryKey
+    @PrimaryKey
     val trackId: Int,
     val trackName: String,
     val artistName: String,
@@ -15,4 +15,6 @@ data class TrackEntity(
     val releaseDate: String?,
     val primaryGenreName: String?,
     val country: String?,
-    val previewUrl: String?)
+    val previewUrl: String?,
+
+)

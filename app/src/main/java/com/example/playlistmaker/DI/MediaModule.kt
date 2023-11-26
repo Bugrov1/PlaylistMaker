@@ -17,12 +17,28 @@ val mediaModule = module {
 
 
     viewModel<FavouritesViewModel> {
-        FavouritesViewModel()
+        FavouritesViewModel(favoritesInteractor = get())
 
     }
 
     viewModel<PlaylistsViewModel> {
         PlaylistsViewModel()
+    }
+
+    single<AppDatabase> {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+            .build()
+    }
+
+
+    factory { TrackDbConvertor() }
+
+    single<FavoritesRepository> {
+        FavoritesRepositoryImpl(appDatabase = get(), trackDbConvertor =  get())
+    }
+
+    single<FavoritesInteractor> {
+        FavoritesInteractorImpl(favoritesRepository = get())
     }
 
 

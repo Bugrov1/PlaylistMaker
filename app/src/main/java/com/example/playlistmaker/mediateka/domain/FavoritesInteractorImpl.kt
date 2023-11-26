@@ -8,15 +8,19 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 
 class FavoritesInteractorImpl(private val favoritesRepository: FavoritesRepository):FavoritesInteractor {
-    override fun addToFavorites(track: Track) {
+    override suspend fun addToFavorites(track: Track) {
         favoritesRepository.addToFavorites(track)
     }
 
-    override fun deleteFromFavorites(track: Track) {
+    override suspend fun deleteFromFavorites(track: Track) {
        favoritesRepository.deleteFromFavorites(track)
     }
 
     override fun getTracks(): Flow<List<Track>> {
-        return favoritesRepository.getTracks().map { it }
+        return favoritesRepository.getTracks()
+    }
+
+    override suspend fun getIds(): List<Int> {
+        return favoritesRepository.getIds()
     }
 }

@@ -13,11 +13,9 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
-
 import com.example.playlistmaker.player.ui.viewmodel.PlayerViewModel
 import com.example.playlistmaker.search.domain.models.Track
 import com.google.gson.Gson
-import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
@@ -63,13 +61,6 @@ class PlayerActivity : AppCompatActivity() {
             }
         }
 
-//        viewModel.observePlayerState().observe(this) {
-//            play.isEnabled = it.isPlayButtonEnabled
-//            buttonStatus(it.buttonText)
-//            timer.text = it.progress
-//            Log.v(ContentValues.TAG, "$it")
-//            Log.v(ContentValues.TAG, "timer ui ---${it.progress}")
-//        }
     }
 
     fun setListeners() {
@@ -80,6 +71,9 @@ class PlayerActivity : AppCompatActivity() {
 
         play.setOnClickListener {
             viewModel.playClickListen()
+        }
+        likebutton.setOnClickListener {
+            viewModel.onFavoriteClicked()
         }
     }
 
@@ -145,13 +139,9 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
     private fun renderFavoritebutton(inFavorites:Boolean){
-        if(true){
-            likebutton.setBackgroundResource(R.drawable.likebuttontrue)
-        }
+        if(inFavorites){likebutton.setBackgroundResource(R.drawable.likebuttontrue)}
+        if(!inFavorites){likebutton.setBackgroundResource(R.drawable.likebutton)}
 
-        else{
-            likebutton.setBackgroundResource(R.drawable.likebutton)
-        }
     }
 
 }
