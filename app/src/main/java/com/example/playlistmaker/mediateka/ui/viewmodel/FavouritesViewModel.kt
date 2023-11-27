@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.mediateka.domain.db.FavoritesInteractor
 import com.example.playlistmaker.mediateka.ui.models.FavoritesState
 import com.example.playlistmaker.search.domain.models.Track
-import com.example.playlistmaker.search.ui.models.SearchState
 import kotlinx.coroutines.launch
 
 class FavouritesViewModel(private val favoritesInteractor: FavoritesInteractor) : ViewModel() {
@@ -30,11 +29,11 @@ class FavouritesViewModel(private val favoritesInteractor: FavoritesInteractor) 
         }
     }
 
-    private fun processResult(movies: List<Track>) {
-        if (movies.isEmpty()) {
+    private fun processResult(tracks: List<Track>) {
+        if (tracks.isEmpty()) {
             renderState(FavoritesState.Empty)
         } else {
-            renderState(FavoritesState.Content(movies))
+            renderState(FavoritesState.Content(tracks))
         }
     }
 
@@ -42,7 +41,7 @@ class FavouritesViewModel(private val favoritesInteractor: FavoritesInteractor) 
         stateLiveData.postValue(state)
     }
 
-    fun refresh(){
+    fun refresh() {
         fillData()
     }
 }

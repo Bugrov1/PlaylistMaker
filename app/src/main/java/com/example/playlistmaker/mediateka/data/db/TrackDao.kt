@@ -5,7 +5,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.playlistmaker.search.domain.models.Track
 
 
 @Dao
@@ -16,7 +15,7 @@ interface TrackDao {
     @Delete(entity = TrackEntity::class)
     suspend fun deleteTrack(trackEntity: TrackEntity)
 
-    @Query("SELECT * FROM favorites_table")
+    @Query("SELECT * FROM favorites_table order by timeStamp DESC")
     suspend fun getTracks(): List<TrackEntity>
 
     @Query("SELECT trackId FROM favorites_table")

@@ -27,6 +27,7 @@ val mediaModule = module {
 
     single<AppDatabase> {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+            .fallbackToDestructiveMigration()
             .build()
     }
 

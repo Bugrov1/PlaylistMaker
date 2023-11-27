@@ -138,9 +138,14 @@ class PlayerActivity : AppCompatActivity() {
 
         }
     }
-    private fun renderFavoritebutton(inFavorites:Boolean){
-        if(inFavorites){likebutton.setBackgroundResource(R.drawable.likebuttontrue)}
-        if(!inFavorites){likebutton.setBackgroundResource(R.drawable.likebutton)}
+
+    private fun renderFavoritebutton(inFavorites: Boolean) {
+        if (inFavorites) {
+            likebutton.setBackgroundResource(R.drawable.likebuttontrue)
+        }
+        if (!inFavorites) {
+            likebutton.setBackgroundResource(R.drawable.likebutton)
+        }
 
     }
 
