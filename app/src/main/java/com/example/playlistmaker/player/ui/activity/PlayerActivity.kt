@@ -40,7 +40,7 @@ class PlayerActivity : AppCompatActivity() {
 
     val viewModel: PlayerViewModel by viewModel { parametersOf(track) }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
@@ -101,7 +101,7 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-//        viewModel.onDestroy()
+
     }
 
     private fun setupDetails(

@@ -2,11 +2,18 @@ package com.example.playlistmaker.DI
 
 import androidx.room.Room
 import com.example.playlistmaker.mediateka.data.FavoritesRepositoryImpl
+import com.example.playlistmaker.mediateka.data.PlaylistRepositoryImpl
+import com.example.playlistmaker.mediateka.data.converters.PlaylistDBConvertor
 import com.example.playlistmaker.mediateka.data.converters.TrackDbConvertor
 import com.example.playlistmaker.mediateka.data.db.AppDatabase
+import com.example.playlistmaker.mediateka.data.db.PlaylistDatabase
 import com.example.playlistmaker.mediateka.domain.FavoritesInteractorImpl
+import com.example.playlistmaker.mediateka.domain.PlaylistInteractorImpl
 import com.example.playlistmaker.mediateka.domain.db.FavoritesInteractor
 import com.example.playlistmaker.mediateka.domain.db.FavoritesRepository
+import com.example.playlistmaker.mediateka.domain.db.PlaylistInteractor
+import com.example.playlistmaker.mediateka.domain.db.PlaylistRepository
+import com.example.playlistmaker.mediateka.ui.viewmodel.CreatePlaylistViemodel
 import com.example.playlistmaker.mediateka.ui.viewmodel.FavouritesViewModel
 import com.example.playlistmaker.mediateka.ui.viewmodel.PlaylistsViewModel
 import org.koin.android.ext.koin.androidContext
@@ -22,8 +29,13 @@ val mediaModule = module {
     }
 
     viewModel<PlaylistsViewModel> {
-        PlaylistsViewModel()
+        PlaylistsViewModel(playlistInteractor = get())
     }
+
+    viewModel<CreatePlaylistViemodel> {
+        CreatePlaylistViemodel(playlistInteractor = get())
+    }
+
 
     single<AppDatabase> {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
@@ -42,6 +54,20 @@ val mediaModule = module {
         FavoritesInteractorImpl(favoritesRepository = get())
     }
 
+    single<PlaylistDatabase> {
+        Room.databaseBuilder(androidContext(), PlaylistDatabase::class.java, "database2.db")
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+    factory { PlaylistDBConvertor() }
+
+    single<PlaylistRepository> {
+        PlaylistRepositoryImpl(playlistDatabase = get(), playlistDbConvertor =  get())
+    }
+
+    single<PlaylistInteractor> {
+        PlaylistInteractorImpl(playlistRepository = get())
+    }
 
 
 

@@ -47,11 +47,15 @@
     <string name="country">Страна</string>
     <string name="media">Медиатека</string>
     <string name="mediaEmpty">Ваша медиатека пуста</string>
-    <string name="mediaEmptyPlylist">Вы не создали ни одного плейлиста</string>
+    <string name="mediaEmptyPlylist">Вы не создали \n ни одного плейлиста</string>
     <string name="newPlylist">Новый плейлист</string>
     <string name="favourites">Избранные треки</string>
     <string name="playlists">Плейлисты</string>
     <string name="share">Share</string>
+    <string name="namePlaylist">Название*</string>
+    <string name="descripyionPlaylist">Описание</string>
+    <string name="createButton">Создать</string>
+
 
 
 </resources>
