@@ -55,6 +55,10 @@
     <dimen name="sp_19">19sp</dimen>
     <dimen name="dp_48">48dp</dimen>
     <dimen name="dp_32">32dp</dimen>
-
+    <dimen name="dp_44">44dp</dimen>
+    <dimen name="dp_18">18dp</dimen>
+    <dimen name="dp_1">1dp</dimen>
+    <dimen name="dp_19">19dp</dimen>
+    <dimen name="dp_13">13dp</dimen>
 
 </resources>

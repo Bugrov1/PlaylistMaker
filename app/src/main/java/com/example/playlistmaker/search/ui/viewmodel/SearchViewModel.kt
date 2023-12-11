@@ -32,8 +32,7 @@ class SearchViewModel(
 
     init {
         checkFavorites()
-//          renderState(SearchState.History(searchHistoryProvider.read()))
-    }
+ }
 
     private fun renderState(state: SearchState) {
         stateLiveData.postValue(state)
@@ -41,8 +40,6 @@ class SearchViewModel(
 
     fun historyload() {
      checkFavorites()
-//        renderState(SearchState.History(searchHistoryProvider.read()))
-
     }
 
     fun checkFavorites(){
@@ -71,9 +68,7 @@ class SearchViewModel(
     }
 
     fun write(track: Track) {
-
-            searchHistoryProvider.write(track)
-//        searchHistoryProvider.write(track)
+        searchHistoryProvider.write(track)
     }
     fun read() {
         viewModelScope.launch {
@@ -83,10 +78,7 @@ class SearchViewModel(
     }
 
     fun update() {
-
-//        checkFavorites()
         renderState(SearchState.History(searchHistoryProvider.read()))
-
     }
 
 

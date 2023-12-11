@@ -11,7 +11,7 @@
     >
 
     <ImageView
-        android:id="@+id/imageViewArtwork"
+        android:id="@+id/playlistCoverItem"
         android:layout_marginStart="@dimen/dp_13"
         android:layout_marginTop="@dimen/dp_8"
         android:layout_marginBottom="@dimen/dp_8"
@@ -20,10 +20,11 @@
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf ="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:src="@drawable/placeholder"/>
 
     <TextView
-        android:id="@+id/trackName"
+        android:id="@+id/playlistNameItem"
         android:fontFamily="@font/ys_display_regular"
         android:layout_width="@dimen/track_song_width"
         android:layout_height="wrap_content"
@@ -33,57 +34,29 @@
         android:layout_marginTop="@dimen/track_view_top_bot_margin"
         android:layout_marginStart="@dimen/dp_8"
         android:layout_marginEnd="@dimen/dp_16"
-        tools:text="Very long name of the song"
+        tools:text="Album name"
         android:lines="1"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/imageViewArtwork"
+        app:layout_constraintStart_toEndOf="@id/playlistCoverItem"
         app:layout_constraintEnd_toStartOf="@id/arrowButton"/>
 
     <TextView
-        android:id="@+id/artistName"
+        android:id="@+id/tracksNumberItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/tracks_dimensions"
         android:fontFamily="@font/ys_display_regular"
         android:textColor="@color/settings_icons"
-        android:layout_marginTop="@dimen/dp_1"
+        android:layout_marginTop="1dp"
         android:layout_marginStart="@dimen/dp_8"
         android:layout_marginBottom="@dimen/track_view_top_bot_margin"
-        tools:text="VeryGoodArtist"
+        tools:text="0 треков"
         android:lines="1"
         android:maxLength="15"
         android:ellipsize="marquee"
-        app:layout_constraintTop_toBottomOf="@id/trackName"
-        app:layout_constraintStart_toEndOf="@id/imageViewArtwork"
-        app:layout_constraintEnd_toStartOf="@id/dot"/>
-
-    <ImageView
-        android:id="@+id/dot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:tint = "@color/settings_icons"
-        android:layout_marginTop="@dimen/dp_1"
-        android:src="@drawable/ic"
-        app:layout_constraintTop_toBottomOf="@id/trackName"
-        app:layout_constraintStart_toEndOf="@id/artistName"
-        app:layout_constraintEnd_toStartOf="@id/trackTime"/>
-
-    <TextView
-        android:id="@+id/trackTime"
-        android:layout_width="@dimen/track_song_width"
-        android:layout_height="wrap_content"
-        android:textColor="@color/settings_icons"
-        android:textSize="@dimen/tracks_dimensions"
-        android:fontFamily="@font/ys_display_regular"
-        android:layout_marginTop="@dimen/dp_1"
-        android:layout_marginBottom="@dimen/track_view_top_bot_margin"
-        android:ellipsize="end"
-        android:layout_marginEnd="135dp"
-        tools:text="3:16"
-        android:lines="1"
-        app:layout_constraintTop_toBottomOf="@id/trackName"
-        app:layout_constraintStart_toEndOf="@id/dot"
-        app:layout_constraintEnd_toStartOf="@id/arrowButton"/>
+        app:layout_constraintTop_toBottomOf="@id/playlistNameItem"
+        app:layout_constraintStart_toEndOf="@id/playlistCoverItem"
+       />
 
 
 
@@ -100,6 +73,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/arrowforward"
+        android:visibility="gone"
 
         />
 

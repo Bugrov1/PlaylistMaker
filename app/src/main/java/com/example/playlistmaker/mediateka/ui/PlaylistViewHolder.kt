@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.mediateka.domain.model.Playlist
+import com.example.playlistmaker.player.ui.TracksEndingCount
 
 class PlaylistViewHolder (view: View): RecyclerView.ViewHolder(view) {
 
@@ -17,10 +18,7 @@ class PlaylistViewHolder (view: View): RecyclerView.ViewHolder(view) {
 
     fun bind(playlist: Playlist) {
         playlistName.text = playlist.playlistName
-        if (playlist.length==null){tracksNumber.text = "no tracks added"}
-//        if(playlist.length!! >1){
-//            tracksNumber.text = playlist.length.toString() +" tracks"
-//        } else {tracksNumber.text = playlist.length.toString() +" track"}
+        tracksNumber.text = TracksEndingCount().tracksString(playlist.length ?: 0)
         val roundingRadius = 10
         Glide.with(itemView)
             .load(playlist.filepath)

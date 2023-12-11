@@ -179,20 +179,14 @@ class CreatePlaylistFragment: Fragment() {
 
     private fun saveImageToPrivateStorage(uri: Uri?) {
         if(uri!=null){
-            //создаём экземпляр класса File, который указывает на нужный каталог
             val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "albums")
-            //создаем каталог, если он не создан
             if (!filePath.exists()){
                 filePath.mkdirs()
             }
-            //создаём экземпляр класса File, который указывает на файл внутри каталога
             val file = File(filePath, playlistName+".jpg")
             photoPath = file.toUri()
-            // создаём входящий поток байтов из выбранной картинки
             val inputStream = requireActivity().contentResolver.openInputStream(uri)
-            // создаём исходящий поток байтов в созданный выше файл
             val outputStream = FileOutputStream(file)
-            // записываем картинку с помощью BitmapFactory
             BitmapFactory
                 .decodeStream(inputStream)
                 .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)}

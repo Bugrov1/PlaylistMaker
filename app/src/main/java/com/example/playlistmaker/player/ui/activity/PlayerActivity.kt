@@ -4,17 +4,26 @@ import android.content.ContentValues
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
+import com.example.playlistmaker.mediateka.domain.model.Playlist
+import com.example.playlistmaker.player.ui.BottomAdapter
 import com.example.playlistmaker.player.ui.viewmodel.PlayerViewModel
 import com.example.playlistmaker.search.domain.models.Track
+import com.example.playlistmaker.search.ui.Adapter
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -37,10 +46,20 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var timer: TextView
     private lateinit var track: Track
     private lateinit var likebutton: ImageButton
-
+    private lateinit var playlistBottomSheet:LinearLayout
     val viewModel: PlayerViewModel by viewModel { parametersOf(track) }
+    private lateinit var playlistButton:ImageView
+    private lateinit var  bottomSheetBehavior:BottomSheetBehavior<LinearLayout>
+    private lateinit var overlay:View
+    private lateinit var bottomSheetRecycler: RecyclerView
 
+    private val adapter = BottomAdapter()
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshBottomSheet()
+
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
@@ -48,7 +67,35 @@ class PlayerActivity : AppCompatActivity() {
 
         track = Gson().fromJson((intent.getStringExtra("track")), Track::class.java)
         initViews()
+         bottomSheetBehavior = BottomSheetBehavior.from(playlistBottomSheet).apply { state =
+            BottomSheetBehavior.STATE_HIDDEN
+        }
+
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        overlay.visibility = View.GONE
+                    }
+                    else -> {
+                        overlay.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+        })
+
+
         setListeners()
+
+        viewModel.observePlaylists().observe(this) {
+            if (it != null) {
+                renderBottomSheet(it)
+            }
+        }
 
         lifecycleScope.launchWhenStarted {
             viewModel.playerState.collect {
@@ -75,6 +122,10 @@ class PlayerActivity : AppCompatActivity() {
         likebutton.setOnClickListener {
             viewModel.onFavoriteClicked()
         }
+
+        playlistButton.setOnClickListener {
+            bottomSheetBehavior.state= BottomSheetBehavior.STATE_COLLAPSED
+        }
     }
 
     private fun initViews() {
@@ -90,8 +141,13 @@ class PlayerActivity : AppCompatActivity() {
         play = findViewById(R.id.playPauseButton)
         timer = findViewById(R.id.playTime)
         likebutton = findViewById(R.id.likeButton)
-
+        playlistBottomSheet = findViewById<LinearLayout>(R.id.playlists_bottom_sheet)
+        playlistButton = findViewById(R.id.playlistButton)
+        overlay = findViewById(R.id.overlay)
         setupDetails(track)
+        bottomSheetRecycler = findViewById(R.id.playlistsRecycler)
+        bottomSheetRecycler.adapter = adapter
+
     }
 
     override fun onPause() {
@@ -101,6 +157,13 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+
+    }
+
+    private fun renderBottomSheet(playlists:List<Playlist>){
+        adapter.playlists.clear()
+        adapter.playlists.addAll(playlists)
+        adapter.notifyDataSetChanged()
 
     }
 

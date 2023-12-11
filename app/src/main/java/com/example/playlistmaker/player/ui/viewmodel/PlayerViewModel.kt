@@ -2,9 +2,14 @@ package com.example.playlistmaker.player.ui.viewmodel
 
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.mediateka.domain.db.FavoritesInteractor
+import com.example.playlistmaker.mediateka.domain.db.PlaylistInteractor
+import com.example.playlistmaker.mediateka.domain.model.Playlist
+import com.example.playlistmaker.mediateka.ui.models.FavoritesState
 import com.example.playlistmaker.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.player.domain.models.State
 import com.example.playlistmaker.player.ui.models.PlayerState
@@ -19,7 +24,8 @@ import kotlinx.coroutines.launch
 class PlayerViewModel(
     track: Track,
     private val mediaPlayer: PlayerInteractor,
-    private val favoritesInteractor: FavoritesInteractor
+    private val favoritesInteractor: FavoritesInteractor,
+    private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
 
     private var trackInit = track
@@ -27,14 +33,48 @@ class PlayerViewModel(
         MutableStateFlow<PlayerState>(PlayerState.Default(trackInit.isFavorite))
     val playerState = _playerState.asStateFlow()
 
+
+
+
+    private val playlistLiveData = MutableLiveData<List<Playlist>?>()
+    fun observePlaylists(): MutableLiveData<List<Playlist>?> = playlistLiveData
+
+
+
+    fun getPlayLists() {
+        viewModelScope.launch {
+            playlistInteractor.getLists()
+                .collect { playlists ->
+                    processResult(playlists)
+                }
+        }
+    }
+
+    fun refreshBottomSheet() {
+        getPlayLists()
+    }
+
+    private fun processResult(playlists: List<Playlist>) {
+        if (playlists.isEmpty()) {
+            render(emptyList<Playlist>())
+        } else {
+            render(playlists)
+        }
+    }
+
+    private fun render(playlists: List<Playlist>?) {
+        playlistLiveData.postValue(playlists)
+    }
+
     init {
         trackInit.previewUrl?.let { mediaPlayer.setDataSource(it) }
         playerInit()
         Log.v("State", "State ---${_playerState}")
         Log.v("Fav Track", "Fav Track ---${trackInit.isFavorite}")
 
-
+        getPlayLists()
     }
+
 
     private var timerJob: Job? = null
     fun playerInit() {
