@@ -7,6 +7,7 @@ import com.example.playlistmaker.mediateka.data.converters.PlaylistDBConvertor
 import com.example.playlistmaker.mediateka.data.converters.TrackDbConvertor
 import com.example.playlistmaker.mediateka.data.db.AppDatabase
 import com.example.playlistmaker.mediateka.data.db.PlaylistDatabase
+import com.example.playlistmaker.mediateka.data.db.TracksInPlaylistsDatabase
 import com.example.playlistmaker.mediateka.domain.FavoritesInteractorImpl
 import com.example.playlistmaker.mediateka.domain.PlaylistInteractorImpl
 import com.example.playlistmaker.mediateka.domain.db.FavoritesInteractor
@@ -62,11 +63,19 @@ val mediaModule = module {
     factory { PlaylistDBConvertor() }
 
     single<PlaylistRepository> {
-        PlaylistRepositoryImpl(playlistDatabase = get(), playlistDbConvertor =  get())
+        PlaylistRepositoryImpl(playlistDatabase = get(),
+            playlistDbConvertor =  get(),
+            tracksInPlaylistsDatabase=get())
     }
 
     single<PlaylistInteractor> {
         PlaylistInteractorImpl(playlistRepository = get())
+    }
+
+    single<TracksInPlaylistsDatabase> {
+        Room.databaseBuilder(androidContext(), TracksInPlaylistsDatabase::class.java, "database3.db")
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
 

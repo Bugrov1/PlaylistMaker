@@ -73,7 +73,7 @@ class CreatePlaylistFragment: Fragment() {
             renderButton(it)
         }
 
-        playlistName  = nameEditText.toString()
+        playlistName  = ""
 
         simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -140,7 +140,8 @@ class CreatePlaylistFragment: Fragment() {
             }
 
         backButton.setOnClickListener {
-            confirmDialog.show()
+            if(playlistName==""){requireActivity().onBackPressedDispatcher.onBackPressed()}
+            else {confirmDialog.show()}
 
         }
 

@@ -1,6 +1,7 @@
 package com.example.playlistmaker.player.ui.activity
 
 import android.content.ContentValues
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +11,9 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -19,6 +22,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.mediateka.domain.model.Playlist
 import com.example.playlistmaker.mediateka.ui.fragments.CreatePlaylistFragment
 import com.example.playlistmaker.player.ui.BottomAdapter
+import com.example.playlistmaker.player.ui.models.PlaylistState
 import com.example.playlistmaker.player.ui.viewmodel.PlayerViewModel
 import com.example.playlistmaker.search.domain.models.Track
 
@@ -98,6 +102,10 @@ class PlayerActivity : AppCompatActivity() {
             }
         }
 
+        viewModel.observeTracks().observe(this){
+            renderPlaylistStatus(it)
+        }
+
         lifecycleScope.launchWhenStarted {
             viewModel.playerState.collect {
                 play.isEnabled = it.isPlayButtonEnabled
@@ -136,6 +144,12 @@ class PlayerActivity : AppCompatActivity() {
                 .commit()
             bottomSheetBehavior.state= BottomSheetBehavior.STATE_HIDDEN
         }
+
+        adapter.onItemClick = {
+            Log.d("PlayerActivity", "adapterclicked")
+            viewModel.addToPlaylist(track.trackId,it)
+            Toast.makeText(this,"Добавлено в плейлист ${it.playlistName}.",Toast.LENGTH_SHORT)
+            }
 
     }
 
@@ -184,6 +198,17 @@ class PlayerActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
 
     }
+
+    private fun renderPlaylistStatus(state:PlaylistState){
+        when (state) {
+            is PlaylistState.inPlaylist -> Toast.makeText(this,state.text,Toast.LENGTH_SHORT).show()
+            is PlaylistState.notInPlaylist -> {
+                Toast.makeText(this,state.text,Toast.LENGTH_SHORT).show()
+
+            }
+        }
+    }
+
 
     private fun setupDetails(
         track: Track
