@@ -10,7 +10,6 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -18,12 +17,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.mediateka.domain.model.Playlist
+import com.example.playlistmaker.mediateka.ui.fragments.CreatePlaylistFragment
 import com.example.playlistmaker.player.ui.BottomAdapter
 import com.example.playlistmaker.player.ui.viewmodel.PlayerViewModel
 import com.example.playlistmaker.search.domain.models.Track
-import com.example.playlistmaker.search.ui.Adapter
+
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.button.MaterialButton
+
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -52,19 +52,20 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var  bottomSheetBehavior:BottomSheetBehavior<LinearLayout>
     private lateinit var overlay:View
     private lateinit var bottomSheetRecycler: RecyclerView
-
     private val adapter = BottomAdapter()
+    private lateinit var createNewPlaylistButton:Button
 
     override fun onResume() {
         super.onResume()
         viewModel.refreshBottomSheet()
+        Log.d("PlayerActivity", "onResume")
 
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
 
-
+        Log.d("PlayerActivity", "onCreate")
         track = Gson().fromJson((intent.getStringExtra("track")), Track::class.java)
         initViews()
          bottomSheetBehavior = BottomSheetBehavior.from(playlistBottomSheet).apply { state =
@@ -124,8 +125,18 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         playlistButton.setOnClickListener {
+            viewModel.refreshBottomSheet()
             bottomSheetBehavior.state= BottomSheetBehavior.STATE_COLLAPSED
         }
+
+        createNewPlaylistButton.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragment_container_view, CreatePlaylistFragment())
+                .addToBackStack(null)
+                .commit()
+            bottomSheetBehavior.state= BottomSheetBehavior.STATE_HIDDEN
+        }
+
     }
 
     private fun initViews() {
@@ -147,12 +158,19 @@ class PlayerActivity : AppCompatActivity() {
         setupDetails(track)
         bottomSheetRecycler = findViewById(R.id.playlistsRecycler)
         bottomSheetRecycler.adapter = adapter
+        createNewPlaylistButton = findViewById(R.id.createNewPlaylist)
 
     }
 
     override fun onPause() {
         super.onPause()
         viewModel.pausePlayer()
+        Log.d("PlayerActivity", "onCreate")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("PlayerActivity", "onStart")
     }
 
     override fun onDestroy() {
