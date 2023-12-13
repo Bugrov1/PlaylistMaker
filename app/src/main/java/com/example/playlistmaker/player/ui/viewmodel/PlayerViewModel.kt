@@ -2,14 +2,12 @@ package com.example.playlistmaker.player.ui.viewmodel
 
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.mediateka.domain.db.FavoritesInteractor
 import com.example.playlistmaker.mediateka.domain.db.PlaylistInteractor
 import com.example.playlistmaker.mediateka.domain.model.Playlist
-import com.example.playlistmaker.mediateka.ui.models.FavoritesState
 import com.example.playlistmaker.player.domain.api.PlayerInteractor
 import com.example.playlistmaker.player.domain.models.State
 import com.example.playlistmaker.player.ui.models.PlayerState
@@ -69,13 +67,10 @@ class PlayerViewModel(
                         processResult(playlists)
                     }
             }
-
-            //добавить в базу треков ,обновить текущий плейлист
             trackLiveData.postValue(PlaylistState.inPlaylist("Tрек добавлен в плейлист ${playlist.playlistName}"))
         }
 
     }
-
     fun getPlayLists() {
         viewModelScope.launch {
             playlistInteractor.getLists()

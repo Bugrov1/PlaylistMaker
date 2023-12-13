@@ -4,21 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.fragment.findNavController
-import com.example.playlistmaker.R
-import com.example.playlistmaker.mediateka.domain.db.FavoritesInteractor
 import com.example.playlistmaker.mediateka.domain.db.PlaylistInteractor
 import com.example.playlistmaker.mediateka.domain.model.Playlist
-
-
-import com.example.playlistmaker.mediateka.ui.fragments.MediaFragmentPlaylists
-import com.example.playlistmaker.mediateka.ui.models.FavoritesState
 import com.example.playlistmaker.mediateka.ui.models.PlaylistsState
-import com.example.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.launch
 
-class PlaylistsViewModel(private val playlistInteractor: PlaylistInteractor): ViewModel() {
+class PlaylistsViewModel(private val playlistInteractor: PlaylistInteractor) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<PlaylistsState>()
     fun observeState(): LiveData<PlaylistsState> = stateLiveData
@@ -27,7 +18,6 @@ class PlaylistsViewModel(private val playlistInteractor: PlaylistInteractor): Vi
         fillData()
 
     }
-
 
     fun fillData() {
         viewModelScope.launch {

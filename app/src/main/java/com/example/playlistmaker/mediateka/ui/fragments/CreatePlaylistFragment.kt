@@ -1,16 +1,15 @@
 package com.example.playlistmaker.mediateka.ui.fragments
 
+import android.content.Context.MODE_PRIVATE
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
@@ -20,20 +19,12 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.FragmentMediaBinding
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.mediateka.domain.model.Playlist
-import com.example.playlistmaker.mediateka.ui.MediaViewPagerAdapter
 import com.example.playlistmaker.mediateka.ui.models.ButtonState
-import com.example.playlistmaker.mediateka.ui.models.FavoritesState
 import com.example.playlistmaker.mediateka.ui.viewmodel.CreatePlaylistViemodel
-import com.example.playlistmaker.search.ui.viewmodel.SearchViewModel
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.w3c.dom.Text
 import java.io.File
 import java.io.FileOutputStream
 
@@ -77,7 +68,7 @@ class CreatePlaylistFragment: Fragment() {
 
         simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // empty
+
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -87,7 +78,7 @@ class CreatePlaylistFragment: Fragment() {
                 }
             }
             override fun afterTextChanged(s: Editable?) {
-                // empty
+
             }
         }
         simpleTextWatcher?.let { nameEditText.addTextChangedListener(it) }
@@ -98,7 +89,7 @@ class CreatePlaylistFragment: Fragment() {
         description =  ""
         simpleTextWatcher2 = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // empty
+
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -107,7 +98,7 @@ class CreatePlaylistFragment: Fragment() {
                 }
             }
             override fun afterTextChanged(s: Editable?) {
-                // empty
+
             }
         }
         simpleTextWatcher2?.let { descriptionEditText.addTextChangedListener(it) }
@@ -115,7 +106,7 @@ class CreatePlaylistFragment: Fragment() {
 
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-                //обрабатываем событие выбора пользователем фотографии
+
                 if (uri != null) {
                     addPhoto.setImageURI(uri)
                     uriPhoto = uri
@@ -127,14 +118,13 @@ class CreatePlaylistFragment: Fragment() {
 
         addPhoto.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-//        Toast.makeText(requireContext(),"createButton clicked",Toast.LENGTH_SHORT).show()
         }
 
         confirmDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("Завершить создание плейлиста?")
             .setMessage("Все несохраненные данные будут потеряны.")
             .setNeutralButton("Отмена") { dialog, which ->
-                // ничего не делаем
+
             }.setPositiveButton("Завершить") { dialog, which ->
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
@@ -146,7 +136,6 @@ class CreatePlaylistFragment: Fragment() {
         }
 
         createButton.setOnClickListener {
-          //сохранить плейлист с названием, обложкой и описанием через вьюмодель
             saveImageToPrivateStorage(uriPhoto)
             val playlist = Playlist(id = null,
                 playlistName = playlistName,
@@ -180,7 +169,8 @@ class CreatePlaylistFragment: Fragment() {
 
     private fun saveImageToPrivateStorage(uri: Uri?) {
         if(uri!=null){
-            val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "albums")
+//            val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "albums")
+            val filePath = File(requireContext().getDir(playlistName,MODE_PRIVATE), "albums")
             if (!filePath.exists()){
                 filePath.mkdirs()
             }

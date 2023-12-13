@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,11 +14,8 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentMediaPlaylistsBinding
 import com.example.playlistmaker.mediateka.domain.model.Playlist
 import com.example.playlistmaker.mediateka.ui.PlaylistAdapter
-import com.example.playlistmaker.mediateka.ui.models.FavoritesState
 import com.example.playlistmaker.mediateka.ui.models.PlaylistsState
 import com.example.playlistmaker.mediateka.ui.viewmodel.PlaylistsViewModel
-import com.example.playlistmaker.search.domain.models.Track
-import com.example.playlistmaker.search.ui.Adapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaFragmentPlaylists : Fragment() {
@@ -34,15 +30,6 @@ class MediaFragmentPlaylists : Fragment() {
 
     }
 
-    companion object {
-        private const val TEXT = "text"
-
-        fun newInstance(text: String) = MediaFragmentPlaylists().apply {
-            arguments = Bundle().apply {
-                putString(TEXT, text)
-            }
-        }
-    }
     val viewModel: PlaylistsViewModel by viewModel()
 
     private lateinit var binding: FragmentMediaPlaylistsBinding
@@ -98,6 +85,18 @@ class MediaFragmentPlaylists : Fragment() {
         adapter.playlists.clear()
         adapter.playlists.addAll(playlists)
         adapter.notifyDataSetChanged()
+    }
+
+
+
+    companion object {
+        private const val TEXT = "text"
+
+        fun newInstance(text: String) = MediaFragmentPlaylists().apply {
+            arguments = Bundle().apply {
+                putString(TEXT, text)
+            }
+        }
     }
 
 

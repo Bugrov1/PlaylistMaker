@@ -1,8 +1,7 @@
 package com.example.playlistmaker.player.ui.activity
 
 import android.content.ContentValues
-import android.content.Intent
-import android.os.Build
+
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -13,7 +12,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
+
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -50,14 +49,14 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var timer: TextView
     private lateinit var track: Track
     private lateinit var likebutton: ImageButton
-    private lateinit var playlistBottomSheet:LinearLayout
+    private lateinit var playlistBottomSheet: LinearLayout
     val viewModel: PlayerViewModel by viewModel { parametersOf(track) }
-    private lateinit var playlistButton:ImageView
-    private lateinit var  bottomSheetBehavior:BottomSheetBehavior<LinearLayout>
-    private lateinit var overlay:View
+    private lateinit var playlistButton: ImageView
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
+    private lateinit var overlay: View
     private lateinit var bottomSheetRecycler: RecyclerView
     private val adapter = BottomAdapter()
-    private lateinit var createNewPlaylistButton:Button
+    private lateinit var createNewPlaylistButton: Button
 
     override fun onResume() {
         super.onResume()
@@ -65,6 +64,7 @@ class PlayerActivity : AppCompatActivity() {
         Log.d("PlayerActivity", "onResume")
 
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
@@ -72,11 +72,13 @@ class PlayerActivity : AppCompatActivity() {
         Log.d("PlayerActivity", "onCreate")
         track = Gson().fromJson((intent.getStringExtra("track")), Track::class.java)
         initViews()
-         bottomSheetBehavior = BottomSheetBehavior.from(playlistBottomSheet).apply { state =
-            BottomSheetBehavior.STATE_HIDDEN
+        bottomSheetBehavior = BottomSheetBehavior.from(playlistBottomSheet).apply {
+            state =
+                BottomSheetBehavior.STATE_HIDDEN
         }
 
-        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
 
@@ -84,6 +86,7 @@ class PlayerActivity : AppCompatActivity() {
                     BottomSheetBehavior.STATE_HIDDEN -> {
                         overlay.visibility = View.GONE
                     }
+
                     else -> {
                         overlay.visibility = View.VISIBLE
                     }
@@ -102,7 +105,7 @@ class PlayerActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.observeTracks().observe(this){
+        viewModel.observeTracks().observe(this) {
             renderPlaylistStatus(it)
         }
 
@@ -134,7 +137,7 @@ class PlayerActivity : AppCompatActivity() {
 
         playlistButton.setOnClickListener {
             viewModel.refreshBottomSheet()
-            bottomSheetBehavior.state= BottomSheetBehavior.STATE_COLLAPSED
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
 
         createNewPlaylistButton.setOnClickListener {
@@ -142,14 +145,14 @@ class PlayerActivity : AppCompatActivity() {
                 .add(R.id.fragment_container_view, CreatePlaylistFragment())
                 .addToBackStack(null)
                 .commit()
-            bottomSheetBehavior.state= BottomSheetBehavior.STATE_HIDDEN
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
 
         adapter.onItemClick = {
             Log.d("PlayerActivity", "adapterclicked")
-            viewModel.addToPlaylist(track.trackId,it)
-            Toast.makeText(this,"Добавлено в плейлист ${it.playlistName}.",Toast.LENGTH_SHORT)
-            }
+            viewModel.addToPlaylist(track.trackId, it)
+            Toast.makeText(this, "Добавлено в плейлист ${it.playlistName}.", Toast.LENGTH_SHORT)
+        }
 
     }
 
@@ -182,28 +185,26 @@ class PlayerActivity : AppCompatActivity() {
         Log.d("PlayerActivity", "onCreate")
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.d("PlayerActivity", "onStart")
-    }
 
     override fun onDestroy() {
         super.onDestroy()
 
     }
 
-    private fun renderBottomSheet(playlists:List<Playlist>){
+    private fun renderBottomSheet(playlists: List<Playlist>) {
         adapter.playlists.clear()
         adapter.playlists.addAll(playlists)
         adapter.notifyDataSetChanged()
 
     }
 
-    private fun renderPlaylistStatus(state:PlaylistState){
+    private fun renderPlaylistStatus(state: PlaylistState) {
         when (state) {
-            is PlaylistState.inPlaylist -> Toast.makeText(this,state.text,Toast.LENGTH_SHORT).show()
+            is PlaylistState.inPlaylist -> Toast.makeText(this, state.text, Toast.LENGTH_SHORT)
+                .show()
+
             is PlaylistState.notInPlaylist -> {
-                Toast.makeText(this,state.text,Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, state.text, Toast.LENGTH_SHORT).show()
 
             }
         }

@@ -19,7 +19,6 @@ class FavouritesViewModel(private val favoritesInteractor: FavoritesInteractor) 
 
     }
 
-
     fun fillData() {
         viewModelScope.launch {
             favoritesInteractor.getTracks()

@@ -28,9 +28,11 @@
 
     <ImageButton
         android:id="@+id/addPhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_width="312dp"
+        android:layout_height="312dp"
+        android:layout_marginTop="@dimen/dp_24"
+        android:layout_marginStart="@dimen/dp_24"
+        android:layout_marginEnd="@dimen/dp_24"
         android:background="@drawable/add_photo_rectangle"
         android:gravity="center"
         android:src="@drawable/add_photo"
@@ -38,12 +40,14 @@
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         android:clickable="true"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
         app:layout_constraintTop_toBottomOf="@id/backButton" />
 
     <EditText
 
         android:layout_marginTop="@dimen/dp_32"
-        android:height="56dp"
+        android:height="@dimen/dp_56"
         app:layout_constraintStart_toStartOf="@id/addPhoto"
         app:layout_constraintEnd_toEndOf="@id/addPhoto"
         app:layout_constraintTop_toBottomOf="@id/addPhoto"
@@ -51,10 +55,10 @@
         android:fontFamily="@font/ys_display_regular"
         android:textFontWeight="400"
         android:textSize="@dimen/text_size_settings"
-        android:paddingLeft="12dp"
+        android:paddingLeft="@dimen/dp_12"
         android:background="@drawable/edit_text_select"
         android:layout_width="0dp"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/dp_56"
         android:hint="@string/namePlaylist"
         android:maxLines="1"
         android:inputType="text"
@@ -66,7 +70,7 @@
 
         android:id="@+id/editTextDescription"
         android:layout_width="0dp"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/dp_56"
         android:layout_marginTop="@dimen/dp_16"
         android:height="56dp"
         android:background="@drawable/edit_text_select"
@@ -74,7 +78,7 @@
         android:hint="@string/descripyionPlaylist"
         android:inputType="text"
         android:maxLines="1"
-        android:paddingLeft="12dp"
+        android:paddingLeft="@dimen/dp_12"
         android:textColor="@color/black_white"
         android:textFontWeight="400"
         android:textSize="@dimen/text_size_settings"

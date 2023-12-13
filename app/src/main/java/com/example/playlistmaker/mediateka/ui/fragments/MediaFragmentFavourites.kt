@@ -20,15 +20,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaFragmentFavourites : Fragment() {
 
-    companion object {
-        private const val TEXT = "text"
-
-        fun newInstance(text: String) = MediaFragmentFavourites().apply {
-            arguments = Bundle().apply {
-                putString(TEXT, text)
-            }
-        }
-    }
 
     val viewModel: FavouritesViewModel by viewModel()
 
@@ -101,6 +92,16 @@ class MediaFragmentFavourites : Fragment() {
         adapter.tracks.clear()
         adapter.tracks.addAll(tracks)
         adapter.notifyDataSetChanged()
+    }
+
+    companion object {
+        private const val TEXT = "text"
+
+        fun newInstance(text: String) = MediaFragmentFavourites().apply {
+            arguments = Bundle().apply {
+                putString(TEXT, text)
+            }
+        }
     }
 
 
