@@ -11,8 +11,8 @@ import kotlinx.coroutines.launch
 
 class FavouritesViewModel(private val favoritesInteractor: FavoritesInteractor) : ViewModel() {
 
-    private val stateLiveData = MutableLiveData<FavoritesState>()
-    fun observeState(): LiveData<FavoritesState> = stateLiveData
+    private val _stateLiveData = MutableLiveData<FavoritesState>()
+    val state: LiveData<FavoritesState> = _stateLiveData
 
     init {
         fillData()
@@ -37,7 +37,7 @@ class FavouritesViewModel(private val favoritesInteractor: FavoritesInteractor) 
     }
 
     private fun renderState(state: FavoritesState) {
-        stateLiveData.postValue(state)
+        _stateLiveData.postValue(state)
     }
 
     fun refresh() {

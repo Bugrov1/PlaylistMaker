@@ -53,7 +53,7 @@ class MediaFragmentPlaylists : Fragment() {
         placeholderText = binding.placeholderText
         viewModel.refresh()
         binding.placeholderText.text = requireArguments().getString(TEXT).toString()
-        viewModel.observeState().observe(viewLifecycleOwner) {
+        viewModel.state.observe(viewLifecycleOwner) {
             render(it)
         }
         setListeners()

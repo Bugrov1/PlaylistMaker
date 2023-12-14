@@ -99,13 +99,13 @@ class PlayerActivity : AppCompatActivity() {
 
         setListeners()
 
-        viewModel.observePlaylists().observe(this) {
+        viewModel.playlistLiveData.observe(this) {
             if (it != null) {
                 renderBottomSheet(it)
             }
         }
 
-        viewModel.observeTracks().observe(this) {
+        viewModel.trackLiveData.observe(this) {
             renderPlaylistStatus(it)
         }
 

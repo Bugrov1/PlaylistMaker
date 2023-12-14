@@ -35,17 +35,17 @@ class PlayerViewModel(
     val playerState = _playerState.asStateFlow()
 
 
-    private val playlistLiveData = MutableLiveData<List<Playlist>?>()
-    fun observePlaylists(): MutableLiveData<List<Playlist>?> = playlistLiveData
+    private val _playlistLiveData = MutableLiveData<List<Playlist>?>()
+    val playlistLiveData: MutableLiveData<List<Playlist>?> = _playlistLiveData
 
-    private val trackLiveData = MutableLiveData<PlaylistState>()
-    fun observeTracks(): MutableLiveData<PlaylistState> = trackLiveData
+    private val _trackLiveData = MutableLiveData<PlaylistState>()
+    val trackLiveData: MutableLiveData<PlaylistState> = _trackLiveData
 
     fun addToPlaylist(trackId:Int,playlist:Playlist){
         val jsonIds = playlist.tracks
         val trackList =  Gson().fromJson(jsonIds,Array<Int>::class.java)?: emptyArray()
         if(trackList.contains(trackId)) {
-            trackLiveData.postValue(PlaylistState.inPlaylist("Данный трек уже есть в плейлисте ${playlist.playlistName}"))
+            _trackLiveData.postValue(PlaylistState.inPlaylist("Данный трек уже есть в плейлисте ${playlist.playlistName}"))
         }
         else{
             val newtrackList =  trackList.plus(trackId)
@@ -67,7 +67,7 @@ class PlayerViewModel(
                         processResult(playlists)
                     }
             }
-            trackLiveData.postValue(PlaylistState.inPlaylist("Tрек добавлен в плейлист ${playlist.playlistName}"))
+            _trackLiveData.postValue(PlaylistState.inPlaylist("Tрек добавлен в плейлист ${playlist.playlistName}"))
         }
 
     }
@@ -93,7 +93,7 @@ class PlayerViewModel(
     }
 
     private fun render(playlists: List<Playlist>?) {
-        playlistLiveData.postValue(playlists)
+        _playlistLiveData.postValue(playlists)
     }
 
     init {

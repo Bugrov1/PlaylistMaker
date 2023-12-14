@@ -13,19 +13,19 @@ import kotlinx.coroutines.launch
 
 class CreatePlaylistViemodel(private val playlistInteractor: PlaylistInteractor): ViewModel() {
 
-    private val stateLiveData = MutableLiveData<ButtonState>()
-    fun observeButtonState(): LiveData<ButtonState> = stateLiveData
+    private val _stateLiveData = MutableLiveData<ButtonState>()
+    val state: LiveData<ButtonState> = _stateLiveData
 
     init{
-        stateLiveData.postValue(ButtonState.Disabled)
+        _stateLiveData.postValue(ButtonState.Disabled)
     }
 
     fun changeButtonstate(s:String){
         if (!s.isEmpty()){
 
-            stateLiveData.postValue(ButtonState.Enabled)
+            _stateLiveData.postValue(ButtonState.Enabled)
         }
-        else{stateLiveData.postValue(ButtonState.Disabled)  }
+        else{_stateLiveData.postValue(ButtonState.Disabled)  }
     }
 
     fun createPlaylist(playlist: Playlist){

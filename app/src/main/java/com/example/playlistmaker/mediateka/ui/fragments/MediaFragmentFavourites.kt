@@ -51,7 +51,7 @@ class MediaFragmentFavourites : Fragment() {
         viewModel.refresh()
         binding.placeholderText.text = requireArguments().getString(TEXT).toString()
         initViews()
-        viewModel.observeState().observe(viewLifecycleOwner) {
+        viewModel.state.observe(viewLifecycleOwner) {
             render(it)
         }
 
