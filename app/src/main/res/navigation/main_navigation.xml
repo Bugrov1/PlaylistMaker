@@ -30,8 +30,9 @@
         android:label="fragment_new_playlist"
         tools:layout="@layout/fragment_new_playlist" />
     <activity
-        android:id="@+id/playerActivity"
+        android:id="@+id/playerActivity3"
         android:name="com.example.playlistmaker.player.ui.activity.PlayerActivity"
-        android:label="activity_player"
-        tools:layout="@layout/activity_player" />
+        android:label="PlayerActivity" />
+
 </navigation>
+

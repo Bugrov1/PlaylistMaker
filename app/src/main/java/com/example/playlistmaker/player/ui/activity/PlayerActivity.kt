@@ -14,6 +14,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -34,6 +40,8 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
+
+
 
     private val roundingRadius = 10
     private lateinit var backButton: ImageButton
@@ -68,6 +76,7 @@ class PlayerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
+
 
         Log.d("PlayerActivity", "onCreate")
         track = Gson().fromJson((intent.getStringExtra("track")), Track::class.java)
@@ -141,10 +150,12 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         createNewPlaylistButton.setOnClickListener {
+
             supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_container_view, CreatePlaylistFragment())
-                .addToBackStack(null)
+                .addToBackStack("playerActivity")
                 .commit()
+
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
 

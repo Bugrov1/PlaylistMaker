@@ -23,6 +23,7 @@ import androidx.core.net.toUri
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.findNavController
 
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.mediateka.domain.model.Playlist
@@ -129,7 +130,6 @@ class CreatePlaylistFragment : Fragment() {
                 launchStatus = DialogStatus.Hidden
             }.setPositiveButton("Завершить") { dialog, which ->
                 requireActivity().onBackPressedDispatcher.onBackPressed()
-
             }
 
         backButton.setOnClickListener {
@@ -139,7 +139,6 @@ class CreatePlaylistFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
 
             override fun handleOnBackPressed() {
-
                 when (playlistName.isNotEmpty()) {
                     true -> {
                         when (launchStatus) {
@@ -167,9 +166,12 @@ class CreatePlaylistFragment : Fragment() {
                         requireActivity().onBackPressedDispatcher.onBackPressed()
                     }
                 }
-
             }
         })
+
+
+
+
 
 
 
