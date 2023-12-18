@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/grey_background"
+    tools:context="com.example.playlistmaker.mediateka.ui.fragments.CreatePlaylistFragment">
+
+
+    <ImageButton
+        android:id="@+id/albumCover"
+        android:layout_width="360dp"
+        android:layout_height="360dp"
+        android:background="@color/grey_background"
+        android:gravity="center"
+        android:src="@drawable/placeholderbig"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:clickable="true"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/backButton"
+        style="@style/BackButton"
+        app:tint = "@color/black_standart"
+        android:background="@color/grey_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/back_button" />
+
+    <TextView
+        android:id="@+id/playlistName"
+        android:layout_marginTop="@dimen/dp_24"
+        android:layout_marginStart="@dimen/dp_16"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/albumCover"
+        android:text="Best Songs 2021"
+        android:fontFamily="@font/ys_display_bold"
+        android:textFontWeight="700"
+        android:textSize="@dimen/sp_24"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@color/black_standart"
+
+        />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_marginTop="@dimen/dp_8"
+        app:layout_constraintStart_toStartOf="@id/playlistName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/playlistName"
+        android:text="2022"
+        android:fontFamily="@font/ys_display_regular"
+        android:textFontWeight="400"
+        android:textSize="@dimen/sp_18"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:textColor="@color/black_standart"
+        android:ellipsize="end"
+        />
+
+    <TextView
+        android:id="@+id/timeTotal"
+        android:layout_marginTop="@dimen/dp_8"
+        app:layout_constraintStart_toStartOf="@id/description"
+        app:layout_constraintTop_toBottomOf="@id/description"
+        app:layout_constraintEnd_toStartOf="@id/dot"
+        android:text="300 Минут"
+        android:fontFamily="@font/ys_display_regular"
+        android:textFontWeight="400"
+        android:textSize="@dimen/sp_18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:textColor="@color/black_standart"
+        android:maxLength="15"
+        android:ellipsize="marquee"
+        />
+
+    <ImageView
+        android:id="@+id/dot"
+        android:layout_width="@dimen/dp_13"
+        android:layout_height="@dimen/dp_13"
+        android:layout_marginStart="@dimen/dp_5"
+        android:src="@drawable/ic"
+        app:layout_constraintBottom_toBottomOf="@id/timeTotal"
+        app:layout_constraintEnd_toStartOf="@id/tracksNumber"
+        app:layout_constraintStart_toEndOf="@id/timeTotal"
+        app:layout_constraintTop_toTopOf="@id/timeTotal"
+        app:tint="@color/black" />
+
+    <TextView
+        android:id="@+id/tracksNumber"
+        android:layout_marginStart="@dimen/dp_5"
+        app:layout_constraintStart_toEndOf="@id/dot"
+        app:layout_constraintTop_toTopOf="@id/timeTotal"
+        app:layout_constraintTop_toBottomOf="@id/description"
+        android:text="98 треков"
+        android:fontFamily="@font/ys_display_regular"
+        android:textFontWeight="400"
+        android:textSize="@dimen/sp_18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:textColor="@color/black_standart"
+        android:maxLength="15"
+        android:ellipsize="marquee"
+        />
+
+    <ImageButton
+        android:id="@+id/shareButton"
+        android:src="@drawable/sharebutton"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:background="@color/grey_background"
+        app:tint="@color/black_standart"
+        app:layout_constraintTop_toBottomOf="@id/timeTotal"
+        app:layout_constraintStart_toStartOf="@id/timeTotal"
+        android:contentDescription="@string/back_button" />
+
+    <ImageButton
+        android:id="@+id/settingsButton"
+        android:layout_marginStart="@dimen/dp_16"
+        android:src="@drawable/dots"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:background="@color/grey_background"
+        app:tint="@color/black_standart"
+        app:layout_constraintTop_toBottomOf="@id/timeTotal"
+        app:layout_constraintStart_toEndOf="@id/shareButton"
+        android:contentDescription="@string/back_button" />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
