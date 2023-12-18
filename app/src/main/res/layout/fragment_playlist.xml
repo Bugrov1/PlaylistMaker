@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/plalists_view_main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/grey_background"
-    tools:context="com.example.playlistmaker.mediateka.ui.fragments.CreatePlaylistFragment">
+    android:orientation="vertical"
+    >
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+>
 
 
     <ImageButton
@@ -128,7 +137,7 @@
         android:contentDescription="@string/back_button" />
 
     <ImageButton
-        android:id="@+id/settingsButton"
+        android:id="@+id/menuButton"
         android:layout_marginStart="@dimen/dp_16"
         android:src="@drawable/dots"
         android:layout_marginTop="@dimen/dp_16"
@@ -141,6 +150,64 @@
         android:contentDescription="@string/back_button" />
 
 
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone"/>
+
+
+    <LinearLayout
+        android:id="@+id/playlists_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bottom_shape_corners"
+        android:orientation="horizontal"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="200dp"
+
+
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/toprectangle"
+                android:layout_marginTop="@dimen/dp_8"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+
+                android:src="@drawable/bottom_top_rectangle"/>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/playlistsRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/dp_12"
+                android:layout_weight="0.4"
+                android:clickable="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/toprectangle"
+                tools:itemCount="2"
+                tools:layout_editor_absoluteX="0dp"
+                tools:listitem="@layout/track_view" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <!-- Вёрстка Bottom Sheet с кнопкой и списком -->
+
+    </LinearLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
