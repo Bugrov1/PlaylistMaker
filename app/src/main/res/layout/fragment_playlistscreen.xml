@@ -9,6 +9,7 @@
     android:layout_height="match_parent"
     android:background="@color/grey_background"
     android:orientation="vertical"
+    tools:context="com.example.playlistmaker.mediateka.ui.fragments.PlaylistScreenFragment"
     >
 
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +20,7 @@
 
     <ImageButton
         android:id="@+id/albumCover"
-        android:layout_width="360dp"
+        android:layout_width="match_parent"
         android:layout_height="360dp"
         android:background="@color/grey_background"
         android:gravity="center"
@@ -35,7 +36,7 @@
         android:id="@+id/backButton"
         style="@style/BackButton"
         app:tint = "@color/black_standart"
-        android:background="@color/grey_background"
+        android:background="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@string/back_button" />

@@ -16,6 +16,7 @@ import com.example.playlistmaker.mediateka.domain.db.PlaylistInteractor
 import com.example.playlistmaker.mediateka.domain.db.PlaylistRepository
 import com.example.playlistmaker.mediateka.ui.viewmodel.CreatePlaylistViemodel
 import com.example.playlistmaker.mediateka.ui.viewmodel.FavouritesViewModel
+import com.example.playlistmaker.mediateka.ui.viewmodel.PlaylistScreenViewmodel
 import com.example.playlistmaker.mediateka.ui.viewmodel.PlaylistsViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -76,6 +77,10 @@ val mediaModule = module {
         Room.databaseBuilder(androidContext(), TracksInPlaylistsDatabase::class.java, "database3.db")
             .fallbackToDestructiveMigration()
             .build()
+    }
+
+    viewModel<PlaylistScreenViewmodel> { (id: String) ->
+        PlaylistScreenViewmodel(id, playlistInteractor = get())
     }
 
 

@@ -29,5 +29,9 @@ class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository)
         playlistRepository.insertTrack(track)
     }
 
+    override suspend fun getPlaylist(id: Long):Playlist {
+        return playlistRepository.getPlaylist(id)
+    }
+
 
 }

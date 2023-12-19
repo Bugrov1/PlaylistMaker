@@ -40,5 +40,10 @@ class PlaylistRepositoryImpl(private val playlistDatabase: PlaylistDatabase,
         tracksInPlaylistsDatabase.trackInPlaylistDao().insertTrack(trackEntities)
     }
 
+    override suspend fun getPlaylist(id: Long): Playlist {
+        val playlistEntity = playlistDatabase.PlaylistDao().getPlaylist(id)
+       return playlistDbConvertor.map(playlistEntity)
+    }
+
 
 }

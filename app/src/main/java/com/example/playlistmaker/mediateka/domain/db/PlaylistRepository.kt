@@ -14,4 +14,6 @@ interface PlaylistRepository {
     fun getLists(): kotlinx.coroutines.flow.Flow<List<Playlist>>
 
     suspend fun insertTrack(track: Track)
+
+    suspend fun getPlaylist(id: Long):Playlist
 }
