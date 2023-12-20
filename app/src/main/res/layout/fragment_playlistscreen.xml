@@ -153,12 +153,6 @@
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <View android:id="@+id/overlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#99000000"
-        android:visibility="gone"/>
-
 
     <LinearLayout
         android:id="@+id/playlists_bottom_sheet"
@@ -166,11 +160,12 @@
         android:layout_height="match_parent"
         android:background="@drawable/bottom_shape_corners"
         android:orientation="horizontal"
-        app:behavior_hideable="true"
-        app:behavior_peekHeight="200dp"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="250dp"
 
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
 
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -208,6 +203,7 @@
         <!-- Вёрстка Bottom Sheet с кнопкой и списком -->
 
     </LinearLayout>
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

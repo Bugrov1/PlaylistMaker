@@ -45,5 +45,11 @@ class PlaylistRepositoryImpl(private val playlistDatabase: PlaylistDatabase,
        return playlistDbConvertor.map(playlistEntity)
     }
 
+    override fun getracks(ids: List<Int>): Flow<List<Track>>  = flow{
+        val tracktEntities = tracksInPlaylistsDatabase.trackInPlaylistDao().getracks(ids)
+        val tracks = tracktEntities.map { track -> playlistDbConvertor.map(track) }
+        emit(tracks)
+    }
+
 
 }

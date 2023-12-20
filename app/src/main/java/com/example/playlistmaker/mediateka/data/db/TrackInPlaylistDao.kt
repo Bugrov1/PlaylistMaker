@@ -13,5 +13,5 @@ interface TrackInPlaylistDao {
 
 
     @Query("SELECT * FROM tracks_in_playlists_table WHERE trackId IN (:ids)")
-    fun getracks(ids: List<String>): List<TrackInPlaylistEntity>
+    suspend fun getracks(ids: List<Int>): List<TrackInPlaylistEntity>
 }

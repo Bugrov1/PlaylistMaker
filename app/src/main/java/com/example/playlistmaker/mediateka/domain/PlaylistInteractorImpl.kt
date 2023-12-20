@@ -33,5 +33,9 @@ class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository)
         return playlistRepository.getPlaylist(id)
     }
 
+    override fun getracks(ids: List<Int>): Flow<List<Track>> {
+        return playlistRepository.getracks(ids)
+    }
+
 
 }

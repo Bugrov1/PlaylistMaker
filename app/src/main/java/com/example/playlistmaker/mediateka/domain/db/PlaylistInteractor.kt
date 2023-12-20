@@ -14,4 +14,6 @@ interface PlaylistInteractor {
     suspend fun insertTrack(track: Track)
 
     suspend fun getPlaylist(id: Long):Playlist
+
+    fun getracks(ids: List<Int>):kotlinx.coroutines.flow.Flow<List<Track>>
 }
