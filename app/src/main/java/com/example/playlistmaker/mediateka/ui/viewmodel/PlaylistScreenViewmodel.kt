@@ -31,7 +31,7 @@ class PlaylistScreenViewmodel(id:String,
     val tracks: LiveData<List<Track>> = _tracksLiveData
     init{
         fillData(idInit)
-
+        getAll()
     }
 
     private fun fillData(id:Long) {
@@ -48,6 +48,12 @@ class PlaylistScreenViewmodel(id:String,
         }
 
     }
+    private fun getAll(){
+        viewModelScope.launch {
+            val tracksAll = playlistInteractor.getAll()
+            Log.v("ALL","$tracksAll")
+        }
+    }
 
         private fun render(playlist: Playlist) {
             _stateLiveData.postValue(playlist)
@@ -61,6 +67,33 @@ class PlaylistScreenViewmodel(id:String,
         }
         val durationSumConverted = SimpleDateFormat("mm", Locale.getDefault()).format(durationSum)
         _durationLiveData.postValue(durationSumConverted )
+
+    }
+
+    fun remove(track:Track) {
+        viewModelScope.launch {
+            val playlist = playlistInteractor.getPlaylist(idInit)
+            var tracks = Gson().fromJson(playlist.tracks,Array<Int>::class.java)
+            val tracksMutable = tracks.toMutableList()
+            tracksMutable.remove(track.trackId)
+            val tracksUpdate =  Gson().toJson(tracksMutable )
+            val playlistSize = tracksMutable.size
+            val playlistUpdate =Playlist(
+                id = playlist.id,
+                playlistName = playlist.playlistName,
+                description = playlist.description,
+                filepath = playlist.filepath,
+                tracks = tracksUpdate,
+                length = playlistSize
+            )
+            playlistInteractor.updateList(playlistUpdate)
+            fillData(idInit)
+
+            if(!playlistInteractor.checkTrack(track)){
+                playlistInteractor.deleteTrack(track)
+            }
+        }
+
 
     }
 

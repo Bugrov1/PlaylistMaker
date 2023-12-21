@@ -16,4 +16,10 @@ interface PlaylistInteractor {
     suspend fun getPlaylist(id: Long):Playlist
 
     fun getracks(ids: List<Int>):kotlinx.coroutines.flow.Flow<List<Track>>
+
+    suspend fun getAll():List<String>
+
+    suspend fun checkTrack(track: Track):Boolean
+
+    suspend fun deleteTrack(track: Track)
 }

@@ -1,9 +1,7 @@
 package com.example.playlistmaker.mediateka.data
 
 import com.example.playlistmaker.mediateka.data.converters.PlaylistDBConvertor
-import com.example.playlistmaker.mediateka.data.converters.TrackDbConvertor
 import com.example.playlistmaker.mediateka.data.db.PlaylistDatabase
-import com.example.playlistmaker.mediateka.data.db.PlaylistEntity
 import com.example.playlistmaker.mediateka.data.db.TracksInPlaylistsDatabase
 import com.example.playlistmaker.mediateka.domain.db.PlaylistRepository
 import com.example.playlistmaker.mediateka.domain.model.Playlist
@@ -49,6 +47,16 @@ class PlaylistRepositoryImpl(private val playlistDatabase: PlaylistDatabase,
         val tracktEntities = tracksInPlaylistsDatabase.trackInPlaylistDao().getracks(ids)
         val tracks = tracktEntities.map { track -> playlistDbConvertor.map(track) }
         emit(tracks)
+    }
+
+    override suspend fun getAll():List<String> {
+        return playlistDatabase.PlaylistDao().getAll()
+    }
+
+    override suspend fun deleteTrack(track: Track){
+        val trackEntity = playlistDbConvertor.map(track)
+        tracksInPlaylistsDatabase.trackInPlaylistDao().deleteTrack(trackEntity)
+
     }
 
 

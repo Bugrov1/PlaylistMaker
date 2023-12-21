@@ -37,5 +37,24 @@ class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository)
         return playlistRepository.getracks(ids)
     }
 
+    override suspend fun getAll():List<String> {
+        return playlistRepository.getAll()
+    }
+
+    override suspend fun checkTrack(track: Track):Boolean {
+        val allTracks = getAll()
+        var allTracksInt = mutableListOf<Int>()
+        for (tracklist in allTracks){
+            val newlist = Gson().fromJson(tracklist,Array<Int>::class.java)?: emptyArray()
+            allTracksInt.addAll(newlist)
+        }
+        return track.trackId in allTracksInt
+
+    }
+
+    override suspend fun deleteTrack(track: Track) {
+        playlistRepository.deleteTrack(track)
+    }
+
 
 }
