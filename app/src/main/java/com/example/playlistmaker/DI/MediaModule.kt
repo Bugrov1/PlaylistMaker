@@ -80,7 +80,7 @@ val mediaModule = module {
     }
 
     viewModel<PlaylistScreenViewmodel> { (id: String) ->
-        PlaylistScreenViewmodel(id, playlistInteractor = get())
+        PlaylistScreenViewmodel(id, playlistInteractor = get(), sharingInteractor = get())
     }
 
 

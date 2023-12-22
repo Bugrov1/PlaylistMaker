@@ -1,6 +1,7 @@
 package com.example.playlistmaker.mediateka.data.db
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -27,6 +28,9 @@ interface PlaylistDao {
 
     @Query("SELECT tracks FROM playlist_table ")
     suspend fun  getAll():List<String>
+
+    @Delete(entity = PlaylistEntity::class)
+    suspend fun delete(playlistEntity: PlaylistEntity)
 
 
 

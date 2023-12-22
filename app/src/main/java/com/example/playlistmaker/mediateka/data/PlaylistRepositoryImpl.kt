@@ -59,5 +59,10 @@ class PlaylistRepositoryImpl(private val playlistDatabase: PlaylistDatabase,
 
     }
 
+    override suspend fun delete(playlist: Playlist) {
+        val playlistEntity = playlistDbConvertor.mapUpdate(playlist)
+        playlistDatabase.PlaylistDao().delete(playlistEntity)
+    }
+
 
 }

@@ -161,7 +161,7 @@
         android:background="@drawable/bottom_shape_corners"
         android:orientation="horizontal"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="250dp"
+        app:behavior_peekHeight="225dp"
 
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
 
@@ -203,6 +203,112 @@
         <!-- Вёрстка Bottom Sheet с кнопкой и списком -->
 
     </LinearLayout>
+
+    <View android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/sharebottomsheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bottom_shape_corners"
+        android:orientation="horizontal"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="300dp"
+
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/rectangle"
+                android:layout_marginTop="@dimen/dp_8"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+
+                android:src="@drawable/bottom_top_rectangle"/>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/shareRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_12"
+                android:layout_weight="0.4"
+                android:clickable="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/rectangle"
+                tools:itemCount="1"
+                tools:layout_editor_absoluteX="0dp"
+                tools:listitem="@layout/playlist_items" />
+
+            <FrameLayout
+                android:id="@+id/sharePlaylist"
+                app:layout_constraintTop_toBottomOf="@id/shareRecycler"
+                android:layout_marginTop="@dimen/dp_8"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                >
+                <TextView
+                    android:layout_marginTop="@dimen/settings_margin_top"
+                    android:layout_marginBottom="@dimen/settings_margin_bot"
+                    style="@style/SettingsText"
+                    android:text="@string/sharePlaylist" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/editInfo"
+                app:layout_constraintTop_toBottomOf="@id/sharePlaylist"
+
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                >
+                <TextView
+                    android:layout_marginTop="@dimen/settings_margin_top"
+                    android:layout_marginBottom="@dimen/settings_margin_bot"
+                    style="@style/SettingsText"
+                    android:text="@string/editInfo" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/deletePlaylist"
+                app:layout_constraintTop_toBottomOf="@id/editInfo"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <TextView
+                    android:layout_marginTop="@dimen/settings_margin_top"
+                    android:layout_marginBottom="@dimen/settings_margin_bot"
+                    style="@style/SettingsText"
+                    android:text="@string/deletePlaylist" />
+
+            </FrameLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <!-- Вёрстка Bottom Sheet с кнопкой и списком -->
+
+    </LinearLayout>
+
 
 
 

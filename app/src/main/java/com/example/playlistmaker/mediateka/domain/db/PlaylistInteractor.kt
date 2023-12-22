@@ -22,4 +22,5 @@ interface PlaylistInteractor {
     suspend fun checkTrack(track: Track):Boolean
 
     suspend fun deleteTrack(track: Track)
+     suspend fun deletePlaylist(playlist: Playlist)
 }

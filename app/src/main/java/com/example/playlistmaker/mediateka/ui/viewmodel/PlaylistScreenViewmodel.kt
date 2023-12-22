@@ -9,13 +9,15 @@ import com.example.playlistmaker.mediateka.domain.db.PlaylistInteractor
 import com.example.playlistmaker.mediateka.domain.model.Playlist
 import com.example.playlistmaker.mediateka.ui.models.PlaylistsState
 import com.example.playlistmaker.search.domain.models.Track
+import com.example.playlistmaker.sharing.domain.api.SharingInteractor
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlaylistScreenViewmodel(id:String,
-                              private val playlistInteractor: PlaylistInteractor
+                              private val playlistInteractor: PlaylistInteractor,
+                              private val  sharingInteractor:SharingInteractor
 ): ViewModel() {
 
     private var idInit = id.toLong()
@@ -70,6 +72,10 @@ class PlaylistScreenViewmodel(id:String,
 
     }
 
+    fun onShareClicked(message:String) {
+        sharingInteractor.shareApp(message)
+    }
+
     fun remove(track:Track) {
         viewModelScope.launch {
             val playlist = playlistInteractor.getPlaylist(idInit)
@@ -97,7 +103,12 @@ class PlaylistScreenViewmodel(id:String,
 
     }
 
+    fun deletePlaylist(playlist: Playlist){
+        viewModelScope.launch {
+            playlistInteractor.deletePlaylist(playlist)
+        }
 
+    }
 
 
 

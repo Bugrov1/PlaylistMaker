@@ -55,6 +55,9 @@
     <string name="namePlaylist">Название*</string>
     <string name="descripyionPlaylist">Описание</string>
     <string name="createButton">Создать</string>
+    <string name="sharePlaylist">Поделиться</string>
+    <string name="editInfo">Редактировать информацию</string>
+    <string name="deletePlaylist">Удалить плейлист</string>
 
 
 

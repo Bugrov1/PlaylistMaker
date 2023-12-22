@@ -22,4 +22,6 @@ interface PlaylistRepository {
     suspend fun getAll():List<String>
 
     suspend fun deleteTrack(track: Track)
+
+    suspend fun delete(playlist: Playlist)
 }
