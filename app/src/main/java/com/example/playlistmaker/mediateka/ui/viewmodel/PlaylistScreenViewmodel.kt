@@ -7,10 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.mediateka.domain.db.PlaylistInteractor
 import com.example.playlistmaker.mediateka.domain.model.Playlist
-import com.example.playlistmaker.mediateka.ui.models.PlaylistsState
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.sharing.domain.api.SharingInteractor
 import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -34,6 +35,7 @@ class PlaylistScreenViewmodel(id:String,
     init{
         fillData(idInit)
         getAll()
+
     }
 
     private fun fillData(id:Long) {
@@ -104,14 +106,13 @@ class PlaylistScreenViewmodel(id:String,
     }
 
     fun deletePlaylist(playlist: Playlist){
-        viewModelScope.launch {
+        Log.v("updateTracksTable","deletePlaylist")
+        val job: Job = viewModelScope.launch(context = Dispatchers.Default) {
+            Log.v("updateTracksTable","viewModelScope.launch")
             playlistInteractor.deletePlaylist(playlist)
+            playlistInteractor.updateTracksTable()
         }
 
     }
-
-
-
-
 
 }

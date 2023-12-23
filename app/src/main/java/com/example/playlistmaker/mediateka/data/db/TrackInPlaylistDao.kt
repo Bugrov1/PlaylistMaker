@@ -18,4 +18,10 @@ interface TrackInPlaylistDao {
 
     @Delete(entity = TrackInPlaylistEntity::class)
     suspend fun deleteTrack(trackInPlaylistEntity: TrackInPlaylistEntity)
+
+    @Query("SELECT trackId FROM tracks_in_playlists_table ")
+    suspend fun getTracksAll(): List<Int>
+
+    @Query("DELETE FROM tracks_in_playlists_table WHERE trackId = :id ")
+    suspend fun deleteById(id:Int)
 }

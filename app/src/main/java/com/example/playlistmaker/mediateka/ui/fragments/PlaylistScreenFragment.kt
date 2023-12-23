@@ -1,37 +1,31 @@
 package com.example.playlistmaker.mediateka.ui.fragments
 
-import android.content.ContentProvider
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 
 import com.example.playlistmaker.databinding.FragmentPlaylistscreenBinding
 import com.example.playlistmaker.mediateka.domain.model.Playlist
-import com.example.playlistmaker.mediateka.ui.PlaylistAdapter
-import com.example.playlistmaker.mediateka.ui.models.DialogStatus
 import com.example.playlistmaker.mediateka.ui.viewmodel.PlaylistScreenViewmodel
-import com.example.playlistmaker.mediateka.ui.viewmodel.PlaylistsViewModel
 import com.example.playlistmaker.player.ui.BottomAdapter
 import com.example.playlistmaker.player.ui.TracksEndingCount
 import com.example.playlistmaker.player.ui.activity.PlayerActivity
-import com.example.playlistmaker.player.ui.viewmodel.PlayerViewModel
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.ui.Adapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
+import kotlinx.coroutines.runBlocking
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
@@ -134,9 +128,17 @@ class PlaylistScreenFragment: Fragment() {
                 .setMessage("Хотите удалить плейлист?")
                 .setNeutralButton("Нет") { dialog, which ->
                 }.setPositiveButton("Да") { dialog, which ->
-                    viewModel.deletePlaylist(playlist)
-                    findNavController().popBackStack()
+                    runBlocking {
+                        viewModel.deletePlaylist(playlist)
+                        findNavController().popBackStack()
+                    }
+
+
+
+
                 }.show()
+
+
         }
     }
     private fun shareDialog(){

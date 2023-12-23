@@ -23,4 +23,9 @@ interface PlaylistInteractor {
 
     suspend fun deleteTrack(track: Track)
      suspend fun deletePlaylist(playlist: Playlist)
+
+    suspend fun getIdsFromAddedTracks(): List<Int>
+    suspend fun deleteById(id:Int)
+
+    suspend fun updateTracksTable()
 }

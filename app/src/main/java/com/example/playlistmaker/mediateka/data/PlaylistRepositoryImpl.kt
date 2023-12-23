@@ -64,5 +64,13 @@ class PlaylistRepositoryImpl(private val playlistDatabase: PlaylistDatabase,
         playlistDatabase.PlaylistDao().delete(playlistEntity)
     }
 
+    override suspend fun getIdsFromAddedTracks(): List<Int> {
+        return tracksInPlaylistsDatabase.trackInPlaylistDao().getTracksAll()
+    }
+
+    override  suspend fun deleteById(id:Int){
+        tracksInPlaylistsDatabase.trackInPlaylistDao().deleteById(id)
+    }
+
 
 }

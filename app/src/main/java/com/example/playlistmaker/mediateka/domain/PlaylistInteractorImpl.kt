@@ -1,5 +1,6 @@
 package com.example.playlistmaker.mediateka.domain
 
+import android.util.Log
 import com.example.playlistmaker.mediateka.domain.db.PlaylistInteractor
 import com.example.playlistmaker.mediateka.domain.db.PlaylistRepository
 import com.example.playlistmaker.mediateka.domain.model.Playlist
@@ -20,6 +21,8 @@ class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository)
         return playlistRepository.getTracksId(id)
 
     }
+
+
 
     override fun getLists(): Flow<List<Playlist>> {
         return playlistRepository.getLists()
@@ -58,6 +61,31 @@ class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository)
 
     override suspend fun deletePlaylist(playlist: Playlist) {
         playlistRepository.delete(playlist)
+
+    }
+
+    override suspend fun getIdsFromAddedTracks(): List<Int> {
+        return playlistRepository.getIdsFromAddedTracks()
+    }
+
+    override suspend fun deleteById(id:Int){
+        playlistRepository.deleteById(id)
+    }
+
+    override suspend fun updateTracksTable() {
+        val tracksInTable = getIdsFromAddedTracks()
+        Log.v("updateTracksTable","$tracksInTable")
+        val allTracks = getAll()
+        var allTracksInPlaylist = mutableListOf<Int>()
+        for (tracklist in allTracks){
+            val newlist = Gson().fromJson(tracklist,Array<Int>::class.java)?: emptyArray()
+            allTracksInPlaylist.addAll(newlist)
+        }
+        Log.v("updateTracksTable","$allTracksInPlaylist")
+        for(id in tracksInTable){ if(id !in allTracksInPlaylist){
+            Log.v("updateTracksTable","deleted")
+            deleteById(id)}
+        }
     }
 
 
