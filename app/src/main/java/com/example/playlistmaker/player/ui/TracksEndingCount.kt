@@ -21,4 +21,25 @@ class TracksEndingCount() {
             }
         }
     }
+
+
+    fun minutesString(minutes:Int):String {
+
+        if(minutes%100>=11&&minutes%100<=19){
+            return "$minutes минут";
+        }
+        else{
+            if(minutes%10==1){
+                return "$minutes минута";
+            }
+            else if (minutes%10>=2&&minutes%10<=4){
+                return "$minutes минуты";
+            }
+            else if (minutes%10>=5&&minutes%10<=9){
+                return "$minutes минут";
+            }else {
+                return  "$minutes минут";
+            }
+        }
+    }
 }

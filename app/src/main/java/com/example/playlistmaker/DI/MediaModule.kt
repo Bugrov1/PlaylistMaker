@@ -15,6 +15,7 @@ import com.example.playlistmaker.mediateka.domain.db.FavoritesRepository
 import com.example.playlistmaker.mediateka.domain.db.PlaylistInteractor
 import com.example.playlistmaker.mediateka.domain.db.PlaylistRepository
 import com.example.playlistmaker.mediateka.ui.viewmodel.CreatePlaylistViemodel
+import com.example.playlistmaker.mediateka.ui.viewmodel.EditPlaylistViewModel
 import com.example.playlistmaker.mediateka.ui.viewmodel.FavouritesViewModel
 import com.example.playlistmaker.mediateka.ui.viewmodel.PlaylistScreenViewmodel
 import com.example.playlistmaker.mediateka.ui.viewmodel.PlaylistsViewModel
@@ -81,6 +82,11 @@ val mediaModule = module {
 
     viewModel<PlaylistScreenViewmodel> { (id: String) ->
         PlaylistScreenViewmodel(id, playlistInteractor = get(), sharingInteractor = get())
+    }
+
+
+    viewModel<EditPlaylistViewModel> {(id: String) ->
+        EditPlaylistViewModel( id, playlistInteractor = get())
     }
 
 

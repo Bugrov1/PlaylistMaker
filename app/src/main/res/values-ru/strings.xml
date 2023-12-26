@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Playlist Maker</string>
     <string name="title_activity_settings">SettingsActivity</string>
@@ -58,7 +59,6 @@
     <string name="sharePlaylist">Поделиться</string>
     <string name="editInfo">Редактировать информацию</string>
     <string name="deletePlaylist">Удалить плейлист</string>
-
     <plurals name="plurals_1">
         <item quantity="zero">%1$d = zero</item>
         <item quantity="one">%1$d = one</item>
@@ -70,17 +70,13 @@
 
     <!-- А этот код мы используем для проверки того, как выглядит реальное склонение -->
     <plurals name="plurals_2">
-        <item quantity="zero">%1$d  tracks</item>
-        <item quantity="one">%1$d track</item>
-        <item quantity="two">%1$d tracks</item>
-        <item quantity="few">%1$d tracks</item>
-        <item quantity="many">%1$d tracks</item>
-        <item quantity="other">%1$d tracks</item>
+        <item quantity="zero">%1$d треков</item>
+        <item quantity="one">%1$d трек</item>
+        <item quantity="two">%1$d трека</item>
+        <item quantity="few">%1$d треков</item>
+        <item quantity="many">%1$d треков</item>
+        <item quantity="other">%1$d треков</item>
     </plurals>
 
 
-
-
-
 </resources>
-

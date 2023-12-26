@@ -58,7 +58,9 @@ class MediaFragmentPlaylists : Fragment() {
         viewModel.refresh()
         binding.placeholderText.text = requireArguments().getString(TEXT).toString()
         viewModel.state.observe(viewLifecycleOwner) {
+            adapter.playlists.clear()
             render(it)
+
         }
         setListeners()
     }

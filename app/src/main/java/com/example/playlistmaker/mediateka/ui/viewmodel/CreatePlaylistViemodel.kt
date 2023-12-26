@@ -11,7 +11,7 @@ import com.example.playlistmaker.mediateka.ui.models.ButtonState
 import com.example.playlistmaker.mediateka.ui.models.FavoritesState
 import kotlinx.coroutines.launch
 
-class CreatePlaylistViemodel(private val playlistInteractor: PlaylistInteractor): ViewModel() {
+open class CreatePlaylistViemodel(private val playlistInteractor: PlaylistInteractor): ViewModel() {
 
     private val _stateLiveData = MutableLiveData<ButtonState>()
     val state: LiveData<ButtonState> = _stateLiveData
@@ -28,7 +28,7 @@ class CreatePlaylistViemodel(private val playlistInteractor: PlaylistInteractor)
         else{_stateLiveData.postValue(ButtonState.Disabled)  }
     }
 
-    fun createPlaylist(playlist: Playlist){
+    open fun createPlaylist(playlist: Playlist){
         viewModelScope.launch{ playlistInteractor.insertList(playlist)}
 
     }

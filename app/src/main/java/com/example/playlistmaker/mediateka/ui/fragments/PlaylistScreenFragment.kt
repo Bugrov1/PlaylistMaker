@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.playlistmaker.R
 
 import com.example.playlistmaker.databinding.FragmentPlaylistscreenBinding
@@ -50,6 +51,13 @@ class PlaylistScreenFragment: Fragment() {
 
     }
     val viewModel: PlaylistScreenViewmodel by viewModel { parametersOf(requireArguments().getString(ARGS_ID)) }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refresh()
+        adapterShare.notifyDataSetChanged()
+
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -72,8 +80,6 @@ class PlaylistScreenFragment: Fragment() {
 
         }
 
-
-
         binding.playlistsRecycler.adapter=adapter
         binding.shareRecycler.adapter =adapterShare
 
@@ -83,9 +89,10 @@ class PlaylistScreenFragment: Fragment() {
             adapterShare.playlists.clear()
             adapterShare.playlists.add(it)
             adapterShare.notifyDataSetChanged()
+
         }
         viewModel.duration.observe(viewLifecycleOwner) {
-           binding.timeTotal.text=it
+           binding.timeTotal.text=TracksEndingCount().minutesString(it.toInt())
         }
 
         viewModel.tracks.observe(viewLifecycleOwner) {
@@ -133,13 +140,18 @@ class PlaylistScreenFragment: Fragment() {
                         findNavController().popBackStack()
                     }
 
-
-
-
                 }.show()
-
-
         }
+        binding.editInfo.setOnClickListener {
+            findNavController().navigate(R.id.action_playlistScreenFragment_to_editPlaylistFragment,
+                requireArguments().getString(ARGS_ID)?.let { it1 ->
+                    EditPlaylistFragment.createArgs(
+                        it1
+                    )
+                })
+        }
+
+
     }
     private fun shareDialog(){
         if (tracks.size==0){showDialog()}
@@ -196,11 +208,11 @@ class PlaylistScreenFragment: Fragment() {
             description.text=playlist.description
             tracksNumber.text= playlist.length?.let { TracksEndingCount().tracksString(it)  }
 
-
-
             Glide.with(requireActivity())
                 .load(playlist.filepath)
                 .placeholder(R.drawable.placeholderbig)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .centerCrop()
                 .into(albumCover)
         }

@@ -1,15 +1,17 @@
 package com.example.playlistmaker.player.ui
 
+import android.content.res.Resources
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.mediateka.domain.model.Playlist
 
-class BottomViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class BottomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val playlistName: TextView = itemView.findViewById(R.id.playlistNameItem)
     private val trackNumber: TextView = itemView.findViewById(R.id.tracksNumberItem)
@@ -18,11 +20,18 @@ class BottomViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         playlistName.text = model.playlistName
 
         trackNumber.text = TracksEndingCount().tracksString(model.length ?: 0)
+
+//        cover.setImageURI(model.filepath)
         val roundingRadius = 10
+//        val imageWidthPixels = 1024;
+//        val  imageHeightPixels = 768;
+
         Glide.with(itemView)
             .load(model.filepath)
             .placeholder(R.drawable.placeholder)
             .centerCrop()
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
             .transform(RoundedCorners(roundingRadius))
             .into(cover)
     }

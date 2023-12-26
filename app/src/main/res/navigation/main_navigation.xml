@@ -40,7 +40,15 @@
         android:id="@+id/playlistScreenFragment"
         android:name="com.example.playlistmaker.mediateka.ui.fragments.PlaylistScreenFragment"
         android:label="fragment_playlistscreen"
-        tools:layout="@layout/fragment_playlistscreen" />
+        tools:layout="@layout/fragment_playlistscreen" >
+        <action
+            android:id="@+id/action_playlistScreenFragment_to_editPlaylistFragment"
+            app:destination="@id/editPlaylistFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editPlaylistFragment"
+        android:name="com.example.playlistmaker.mediateka.ui.fragments.EditPlaylistFragment"
+        android:label="EditPlaylistFragment" />
 
 </navigation>
 

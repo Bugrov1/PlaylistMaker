@@ -33,9 +33,12 @@ class PlaylistScreenViewmodel(id:String,
     private val _tracksLiveData = MutableLiveData<List<Track>>()
     val tracks: LiveData<List<Track>> = _tracksLiveData
     init{
+        refresh()
+    }
+
+    fun refresh(){
         fillData(idInit)
         getAll()
-
     }
 
     private fun fillData(id:Long) {
