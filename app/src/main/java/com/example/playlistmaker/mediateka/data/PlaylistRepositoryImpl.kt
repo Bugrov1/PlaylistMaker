@@ -46,7 +46,10 @@ class PlaylistRepositoryImpl(private val playlistDatabase: PlaylistDatabase,
     override fun getracks(ids: List<Int>): Flow<List<Track>>  = flow{
         val tracktEntities = tracksInPlaylistsDatabase.trackInPlaylistDao().getracks(ids)
         val tracks = tracktEntities.map { track -> playlistDbConvertor.map(track) }
-        emit(tracks)
+        val desiredOrder = ids
+        val thingsById = tracks.associateBy { it.trackId }
+        val sortedTracks = desiredOrder.mapNotNull{ thingsById[it] }
+        emit(sortedTracks)
     }
 
     override suspend fun getAll():List<String> {

@@ -1,6 +1,6 @@
 package com.example.playlistmaker.mediateka.ui.viewmodel
 
-import android.util.Log
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -38,7 +38,6 @@ class PlaylistScreenViewmodel(id:String,
 
     fun refresh(){
         fillData(idInit)
-        getAll()
     }
 
     private fun fillData(id:Long) {
@@ -55,19 +54,13 @@ class PlaylistScreenViewmodel(id:String,
         }
 
     }
-    private fun getAll(){
-        viewModelScope.launch {
-            val tracksAll = playlistInteractor.getAll()
-            Log.v("ALL","$tracksAll")
-        }
-    }
+
 
         private fun render(playlist: Playlist) {
             _stateLiveData.postValue(playlist)
         }
 
     private fun processResult(tracks: List<Track>) {
-        Log.v("TRACKSFOUND", "$tracks")
         var durationSum = 0.0
         for(track in tracks){
             durationSum+=track.trackTimeMillis
@@ -109,9 +102,7 @@ class PlaylistScreenViewmodel(id:String,
     }
 
     fun deletePlaylist(playlist: Playlist){
-        Log.v("updateTracksTable","deletePlaylist")
         val job: Job = viewModelScope.launch(context = Dispatchers.Default) {
-            Log.v("updateTracksTable","viewModelScope.launch")
             playlistInteractor.deletePlaylist(playlist)
             playlistInteractor.updateTracksTable()
         }

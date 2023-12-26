@@ -6,15 +6,12 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
@@ -22,12 +19,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.playlistmaker.R
-
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.mediateka.domain.model.Playlist
 import com.example.playlistmaker.mediateka.ui.models.ButtonState
@@ -43,15 +37,12 @@ open class CreatePlaylistFragment : Fragment() {
     open val viewModel: CreatePlaylistViemodel by viewModel()
     private lateinit var backButton: ImageButton
     lateinit var binding: FragmentNewPlaylistBinding
-    lateinit var nameEditText: EditText
-    private lateinit var createButton: TextView
     private lateinit var addPhoto: ImageButton
     lateinit var playlistName: String
     lateinit var confirmDialog: MaterialAlertDialogBuilder
     open var photoPath: Uri? = null
     private lateinit var description: String
     lateinit var descriptionEditText: EditText
-    private var simpleTextWatcher2: TextWatcher? = null
     var uriPhoto: Uri? = null
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,8 +57,6 @@ open class CreatePlaylistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.createButton.isEnabled = false
-        nameEditText = binding.EditTextName
-        createButton = binding.createButton
         addPhoto = binding.addPhoto
         backButton = binding.backButton
         descriptionEditText = binding.editTextDescription
@@ -79,7 +68,7 @@ open class CreatePlaylistFragment : Fragment() {
 
         playlistName = ""
 
-        nameEditText.doOnTextChanged { text, start, before, count ->
+        binding.EditTextName.doOnTextChanged { text, start, before, count ->
             viewModel.changeButtonstate(text.toString())
             if (text != null) {
                 playlistName = text.toString()
@@ -96,22 +85,6 @@ open class CreatePlaylistFragment : Fragment() {
             }
 
         }
-//        simpleTextWatcher2 = object : TextWatcher {
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-//
-//            }
-//
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//                if (s != null) {
-//                    description = s.toString()
-//                }
-//            }
-//
-//            override fun afterTextChanged(s: Editable?) {
-//
-//            }
-//        }
-//        simpleTextWatcher2?.let { descriptionEditText.addTextChangedListener(it) }
 
 
         val pickMedia =
@@ -124,7 +97,7 @@ open class CreatePlaylistFragment : Fragment() {
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .centerCrop()
-                        .into(addPhoto)
+                        .into( binding.addPhoto)
                     uriPhoto = uri
 
                 } else {
@@ -152,7 +125,7 @@ open class CreatePlaylistFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
 
             override fun handleOnBackPressed() {
-                when (nameEditText.text.toString().isNotEmpty()) {
+                when (binding.EditTextName.text.toString().isNotEmpty()) {
                     true -> {
                         when (launchStatus) {
                             DialogStatus.Launched -> {
@@ -182,20 +155,14 @@ open class CreatePlaylistFragment : Fragment() {
             }
         })
 
-
-
-
-
-
-
-        createButton.setOnClickListener {
+        binding.createButton.setOnClickListener {
             saveImageToPrivateStorage(uriPhoto)
             val playlist = Playlist(
                 id = null,
                 playlistName = playlistName,
                 description = description,
                 filepath = photoPath, tracks = null,
-                length = null
+                length = 0
             )
             viewModel.createPlaylist(playlist)
 
@@ -216,23 +183,32 @@ open class CreatePlaylistFragment : Fragment() {
 
     fun renderButton(state: ButtonState) {
         when (state) {
-            is ButtonState.Enabled -> createButton.isEnabled = true
-            is ButtonState.Disabled -> createButton.isEnabled = false
+            is ButtonState.Enabled -> binding.createButton.isEnabled = true
+            is ButtonState.Disabled ->  binding.createButton.isEnabled = false
 
-            else -> {}
+
         }
 
+    }
+    fun renderImage(uri: Uri) {
+        Glide.with(requireActivity())
+            .load(uri)
+            .placeholder(R.drawable.placeholderbig)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
+            .centerCrop()
+            .into(binding.addPhoto)
     }
 
     open fun saveImageToPrivateStorage(uri: Uri?) {
         if (uri != null) {
             val filePath =
-                File(requireContext().getDir(nameEditText.text.toString(), MODE_PRIVATE), "albums")
+                File(requireContext().getDir( binding.EditTextName.text.toString(), MODE_PRIVATE), "albums")
             if (!filePath.exists()) {
                 filePath.mkdirs()
             }
 
-            val file = File(filePath, nameEditText.text.toString() + ".jpg")
+            val file = File(filePath,  binding.EditTextName.text.toString() + ".jpg")
             photoPath = file.toUri()
             val inputStream = requireActivity().contentResolver.openInputStream(uri)
             val outputStream = FileOutputStream(file)

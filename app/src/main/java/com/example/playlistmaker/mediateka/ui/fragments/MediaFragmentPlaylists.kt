@@ -1,8 +1,6 @@
 package com.example.playlistmaker.mediateka.ui.fragments
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,8 +16,6 @@ import com.example.playlistmaker.mediateka.domain.model.Playlist
 import com.example.playlistmaker.mediateka.ui.PlaylistAdapter
 import com.example.playlistmaker.mediateka.ui.models.PlaylistsState
 import com.example.playlistmaker.mediateka.ui.viewmodel.PlaylistsViewModel
-import com.example.playlistmaker.player.ui.activity.PlayerActivity
-import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaFragmentPlaylists : Fragment() {
@@ -72,7 +68,7 @@ class MediaFragmentPlaylists : Fragment() {
 
         adapter.onItemClick = {
             findNavController().navigate(R.id.action_mediaFragment_to_playlistScreenFragment,PlaylistScreenFragment.createArgs(it.id.toString()))
-            Log.v("DATATRANSFER","$it.id.toString()")
+
         }
 
     }

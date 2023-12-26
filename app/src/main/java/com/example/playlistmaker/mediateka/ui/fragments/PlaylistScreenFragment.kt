@@ -7,14 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.playlistmaker.R
-
 import com.example.playlistmaker.databinding.FragmentPlaylistscreenBinding
 import com.example.playlistmaker.mediateka.domain.model.Playlist
 import com.example.playlistmaker.mediateka.ui.viewmodel.PlaylistScreenViewmodel
@@ -32,7 +31,7 @@ import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlaylistScreenFragment: Fragment() {
+class PlaylistScreenFragment : Fragment() {
 
     private lateinit var binding: FragmentPlaylistscreenBinding
 
@@ -43,6 +42,7 @@ class PlaylistScreenFragment: Fragment() {
     private lateinit var bottomSheetShareBehavior: BottomSheetBehavior<LinearLayout>
     private lateinit var tracks: List<Track>
     private lateinit var playlist: Playlist
+
     companion object {
         private const val ARGS_ID = "id"
 
@@ -50,7 +50,14 @@ class PlaylistScreenFragment: Fragment() {
             bundleOf(ARGS_ID to id)
 
     }
-    val viewModel: PlaylistScreenViewmodel by viewModel { parametersOf(requireArguments().getString(ARGS_ID)) }
+
+    val viewModel: PlaylistScreenViewmodel by viewModel {
+        parametersOf(
+            requireArguments().getString(
+                ARGS_ID
+            )
+        )
+    }
 
     override fun onResume() {
         super.onResume()
@@ -58,6 +65,7 @@ class PlaylistScreenFragment: Fragment() {
         adapterShare.notifyDataSetChanged()
 
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -80,8 +88,8 @@ class PlaylistScreenFragment: Fragment() {
 
         }
 
-        binding.playlistsRecycler.adapter=adapter
-        binding.shareRecycler.adapter =adapterShare
+        binding.playlistsRecycler.adapter = adapter
+        binding.shareRecycler.adapter = adapterShare
 
         viewModel.state.observe(viewLifecycleOwner) {
             render(it)
@@ -92,11 +100,11 @@ class PlaylistScreenFragment: Fragment() {
 
         }
         viewModel.duration.observe(viewLifecycleOwner) {
-           binding.timeTotal.text=TracksEndingCount().minutesString(it.toInt())
+            binding.timeTotal.text = TracksEndingCount().minutesString(it.toInt())
         }
 
         viewModel.tracks.observe(viewLifecycleOwner) {
-           renderBottomSheet(it)
+            renderBottomSheet(it.asReversed())
             tracks = it
         }
 
@@ -153,16 +161,18 @@ class PlaylistScreenFragment: Fragment() {
 
 
     }
-    private fun shareDialog(){
-        if (tracks.size==0){showDialog()}
-    else{
-        viewModel.onShareClicked(createInfo())
 
+    private fun shareDialog() {
+        if (tracks.size == 0) {
+            showDialog()
+        } else {
+            viewModel.onShareClicked(createInfo())
+
+        }
     }
-    }
 
 
-    private fun deleteTrack( track:Track){
+    private fun deleteTrack(track: Track) {
 
         confirmDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("Удалить трек")
@@ -174,10 +184,10 @@ class PlaylistScreenFragment: Fragment() {
         confirmDialog.show()
     }
 
-    private fun showDialog(){
+    private fun showDialog() {
         MaterialAlertDialogBuilder(requireContext())
             .setMessage("В этом плейлисте нет списка треков, которым можно поделиться")
-            .setNeutralButton("ОК",  object: DialogInterface.OnClickListener {
+            .setNeutralButton("ОК", object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
 
                 }
@@ -185,28 +195,33 @@ class PlaylistScreenFragment: Fragment() {
             .show()
     }
 
-    private fun createInfo():String{
-        val tracks = adapter.tracks.toMutableList()?: emptyList<Track>()
+    private fun createInfo(): String {
+        val tracks = adapter.tracks.toMutableList() ?: emptyList<Track>()
         val playlistName = binding.playlistName.text
         val playlistDescription = binding.description.text
         val tracksNumber = binding.tracksNumber.text
-        var description ="$playlistName\n$playlistDescription\n$tracksNumber"
+        var description = "$playlistName\n$playlistDescription\n$tracksNumber"
         var trackN = 1
-        for (i in tracks){
-            description+= "\n$trackN.${i.artistName}-${i.trackName}(${ SimpleDateFormat("mm:ss", Locale.getDefault()).format(i.trackTimeMillis)})"
-            trackN+=1
+        for (i in tracks) {
+            description += "\n$trackN.${i.artistName}-${i.trackName}(${
+                SimpleDateFormat(
+                    "mm:ss",
+                    Locale.getDefault()
+                ).format(i.trackTimeMillis)
+            })"
+            trackN += 1
 
         }
 
         return description
     }
 
-    private fun render(playlist: Playlist){
+    private fun render(playlist: Playlist) {
 
-        binding.apply{
-            playlistName.text=playlist.playlistName
-            description.text=playlist.description
-            tracksNumber.text= playlist.length?.let { TracksEndingCount().tracksString(it)  }
+        binding.apply {
+            playlistName.text = playlist.playlistName
+            description.text = playlist.description
+            tracksNumber.text = playlist.length?.let { TracksEndingCount().tracksString(it) }
 
             Glide.with(requireActivity())
                 .load(playlist.filepath)
@@ -219,13 +234,16 @@ class PlaylistScreenFragment: Fragment() {
     }
 
     private fun renderBottomSheet(tracks: List<Track>) {
-        if (tracks.size==0){
-            binding.playlistsBottomSheet.visibility=View.GONE
+        if (tracks.size == 0) {
+            binding.playlistsBottomSheet.visibility = View.GONE
+            Toast.makeText(requireContext(), "В этом плейлисте пока нет треков", Toast.LENGTH_SHORT)
+                .show()
 
-        }
-        else{adapter.tracks.clear()
+        } else {
+            adapter.tracks.clear()
             adapter.tracks.addAll(tracks)
-            adapter.notifyDataSetChanged()}
+            adapter.notifyDataSetChanged()
+        }
 
     }
 

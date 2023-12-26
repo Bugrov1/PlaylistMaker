@@ -5,25 +5,17 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toFile
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.mediateka.domain.model.Playlist
-import com.example.playlistmaker.mediateka.ui.models.DialogStatus
-import com.example.playlistmaker.mediateka.ui.viewmodel.CreatePlaylistViemodel
 import com.example.playlistmaker.mediateka.ui.viewmodel.EditPlaylistViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -75,9 +67,7 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
         viewModel.data.observe(viewLifecycleOwner) {
             playlist = it
             oldName = it.playlistName
-            Log.v(" filepath", " 70 oldName is $oldName ")
             photoPath = it.filepath
-            Log.v("filepath", " 72 photoPath is$photoPath")
             binding.createButton.text = "Сохранить"
             binding.EditTextName.setText(it.playlistName)
             binding.editTextDescription.setText(it.description)
@@ -86,25 +76,8 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
         }
 
 
-        val pickMedia =
-            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-
-                if (uri != null) {
-                    renderImage(uri)
-                    uriPhoto = uri
-
-                } else {
-                    Log.d("PhotoPicker", "No media selected")
-                }
-            }
-
-        binding.addPhoto.setOnClickListener {
-            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-        }
-
         binding.createButton.setOnClickListener {
             saveImageToPrivateStorage(uriPhoto)
-            Log.v(" filepath", " 98 uriPhoto is $uriPhoto")
             val playlist = Playlist(
                 id = playlist.id,
                 playlistName = binding.EditTextName.text.toString(),
@@ -113,10 +86,10 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
                 tracks = playlist.tracks,
                 length = playlist.length
             )
-            Log.v(" filepath", " 107 photoPath is $photoPath")
+
             viewModel.savePlaylist(playlist)
 
-            Toast.makeText(requireContext(), "Плейлист $playlistName создан", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), "Плейлист $playlistName был изменен", Toast.LENGTH_SHORT)
                 .show()
             findNavController().popBackStack()
         }
@@ -130,13 +103,6 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
                 findNavController().popBackStack()
             }
 
-        fun onBackPressed() {
-            if (binding.EditTextName.text.toString().isNotEmpty()) {
-                confirmDialog.show()
-            } else {
-                findNavController().popBackStack()
-            }
-        }
 
         binding.backButton.setOnClickListener {
             onBackPressed()
@@ -148,18 +114,15 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
             }
         })
 
-
+    }
+    fun onBackPressed() {
+        if (binding.EditTextName.text.toString().isNotEmpty()) {
+            confirmDialog.show()
+        } else {
+            findNavController().popBackStack()
+        }
     }
 
-    fun renderImage(uri: Uri) {
-        Glide.with(requireActivity())
-            .load(uri)
-            .placeholder(R.drawable.placeholderbig)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .skipMemoryCache(true)
-            .centerCrop()
-            .into(binding.addPhoto)
-    }
 
 
     override fun saveImageToPrivateStorage(uri: Uri?) {
@@ -167,7 +130,6 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
         if (oldName != binding.EditTextName.text.toString() && uri != null) {
 
             val file = photoPath?.toFile()
-            Log.v("filepath", "152 file is$file")
             if (file != null) {
                 file.delete()
             }
