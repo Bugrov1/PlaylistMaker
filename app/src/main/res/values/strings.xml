@@ -58,6 +58,23 @@
     <string name="sharePlaylist">Поделиться</string>
     <string name="editInfo">Редактировать информацию</string>
     <string name="deletePlaylist">Удалить плейлист</string>
+    <string name="finishCreatePlaylist" translatable="false">Завершить создание плейлиста?</string>
+    <string name="allUnsavedWillbeLost" translatable="false">Все несохраненные данные будут потеряны.</string>
+    <string name="cancel" translatable="false">Отмена</string>
+    <string name="finish" translatable="false">Завершить</string>
+    <string name="save" translatable="false">Сохранить</string>
+    <string name="deleteTrack" translatable="false"> Удалить трек</string>
+    <string name="delete" translatable="false">Удалить</string>
+    <string name="noTracksToShare" translatable="false">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="areYouSure" translatable="false"> Вы уверены, что хотите удалить трек из плейлиста?</string>
+    <string name="ok" translatable="false">OK</string>
+    <string name="positive" translatable="false">ДА</string>
+    <string name="negative" translatable="false">НЕТ</string>
+
+    <string name="wantToDelete" translatable="false">Хотите удалить плейлист?</string>
+
+
+    <string name="emptyPlaylist" translatable="false">В этом плейлисте пока нет треков</string>
 
     <plurals name="plurals_1">
         <item quantity="zero">%1$d = zero</item>

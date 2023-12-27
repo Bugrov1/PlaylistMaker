@@ -82,7 +82,7 @@ class SearchFragment : Fragment() {
        Log.v("TESSSSSSSSSSST","onViewCreated")
         initViews()
         initListeners()
-
+        history = viewModel.read()?: emptyArray()
         inputText = ""
         input = inputEditText
         viewModel.observeState().observe(viewLifecycleOwner) {

@@ -46,7 +46,7 @@ class PlaylistScreenViewmodel(id:String,
             val playlist = playlistInteractor.getPlaylist(id)
             render(playlist)
             val tracks = Gson().fromJson(playlist.tracks,Array<Int>::class.java)?: emptyArray()
-            playlistInteractor.getracks(tracks.toMutableList())
+            playlistInteractor.getTrackListFlow(tracks.toMutableList())
                 .collect { tracklist->
                     processResult(tracklist)
                     _tracksLiveData.postValue(tracklist)

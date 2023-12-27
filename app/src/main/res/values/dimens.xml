@@ -42,6 +42,7 @@
     <dimen name="search_width_placeholder_message">300dp</dimen>
     <dimen name="search_margin_top_placeholder_image">102dp</dimen>
     <dimen name="dp_24">24dp</dimen>
+    <dimen name="dp_26">26dp</dimen>
     <dimen name="dp_12">12dp</dimen>
     <dimen name="dp_100">100dp</dimen>
     <dimen name="dp_51">51dp</dimen>
@@ -65,4 +66,12 @@
     <dimen name="sp_24">24sp</dimen>
     <dimen name="sp_18">24sp</dimen>
     <dimen name="dp_5">5dp</dimen>
+    <dimen name="dp_17">17dp</dimen>
+    <dimen name="dp_4">4dp</dimen>
+
+
+
+
+
+
 </resources>

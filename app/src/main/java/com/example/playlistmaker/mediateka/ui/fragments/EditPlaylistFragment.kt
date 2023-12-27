@@ -14,6 +14,7 @@ import androidx.core.net.toFile
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.mediateka.domain.model.Playlist
 import com.example.playlistmaker.mediateka.ui.viewmodel.EditPlaylistViewModel
@@ -68,7 +69,7 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
             playlist = it
             oldName = it.playlistName
             photoPath = it.filepath
-            binding.createButton.text = "Сохранить"
+            binding.createButton.text = getString(R.string.save)
             binding.EditTextName.setText(it.playlistName)
             binding.editTextDescription.setText(it.description)
             it.filepath?.let { it1 -> renderImage(it1) }
@@ -81,7 +82,7 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
             val playlist = Playlist(
                 id = playlist.id,
                 playlistName = binding.EditTextName.text.toString(),
-                description = descriptionEditText.text.toString(),
+                description = binding.editTextDescription.text.toString(),
                 filepath = photoPath,
                 tracks = playlist.tracks,
                 length = playlist.length
@@ -89,17 +90,21 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
 
             viewModel.savePlaylist(playlist)
 
-            Toast.makeText(requireContext(), "Плейлист $playlistName был изменен", Toast.LENGTH_SHORT)
+            Toast.makeText(
+                requireContext(),
+                "Плейлист $playlistName был изменен",
+                Toast.LENGTH_SHORT
+            )
                 .show()
             findNavController().popBackStack()
         }
 
         confirmDialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Завершить создание плейлиста?")
-            .setMessage("Все несохраненные данные будут потеряны.")
-            .setNeutralButton("Отмена") { dialog, which ->
+            .setTitle(getString(R.string.finishCreatePlaylist))
+            .setMessage(getString(R.string.allUnsavedWillbeLost))
+            .setNeutralButton(getString(R.string.cancel)) { dialog, which ->
 
-            }.setPositiveButton("Завершить") { dialog, which ->
+            }.setPositiveButton(getString(R.string.finish)) { dialog, which ->
                 findNavController().popBackStack()
             }
 
@@ -115,6 +120,7 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
         })
 
     }
+
     fun onBackPressed() {
         if (binding.EditTextName.text.toString().isNotEmpty()) {
             confirmDialog.show()
@@ -122,7 +128,6 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
             findNavController().popBackStack()
         }
     }
-
 
 
     override fun saveImageToPrivateStorage(uri: Uri?) {

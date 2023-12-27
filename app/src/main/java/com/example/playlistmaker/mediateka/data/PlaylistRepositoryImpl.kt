@@ -15,20 +15,20 @@ class PlaylistRepositoryImpl(private val playlistDatabase: PlaylistDatabase,
 ): PlaylistRepository {
     override suspend fun insertList(playlist: Playlist) {
         val listEntity = playlistDbConvertor.map(playlist)
-        playlistDatabase.PlaylistDao().insertList(listEntity)
+        playlistDatabase.getPlaylistDao().insertList(listEntity)
     }
 
     override suspend fun updateList(playlist: Playlist) {
         val listEntity = playlistDbConvertor.mapUpdate(playlist)
-        playlistDatabase.PlaylistDao().updateList(listEntity)
+        playlistDatabase.getPlaylistDao().updateList(listEntity)
     }
 
     override suspend fun getTracksId(id: Long): String {
-        return playlistDatabase.PlaylistDao().getTracksId(id)
+        return playlistDatabase.getPlaylistDao().getTracksId(id)
     }
 
     override fun getLists(): Flow<List<Playlist>> = flow {
-        val playlistEntities = playlistDatabase.PlaylistDao().getLists()
+        val playlistEntities = playlistDatabase.getPlaylistDao().getLists()
         val lists = playlistEntities.map { list -> playlistDbConvertor.map(list) }
         emit(lists)
     }
@@ -39,12 +39,12 @@ class PlaylistRepositoryImpl(private val playlistDatabase: PlaylistDatabase,
     }
 
     override suspend fun getPlaylist(id: Long): Playlist {
-        val playlistEntity = playlistDatabase.PlaylistDao().getPlaylist(id)
+        val playlistEntity = playlistDatabase.getPlaylistDao().getPlaylist(id)
        return playlistDbConvertor.map(playlistEntity)
     }
 
-    override fun getracks(ids: List<Int>): Flow<List<Track>>  = flow{
-        val tracktEntities = tracksInPlaylistsDatabase.trackInPlaylistDao().getracks(ids)
+    override fun getTrackListFlow(ids: List<Int>): Flow<List<Track>>  = flow{
+        val tracktEntities = tracksInPlaylistsDatabase.trackInPlaylistDao().getTracksInList(ids)
         val tracks = tracktEntities.map { track -> playlistDbConvertor.map(track) }
         val desiredOrder = ids
         val thingsById = tracks.associateBy { it.trackId }
@@ -52,8 +52,8 @@ class PlaylistRepositoryImpl(private val playlistDatabase: PlaylistDatabase,
         emit(sortedTracks)
     }
 
-    override suspend fun getAll():List<String> {
-        return playlistDatabase.PlaylistDao().getAll()
+    override suspend fun getTracksListIds():List<String> {
+        return playlistDatabase.getPlaylistDao().getTracksListIds()
     }
 
     override suspend fun deleteTrack(track: Track){
@@ -64,15 +64,15 @@ class PlaylistRepositoryImpl(private val playlistDatabase: PlaylistDatabase,
 
     override suspend fun delete(playlist: Playlist) {
         val playlistEntity = playlistDbConvertor.mapUpdate(playlist)
-        playlistDatabase.PlaylistDao().delete(playlistEntity)
+        playlistDatabase.getPlaylistDao().delete(playlistEntity)
     }
 
     override suspend fun getIdsFromAddedTracks(): List<Int> {
-        return tracksInPlaylistsDatabase.trackInPlaylistDao().getTracksAll()
+        return tracksInPlaylistsDatabase.trackInPlaylistDao().getTrackIdList()
     }
 
     override  suspend fun deleteById(id:Int){
-        tracksInPlaylistsDatabase.trackInPlaylistDao().deleteById(id)
+        tracksInPlaylistsDatabase.trackInPlaylistDao().deleteTrackById(id)
     }
 
 

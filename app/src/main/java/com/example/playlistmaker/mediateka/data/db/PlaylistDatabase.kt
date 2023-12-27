@@ -5,5 +5,5 @@ import androidx.room.RoomDatabase
 @Database(version = 1, entities = [PlaylistEntity::class])
 abstract class PlaylistDatabase:RoomDatabase(){
 
-    abstract fun PlaylistDao(): PlaylistDao
+    abstract fun getPlaylistDao(): PlaylistDao
 }

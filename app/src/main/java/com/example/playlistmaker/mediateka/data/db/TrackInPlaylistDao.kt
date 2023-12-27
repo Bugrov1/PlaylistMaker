@@ -14,14 +14,14 @@ interface TrackInPlaylistDao {
 
 
     @Query("SELECT * FROM tracks_in_playlists_table WHERE trackId IN (:ids)")
-    suspend fun getracks(ids: List<Int>): List<TrackInPlaylistEntity>
+    suspend fun getTracksInList(ids: List<Int>): List<TrackInPlaylistEntity>
 
     @Delete(entity = TrackInPlaylistEntity::class)
     suspend fun deleteTrack(trackInPlaylistEntity: TrackInPlaylistEntity)
 
     @Query("SELECT trackId FROM tracks_in_playlists_table ")
-    suspend fun getTracksAll(): List<Int>
+    suspend fun getTrackIdList(): List<Int>
 
     @Query("DELETE FROM tracks_in_playlists_table WHERE trackId = :id ")
-    suspend fun deleteById(id:Int)
+    suspend fun deleteTrackById(id:Int)
 }

@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.google.gson.Gson
 
 @Dao
 interface PlaylistDao {
@@ -27,7 +26,7 @@ interface PlaylistDao {
     suspend fun getPlaylist(id:Long):PlaylistEntity
 
     @Query("SELECT tracks FROM playlist_table ")
-    suspend fun  getAll():List<String>
+    suspend fun  getTracksListIds():List<String>
 
     @Delete(entity = PlaylistEntity::class)
     suspend fun delete(playlistEntity: PlaylistEntity)

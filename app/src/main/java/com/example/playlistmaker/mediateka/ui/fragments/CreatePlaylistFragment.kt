@@ -35,14 +35,12 @@ import java.io.FileOutputStream
 open class CreatePlaylistFragment : Fragment() {
 
     open val viewModel: CreatePlaylistViemodel by viewModel()
-    private lateinit var backButton: ImageButton
     lateinit var binding: FragmentNewPlaylistBinding
-    private lateinit var addPhoto: ImageButton
     lateinit var playlistName: String
     lateinit var confirmDialog: MaterialAlertDialogBuilder
     open var photoPath: Uri? = null
     private lateinit var description: String
-    lateinit var descriptionEditText: EditText
+
     var uriPhoto: Uri? = null
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,9 +55,6 @@ open class CreatePlaylistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.createButton.isEnabled = false
-        addPhoto = binding.addPhoto
-        backButton = binding.backButton
-        descriptionEditText = binding.editTextDescription
 
 
         viewModel.state.observe(viewLifecycleOwner) {
@@ -76,16 +71,12 @@ open class CreatePlaylistFragment : Fragment() {
 
         }
 
-
         description = ""
-
         binding.editTextDescription.doOnTextChanged { text, start, before, count ->
             if (text != null) {
                 description = text.toString()
             }
-
         }
-
 
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -97,7 +88,7 @@ open class CreatePlaylistFragment : Fragment() {
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .centerCrop()
-                        .into( binding.addPhoto)
+                        .into(binding.addPhoto)
                     uriPhoto = uri
 
                 } else {
@@ -105,20 +96,20 @@ open class CreatePlaylistFragment : Fragment() {
                 }
             }
 
-        addPhoto.setOnClickListener {
+        binding.addPhoto.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
         var launchStatus: DialogStatus = DialogStatus.Hidden
         confirmDialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Завершить создание плейлиста?")
-            .setMessage("Все несохраненные данные будут потеряны.")
-            .setNeutralButton("Отмена") { dialog, which ->
+            .setTitle(getString(R.string.finishCreatePlaylist))
+            .setMessage(getString(R.string.allUnsavedWillbeLost))
+            .setNeutralButton(getString(R.string.cancel)) { dialog, which ->
                 launchStatus = DialogStatus.Hidden
-            }.setPositiveButton("Завершить") { dialog, which ->
+            }.setPositiveButton(getString(R.string.finish)) { dialog, which ->
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
 
-        backButton.setOnClickListener {
+        binding.backButton.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
@@ -143,8 +134,6 @@ open class CreatePlaylistFragment : Fragment() {
                                 launchStatus = DialogStatus.Launched
                             }
                         }
-
-
                     }
 
                     false -> {
@@ -170,26 +159,16 @@ open class CreatePlaylistFragment : Fragment() {
                 .show()
             launchStatus = DialogStatus.Neutral
             requireActivity().onBackPressedDispatcher.onBackPressed()
-
         }
-
-
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
     }
 
     fun renderButton(state: ButtonState) {
         when (state) {
             is ButtonState.Enabled -> binding.createButton.isEnabled = true
-            is ButtonState.Disabled ->  binding.createButton.isEnabled = false
-
-
+            is ButtonState.Disabled -> binding.createButton.isEnabled = false
         }
-
     }
+
     fun renderImage(uri: Uri) {
         Glide.with(requireActivity())
             .load(uri)
@@ -203,12 +182,14 @@ open class CreatePlaylistFragment : Fragment() {
     open fun saveImageToPrivateStorage(uri: Uri?) {
         if (uri != null) {
             val filePath =
-                File(requireContext().getDir( binding.EditTextName.text.toString(), MODE_PRIVATE), "albums")
+                File(
+                    requireContext().getDir(binding.EditTextName.text.toString(), MODE_PRIVATE),
+                    "albums"
+                )
             if (!filePath.exists()) {
                 filePath.mkdirs()
             }
-
-            val file = File(filePath,  binding.EditTextName.text.toString() + ".jpg")
+            val file = File(filePath, binding.EditTextName.text.toString() + ".jpg")
             photoPath = file.toUri()
             val inputStream = requireActivity().contentResolver.openInputStream(uri)
             val outputStream = FileOutputStream(file)
@@ -216,8 +197,5 @@ open class CreatePlaylistFragment : Fragment() {
                 .decodeStream(inputStream)
                 .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
         }
-
     }
-
-
 }

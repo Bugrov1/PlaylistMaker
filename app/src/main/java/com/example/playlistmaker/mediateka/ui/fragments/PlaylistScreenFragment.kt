@@ -37,7 +37,7 @@ class PlaylistScreenFragment : Fragment() {
 
     private val adapter = Adapter()
     private val adapterShare = BottomAdapter()
-    lateinit var confirmDialog: MaterialAlertDialogBuilder
+    private lateinit var confirmDialog: MaterialAlertDialogBuilder
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
     private lateinit var bottomSheetShareBehavior: BottomSheetBehavior<LinearLayout>
     private lateinit var tracks: List<Track>
@@ -79,15 +79,12 @@ class PlaylistScreenFragment : Fragment() {
         bottomSheetBehavior = BottomSheetBehavior.from(binding.playlistsBottomSheet).apply {
             state =
                 BottomSheetBehavior.STATE_COLLAPSED
-
         }
 
         bottomSheetShareBehavior = BottomSheetBehavior.from(binding.sharebottomsheet).apply {
             state =
                 BottomSheetBehavior.STATE_HIDDEN
-
         }
-
         binding.playlistsRecycler.adapter = adapter
         binding.shareRecycler.adapter = adapterShare
 
@@ -139,10 +136,10 @@ class PlaylistScreenFragment : Fragment() {
                     BottomSheetBehavior.STATE_HIDDEN
             }
             MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Удалить плейлист")
-                .setMessage("Хотите удалить плейлист?")
-                .setNeutralButton("Нет") { dialog, which ->
-                }.setPositiveButton("Да") { dialog, which ->
+                .setTitle(getString(R.string.deletePlaylist))
+                .setMessage(getString(R.string.wantToDelete))
+                .setNeutralButton(getString(R.string.negative)) { dialog, which ->
+                }.setPositiveButton(getString(R.string.positive)) { dialog, which ->
                     runBlocking {
                         viewModel.deletePlaylist(playlist)
                         findNavController().popBackStack()
@@ -175,10 +172,10 @@ class PlaylistScreenFragment : Fragment() {
     private fun deleteTrack(track: Track) {
 
         confirmDialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Удалить трек")
-            .setMessage("Вы уверены, что хотите удалить трек из плейлиста?")
-            .setNeutralButton("Отмена") { dialog, which ->
-            }.setPositiveButton("Удалить") { dialog, which ->
+            .setTitle(getString(R.string.deleteTrack))
+            .setMessage(getString(R.string.areYouSure))
+            .setNeutralButton(R.string.cancel) { dialog, which ->
+            }.setPositiveButton(R.string.delete) { dialog, which ->
                 viewModel.remove(track)
             }
         confirmDialog.show()
@@ -186,8 +183,8 @@ class PlaylistScreenFragment : Fragment() {
 
     private fun showDialog() {
         MaterialAlertDialogBuilder(requireContext())
-            .setMessage("В этом плейлисте нет списка треков, которым можно поделиться")
-            .setNeutralButton("ОК", object : DialogInterface.OnClickListener {
+            .setMessage(getString(R.string.noTracksToShare))
+            .setNeutralButton(getString(R.string.ok), object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
 
                 }
@@ -236,7 +233,7 @@ class PlaylistScreenFragment : Fragment() {
     private fun renderBottomSheet(tracks: List<Track>) {
         if (tracks.size == 0) {
             binding.playlistsBottomSheet.visibility = View.GONE
-            Toast.makeText(requireContext(), "В этом плейлисте пока нет треков", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), getString(R.string.emptyPlaylist), Toast.LENGTH_SHORT)
                 .show()
 
         } else {

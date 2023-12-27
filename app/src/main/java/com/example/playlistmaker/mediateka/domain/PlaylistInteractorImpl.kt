@@ -36,16 +36,16 @@ class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository)
         return playlistRepository.getPlaylist(id)
     }
 
-    override fun getracks(ids: List<Int>): Flow<List<Track>> {
-        return playlistRepository.getracks(ids)
+    override fun getTrackListFlow(ids: List<Int>): Flow<List<Track>> {
+        return playlistRepository.getTrackListFlow(ids)
     }
 
-    override suspend fun getAll():List<String> {
-        return playlistRepository.getAll()
+    override suspend fun getTracksListIds():List<String> {
+        return playlistRepository.getTracksListIds()
     }
 
     override suspend fun checkTrack(track: Track):Boolean {
-        val allTracks = getAll()
+        val allTracks = getTracksListIds()
         var allTracksInt = mutableListOf<Int>()
         for (tracklist in allTracks){
             val newlist = Gson().fromJson(tracklist,Array<Int>::class.java)?: emptyArray()
@@ -75,7 +75,7 @@ class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository)
     override suspend fun updateTracksTable() {
         val tracksInTable = getIdsFromAddedTracks()
         Log.v("updateTracksTable","$tracksInTable")
-        val allTracks = getAll()
+        val allTracks = getTracksListIds()
         var allTracksInPlaylist = mutableListOf<Int>()
         for (tracklist in allTracks){
             val newlist = Gson().fromJson(tracklist,Array<Int>::class.java)?: emptyArray()

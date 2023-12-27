@@ -2,6 +2,7 @@ package com.example.playlistmaker.mediateka.domain.db
 
 import com.example.playlistmaker.mediateka.domain.model.Playlist
 import com.example.playlistmaker.search.domain.models.Track
+import kotlinx.coroutines.flow.Flow
 
 interface PlaylistInteractor {
     suspend fun insertList(playlist: Playlist)
@@ -10,14 +11,14 @@ interface PlaylistInteractor {
 
     suspend fun getTracksId(id:Long): String
 
-    fun getLists():kotlinx.coroutines.flow.Flow<List<Playlist>>
+    fun getLists():Flow<List<Playlist>>
     suspend fun insertTrack(track: Track)
 
     suspend fun getPlaylist(id: Long):Playlist
 
-    fun getracks(ids: List<Int>):kotlinx.coroutines.flow.Flow<List<Track>>
+    fun getTrackListFlow(ids: List<Int>):Flow<List<Track>>
 
-    suspend fun getAll():List<String>
+    suspend fun getTracksListIds():List<String>
 
     suspend fun checkTrack(track: Track):Boolean
 

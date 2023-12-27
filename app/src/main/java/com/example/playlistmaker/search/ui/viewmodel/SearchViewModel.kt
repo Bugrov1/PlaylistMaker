@@ -63,18 +63,15 @@ class SearchViewModel(
                 )
                  }
                  renderState(SearchState.History(checked.toTypedArray()))
-            }
+            }else{ renderState(SearchState.History(emptyArray()))}
         }
     }
 
     fun write(track: Track) {
         searchHistoryProvider.write(track)
     }
-    fun read() {
-        viewModelScope.launch {
-            searchHistoryProvider.read()
-        }
-
+    fun read():Array<Track>? {
+           return  searchHistoryProvider.read()
     }
 
     fun update() {
