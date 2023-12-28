@@ -32,16 +32,14 @@ class SearchFragment : Fragment() {
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
+
     }
 
     private val viewModel: SearchViewModel by viewModel()
 
     private val adapter = Adapter()
 
-
-//    private val adapterHistory = Adapter()
-
-    private val adapterHistory = AdapterTest { track ->
+    val adapterHistory = AdapterTest { track ->
         if (clickDebounce()) {
             viewModel.write(track)
             viewModel.update()
@@ -52,8 +50,14 @@ class SearchFragment : Fragment() {
                 R.id.action_searchFragment_to_playerFragment,
                 PlayerFragment.createArgs(trackGson)
             )
+
         }
     }
+
+//    private val adapterHistory = Adapter()
+
+
+
 
     private val trackList = arrayListOf<Track>()
 
@@ -84,14 +88,16 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.v("NAV", "onViewCreated")
+
         initViews()
         initListeners()
+
         history = viewModel.read() ?: emptyArray()
         inputText = ""
         input = inputEditText
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
-            Log.v("NAV", "$it")
+            Log.v("NAV", "State is $it")
         }
     }
 
@@ -99,8 +105,6 @@ class SearchFragment : Fragment() {
         super.onResume()
         Log.v("Nav", "RESUMED")
         viewModel.refresh()
-        adapterHistory.notifyDataSetChanged()
-        adapter.notifyDataSetChanged()
 
 
     }
@@ -148,6 +152,7 @@ class SearchFragment : Fragment() {
             }
         }
 
+
 //        adapterHistory.onItemClick = {
 //            if (clickDebounce()) {
 //                Log.v("NAV","adapterclicked")
@@ -193,12 +198,13 @@ class SearchFragment : Fragment() {
             R.id.action_searchFragment_to_playerFragment,
             PlayerFragment.createArgs(trackGson)
         )
+
     }
 
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.v("TESSSSSSSSSSST", "onDestroy")
+        Log.v("Nav", "onDestroy")
         simpleTextWatcher?.let { inputEditText.removeTextChangedListener(it) }
     }
 
@@ -284,7 +290,7 @@ class SearchFragment : Fragment() {
             is SearchState.Empty -> showEmpty(state.message)
             is SearchState.History -> historyLoad(state.history)
             is SearchState.Update -> updateHistory(state.history)
-            else -> {}
+
         }
     }
 

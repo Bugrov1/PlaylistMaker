@@ -5,20 +5,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.mediateka.domain.db.FavoritesInteractor
 import com.example.playlistmaker.mediateka.domain.db.PlaylistInteractor
 import com.example.playlistmaker.mediateka.domain.model.Playlist
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.sharing.domain.api.SharingInteractor
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlaylistScreenViewmodel(id:String,
                               private val playlistInteractor: PlaylistInteractor,
-                              private val  sharingInteractor:SharingInteractor
+                              private val  sharingInteractor:SharingInteractor,
+                              private val favoritesInteractor: FavoritesInteractor
 ): ViewModel() {
 
     private var idInit = id.toLong()
@@ -45,11 +46,12 @@ class PlaylistScreenViewmodel(id:String,
         viewModelScope.launch {
             val playlist = playlistInteractor.getPlaylist(id)
             render(playlist)
+            val favorites = favoritesInteractor.getIds()
             val tracks = Gson().fromJson(playlist.tracks,Array<Int>::class.java)?: emptyArray()
             playlistInteractor.getTrackListFlow(tracks.toMutableList())
                 .collect { tracklist->
-                    processResult(tracklist)
-                    _tracksLiveData.postValue(tracklist)
+                    processResult(tracklist,favorites)
+//                    _tracksLiveData.postValue(tracklist)
                 }
         }
 
@@ -60,15 +62,31 @@ class PlaylistScreenViewmodel(id:String,
             _stateLiveData.postValue(playlist)
         }
 
-    private fun processResult(tracks: List<Track>) {
+    private fun processResult(tracks: List<Track>,favorites:List<Int>) {
         var durationSum = 0.0
         for(track in tracks){
             durationSum+=track.trackTimeMillis
         }
         val durationSumConverted = SimpleDateFormat("mm", Locale.getDefault()).format(durationSum)
         _durationLiveData.postValue(durationSumConverted )
-
+        val checked=
+            tracks.map { Track(
+                it.trackName,
+                it.artistName,
+                it.trackTimeMillis,
+                it.artworkUrl100,
+                it.trackId,
+                it.collectionName,
+                it.releaseDate,
+                it.primaryGenreName,
+                it.country,
+                it.previewUrl,
+                isFavorite = it.trackId  in favorites
+            )
+            }
+        _tracksLiveData.postValue(checked)
     }
+
 
     fun onShareClicked(message:String) {
         sharingInteractor.shareApp(message)
@@ -77,7 +95,7 @@ class PlaylistScreenViewmodel(id:String,
     fun remove(track:Track) {
         viewModelScope.launch {
             val playlist = playlistInteractor.getPlaylist(idInit)
-            var tracks = Gson().fromJson(playlist.tracks,Array<Int>::class.java)
+            val tracks = Gson().fromJson(playlist.tracks,Array<Int>::class.java)
             val tracksMutable = tracks.toMutableList()
             tracksMutable.remove(track.trackId)
             val tracksUpdate =  Gson().toJson(tracksMutable )
@@ -102,7 +120,7 @@ class PlaylistScreenViewmodel(id:String,
     }
 
     fun deletePlaylist(playlist: Playlist){
-        val job: Job = viewModelScope.launch(context = Dispatchers.Default) {
+        viewModelScope.launch(context = Dispatchers.Default) {
             playlistInteractor.deletePlaylist(playlist)
             playlistInteractor.updateTracksTable()
         }

@@ -1,18 +1,20 @@
 package com.example.playlistmaker.mediateka.ui.fragments
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentMediaFavoritesBinding
 import com.example.playlistmaker.mediateka.ui.models.FavoritesState
 import com.example.playlistmaker.mediateka.ui.viewmodel.FavouritesViewModel
-import com.example.playlistmaker.player.ui.activity.PlayerActivity
+import com.example.playlistmaker.player.ui.fragment.PlayerFragment
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.ui.Adapter
 import com.google.gson.Gson
@@ -56,12 +58,22 @@ class MediaFragmentFavourites : Fragment() {
         }
 
         adapter.onItemClick = {
-            val intent = Intent(requireContext(), PlayerActivity::class.java)
-            intent.putExtra("track", Gson().toJson(it))
-            startActivity(intent)
+//            val intent = Intent(requireContext(), PlayerActivity::class.java)
+//            intent.putExtra("track", Gson().toJson(it))
+//            startActivity(intent)
+            startPlayer(it)
         }
 
 
+    }
+
+    private fun startPlayer(track: Track) {
+        val trackGson = Gson().toJson(track)
+        Log.v("NAV", "$trackGson")
+        findNavController().navigate(
+            R.id.action_mediaFragment_to_playerFragment,
+            PlayerFragment.createArgs(trackGson)
+        )
     }
 
     private fun initViews() {

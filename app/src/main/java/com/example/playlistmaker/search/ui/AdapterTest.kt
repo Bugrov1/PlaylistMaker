@@ -25,7 +25,8 @@ class AdapterTest(val clickListener: TrackClickListener
             Log.v("NAV","adapterclickedformAdapter ${tracks[position]}")
 //            onItemClick?.invoke(tracks[position])
             clickListener.onClick(tracks[position])
-            Log.v("NAV","adapterclickedformAdapter ${clickListener.onClick(tracks[position])}")
+            Log.v("NAV","adapterclickedformAdapter ${clickListener}")
+
             this.notifyDataSetChanged()
 
         }

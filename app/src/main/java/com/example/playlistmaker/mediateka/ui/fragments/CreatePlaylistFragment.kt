@@ -26,7 +26,6 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.mediateka.domain.model.Playlist
 import com.example.playlistmaker.mediateka.ui.models.ButtonState
-import com.example.playlistmaker.mediateka.ui.models.DialogStatus
 import com.example.playlistmaker.mediateka.ui.viewmodel.CreatePlaylistViemodel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -52,6 +51,7 @@ open class CreatePlaylistFragment : Fragment() {
         super.onDestroyView()
         handler.removeCallbacksAndMessages(null)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -104,18 +104,17 @@ open class CreatePlaylistFragment : Fragment() {
         binding.addPhoto.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
-        var launchStatus: DialogStatus = DialogStatus.Hidden
+
         confirmDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.finishCreatePlaylist))
             .setMessage(getString(R.string.allUnsavedWillbeLost))
             .setNeutralButton(getString(R.string.cancel)) { dialog, which ->
-                launchStatus = DialogStatus.Hidden
+
             }.setPositiveButton(getString(R.string.finish)) { dialog, which ->
                 findNavController().popBackStack()
             }
 
         binding.backButton.setOnClickListener {
-
             onBackPressed(playlistName)
         }
 
@@ -142,7 +141,8 @@ open class CreatePlaylistFragment : Fragment() {
             findNavController().popBackStack()
         }
     }
-    open fun onBackPressed(text:String) {
+
+    open fun onBackPressed(text: String) {
         if (text.isNotEmpty()) {
             confirmDialog.show()
         } else {
@@ -155,7 +155,7 @@ open class CreatePlaylistFragment : Fragment() {
         when (state) {
             is ButtonState.Enabled -> binding.createButton.isEnabled = true
             is ButtonState.Disabled -> binding.createButton.isEnabled = false
-            else -> {}
+
         }
     }
 

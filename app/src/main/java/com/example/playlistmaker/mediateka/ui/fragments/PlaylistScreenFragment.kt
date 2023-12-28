@@ -1,8 +1,8 @@
 package com.example.playlistmaker.mediateka.ui.fragments
 
 import android.content.DialogInterface
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +19,7 @@ import com.example.playlistmaker.mediateka.domain.model.Playlist
 import com.example.playlistmaker.mediateka.ui.viewmodel.PlaylistScreenViewmodel
 import com.example.playlistmaker.player.ui.BottomAdapter
 import com.example.playlistmaker.player.ui.TracksEndingCount
-import com.example.playlistmaker.player.ui.activity.PlayerActivity
+import com.example.playlistmaker.player.ui.fragment.PlayerFragment
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.ui.Adapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -110,10 +110,13 @@ class PlaylistScreenFragment : Fragment() {
         }
 
         adapter.onItemClick = {
-            val intent = Intent(requireContext(), PlayerActivity::class.java)
-            intent.putExtra("track", Gson().toJson(it))
-            startActivity(intent)
+//            val intent = Intent(requireContext(), PlayerActivity::class.java)
+//            intent.putExtra("track", Gson().toJson(it))
+//            startActivity(intent)
+            startPlayer(it)
         }
+
+
 
         adapter.onLongItemclick = {
             deleteTrack(it)
@@ -163,6 +166,15 @@ class PlaylistScreenFragment : Fragment() {
         }
 
 
+    }
+
+    private fun startPlayer(track: Track) {
+        val trackGson = Gson().toJson(track)
+        Log.v("NAV", "$trackGson")
+        findNavController().navigate(
+            R.id.action_playlistScreenFragment_to_playerFragment,
+            PlayerFragment.createArgs(trackGson)
+        )
     }
 
     private fun shareDialog() {
