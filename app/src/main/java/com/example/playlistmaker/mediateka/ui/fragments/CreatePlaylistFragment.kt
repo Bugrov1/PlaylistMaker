@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
+import com.example.playlistmaker.databinding.FragmentTestBinding
 import com.example.playlistmaker.mediateka.domain.model.Playlist
 import com.example.playlistmaker.mediateka.ui.models.ButtonState
 import com.example.playlistmaker.mediateka.ui.models.DialogStatus
@@ -36,10 +37,12 @@ open class CreatePlaylistFragment : Fragment() {
 
     open val viewModel: CreatePlaylistViemodel by viewModel()
     lateinit var binding: FragmentNewPlaylistBinding
+
     lateinit var playlistName: String
     lateinit var confirmDialog: MaterialAlertDialogBuilder
     open var photoPath: Uri? = null
     private lateinit var description: String
+
 
     var uriPhoto: Uri? = null
     override fun onCreateView(
@@ -48,6 +51,7 @@ open class CreatePlaylistFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentNewPlaylistBinding.inflate(inflater, container, false)
+
         return binding.root
 
     }
@@ -82,15 +86,9 @@ open class CreatePlaylistFragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
 
                 if (uri != null) {
-                    Glide.with(requireActivity())
-                        .load(uri)
-                        .placeholder(R.drawable.placeholderbig)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .centerCrop()
-                        .into(binding.addPhoto)
+                    renderImage(uri)
                     uriPhoto = uri
-
+                    Log.d("uriPhoto", "${uriPhoto.toString().isNotEmpty()} ")
                 } else {
                     Log.d("PhotoPicker", "No media selected")
                 }
@@ -116,7 +114,8 @@ open class CreatePlaylistFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
 
             override fun handleOnBackPressed() {
-                when (binding.EditTextName.text.toString().isNotEmpty()) {
+                when (binding.EditTextName.text.toString().isNotEmpty() ||
+                        binding.editTextDescription.text.toString().isNotEmpty() ) {
                     true -> {
                         when (launchStatus) {
                             DialogStatus.Launched -> {
@@ -166,6 +165,7 @@ open class CreatePlaylistFragment : Fragment() {
         when (state) {
             is ButtonState.Enabled -> binding.createButton.isEnabled = true
             is ButtonState.Disabled -> binding.createButton.isEnabled = false
+            else -> {}
         }
     }
 

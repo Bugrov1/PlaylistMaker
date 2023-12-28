@@ -49,7 +49,7 @@
     <ImageButton
 
         style="@style/BackButton"
-        android:id="@+id/playerBack"
+        android:id="@+id/backArrow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@string/back_button" />
@@ -65,7 +65,7 @@
         app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toStartOf="@+id/right_guideline"
         app:layout_constraintStart_toStartOf="@+id/left_guideline"
-        app:layout_constraintTop_toBottomOf="@+id/playerBack"
+        app:layout_constraintTop_toBottomOf="@+id/backArrow"
         app:srcCompat="@drawable/placeholderbig" />
 
     <TextView

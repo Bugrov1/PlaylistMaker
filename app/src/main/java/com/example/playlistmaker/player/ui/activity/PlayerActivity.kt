@@ -14,12 +14,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -168,7 +162,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        backButton = findViewById(R.id.playerBack)
+        backButton = findViewById(R.id.backArrow)
         albumCover = findViewById(R.id.albumCover)
         trackName = findViewById(R.id.trackName)
         artistName = findViewById(R.id.artistName)

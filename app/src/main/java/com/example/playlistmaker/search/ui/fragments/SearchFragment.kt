@@ -3,10 +3,7 @@ package com.example.playlistmaker.search.ui.fragments
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -17,12 +14,14 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
-import com.example.playlistmaker.player.ui.activity.PlayerActivity
+import com.example.playlistmaker.player.ui.fragment.PlayerFragment
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.ui.Adapter
+import com.example.playlistmaker.search.ui.AdapterTest
 import com.example.playlistmaker.search.ui.models.SearchState
 import com.example.playlistmaker.search.ui.viewmodel.SearchViewModel
 import com.google.gson.Gson
@@ -35,9 +34,27 @@ class SearchFragment : Fragment() {
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
+    private val viewModel: SearchViewModel by viewModel()
 
     private val adapter = Adapter()
-    private val adapterHistory = Adapter()
+
+
+//    private val adapterHistory = Adapter()
+
+private val adapterHistory = AdapterTest{ track ->
+    if(clickDebounce()){
+        viewModel.write(track)
+        viewModel.update()
+        Log.v("NAV","adapterHistoryClicked")
+        val trackGson = Gson().toJson(track)
+        Log.v("NAV","$trackGson")
+        findNavController().navigate(R.id.action_searchFragment_to_playerFragment,
+            PlayerFragment.createArgs(trackGson))
+    }
+}
+
+
+
     private val trackList = arrayListOf<Track>()
 
 
@@ -62,7 +79,7 @@ class SearchFragment : Fragment() {
     private var simpleTextWatcher: TextWatcher? = null
 
 
-    private val viewModel: SearchViewModel by viewModel()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,14 +89,14 @@ class SearchFragment : Fragment() {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
 
-        Log.v("TESSSSSSSSSSST","onCreateView")
+        Log.v("NAV","onCreateView")
 
     }
 
     @SuppressLint("MissingInflatedId")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       Log.v("TESSSSSSSSSSST","onViewCreated")
+       Log.v("NAV","onViewCreated")
         initViews()
         initListeners()
         history = viewModel.read()?: emptyArray()
@@ -87,14 +104,17 @@ class SearchFragment : Fragment() {
         input = inputEditText
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
-            Log.v("TESSSSSSSSSSST","$it")
+            Log.v("NAV","$it")
         }
     }
 
     override fun onResume() {
         super.onResume()
-        Log.v("TESSSSSSSSSSST","RESUMED")
+        Log.v("Nav","RESUMED")
         viewModel.refresh()
+        adapterHistory.notifyDataSetChanged()
+        adapter.notifyDataSetChanged()
+
 
     }
 
@@ -109,9 +129,9 @@ class SearchFragment : Fragment() {
         clearHistoryButton = binding.clearHistory
         historyRecycler = binding.historyRecycler
         progressBar = binding.progressBar
-
         recyclerView.adapter = adapter
         historyRecycler.adapter = adapterHistory
+        Log.v("NAV","initiViews")
 
     }
 
@@ -141,25 +161,26 @@ class SearchFragment : Fragment() {
 
         adapter.onItemClick = {
             if (clickDebounce()) {
+                Log.v("NAV","adapterclicked")
                 viewModel.write(it)
-                val intent = Intent(requireContext(), PlayerActivity::class.java)
-                intent.putExtra("track", Gson().toJson(it))
-
-                startActivity(intent)
-
+//                val intent = Intent(requireContext(), PlayerActivity::class.java)
+//                intent.putExtra("track", Gson().toJson(it))
+//                startActivity(intent)
+                startPlayer(it)
             }
         }
 
-        adapterHistory.onItemClick = {
-            if (clickDebounce()) {
-                viewModel.write(it)
-                viewModel.update()
-                val intent = Intent(requireContext(), PlayerActivity::class.java)
-                intent.putExtra("track", Gson().toJson(it))
-
-                startActivity(intent)
-            }
-        }
+//        adapterHistory.onItemClick = {
+//            if (clickDebounce()) {
+//                Log.v("NAV","adapterclicked")
+//                viewModel.write(it)
+//                viewModel.update()
+////                val intent = Intent(requireContext(), PlayerActivity::class.java)
+////                intent.putExtra("track", Gson().toJson(it))
+////                startActivity(intent)
+//                startPlayer(it)
+//            }
+//        }
 
         clearHistoryButton.setOnClickListener {
 
@@ -186,6 +207,13 @@ class SearchFragment : Fragment() {
             }
         }
     }
+
+    private fun startPlayer(track:Track){
+        val trackGson = Gson().toJson(track)
+        Log.v("NAV","$trackGson")
+        findNavController().navigate(R.id.action_searchFragment_to_playerFragment,
+            PlayerFragment.createArgs(trackGson)) }
+
 
     override fun onDestroy() {
         super.onDestroy()

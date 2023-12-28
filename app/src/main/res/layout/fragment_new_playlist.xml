@@ -17,14 +17,14 @@
         android:contentDescription="@string/back_button" />
 
 
-        <TextView
-            android:gravity="center"
-            app:layout_constraintBottom_toBottomOf="@id/backButton"
-            app:layout_constraintStart_toEndOf="@id/backButton"
-            android:layout_height="@dimen/dp_48"
-            android:layout_marginStart="@dimen/dp_12"
-            android:text="@string/newPlylist"
-            style="@style/TopText" />
+    <TextView
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@id/backButton"
+        app:layout_constraintStart_toEndOf="@id/backButton"
+        android:layout_height="@dimen/dp_48"
+        android:layout_marginStart="@dimen/dp_12"
+        android:text="@string/newPlylist"
+        style="@style/TopText" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/create_button_guideline"
@@ -59,60 +59,67 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/backButton"
-      />
-
-
-    <EditText
-
-        android:layout_marginTop="@dimen/dp_32"
-        android:height="@dimen/dp_56"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="@dimen/dp_16"
-        android:layout_marginEnd="@dimen/dp_16"
-        app:layout_constraintTop_toBottomOf="@id/addPhoto"
-        app:layout_constraintBottom_toTopOf="@id/editTextDescription"
-        android:id="@+id/EditTextName"
-        android:fontFamily="@font/ys_display_regular"
-        android:textFontWeight="400"
-        android:textSize="@dimen/text_size_settings"
-        android:paddingLeft="@dimen/dp_12"
-        android:background="@drawable/edit_text_select"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/dp_56"
-        android:hint="@string/namePlaylist"
-        android:textColorHint="@color/black_standart_white"
-        android:maxLines="1"
-        android:inputType="text"
-        android:textColor="@color/black_standart_white"
-
         />
 
 
-
-    <EditText
-
-        android:id="@+id/editTextDescription"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/dp_56"
-        android:layout_marginTop="@dimen/dp_16"
-        android:height="56dp"
-        android:background="@drawable/edit_text_select"
-        android:fontFamily="@font/ys_display_regular"
-        android:hint="@string/descripyionPlaylist"
-        android:inputType="text"
-        android:maxLines="1"
-        android:paddingLeft="@dimen/dp_12"
-        android:textColor="@color/black_standart_white"
-        android:textFontWeight="400"
-        android:textSize="@dimen/text_size_settings"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textField"
+        style="@style/CustomOutlineBox"
+        app:layout_constraintTop_toBottomOf="@id/addPhoto"
+        app:layout_constraintBottom_toTopOf="@id/descriptionField"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_32"
+        android:hint="@string/namePlaylist"
         android:textColorHint="@color/black_standart_white"
-        app:layout_constraintEnd_toEndOf="@id/EditTextName"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@id/EditTextName"
-        app:layout_constraintTop_toBottomOf="@id/EditTextName"
 
-       />
+
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/EditTextName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textCursorDrawable="@drawable/cursor"
+            style="@style/EditTextStyle"
+
+            />
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/descriptionField"
+        style="@style/CustomOutlineBox"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:hint="@string/descripyionPlaylist"
+        app:layout_constraintEnd_toEndOf="@id/textField"
+        app:layout_constraintStart_toStartOf="@id/textField"
+        app:layout_constraintTop_toBottomOf="@id/textField"
+        android:textColorHint="@color/black_standart_white"
+
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textCursorDrawable="@drawable/cursor"
+            style="@style/EditTextStyle"
+
+            />
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <TextView
         android:id="@+id/createButton"

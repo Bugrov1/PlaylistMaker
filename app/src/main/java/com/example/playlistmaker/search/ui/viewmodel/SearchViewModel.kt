@@ -1,6 +1,7 @@
 package com.example.playlistmaker.search.ui.viewmodel
 
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -104,6 +105,7 @@ class SearchViewModel(
         }
     }
     fun refresh(){
+        Log.v("NAV","resfreshed")
         when(stateLiveData.value){
             is SearchState.History -> historyload()
             is SearchState.Content -> viewModelScope.launch {

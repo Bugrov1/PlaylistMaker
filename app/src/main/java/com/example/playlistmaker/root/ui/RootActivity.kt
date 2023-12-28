@@ -27,7 +27,8 @@ private lateinit var binding: ActivityRootBinding
 
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if(destination.id == R.id.createPlaylistFragment || destination.id ==R.id.playlistScreenFragment ) {
+            if(destination.id == R.id.createPlaylistFragment || destination.id ==R.id.playlistScreenFragment||
+                destination.id ==R.id.playerFragment) {
 
                 bottomNavigationView.visibility = View.GONE
             } else {

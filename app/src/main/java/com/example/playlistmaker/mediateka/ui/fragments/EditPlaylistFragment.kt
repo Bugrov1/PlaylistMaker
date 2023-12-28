@@ -53,6 +53,7 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         binding = FragmentNewPlaylistBinding.inflate(inflater, container, false)
         return binding.root
 
@@ -110,19 +111,19 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
 
 
         binding.backButton.setOnClickListener {
-            onBackPressed()
+            onBackPressed(binding.EditTextName.toString())
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                onBackPressed()
+                onBackPressed(binding.EditTextName.toString())
             }
         })
 
     }
 
-    fun onBackPressed() {
-        if (binding.EditTextName.text.toString().isNotEmpty()) {
+    fun onBackPressed(text:String) {
+        if (text.isNotEmpty()) {
             confirmDialog.show()
         } else {
             findNavController().popBackStack()

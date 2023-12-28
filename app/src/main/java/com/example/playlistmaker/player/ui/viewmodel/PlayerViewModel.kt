@@ -205,7 +205,7 @@ class PlayerViewModel(
 
     }
 
-    private fun releasePlayer() {
+    fun releasePlayer() {
         mediaPlayer.stop()
         mediaPlayer.release()
         timerJob?.cancel()

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.search.domain.models.Track
 
-class Adapter(
+class AdapterTest(val clickListener: TrackClickListener
 
 ) : RecyclerView.Adapter<ViewHolderTrack>() {
     var tracks = ArrayList<Track>()
@@ -24,8 +24,9 @@ class Adapter(
 
         holder.itemView.setOnClickListener {
             Log.v("NAV","adapterclickedformAdapter ${tracks[position]}")
-            onItemClick?.invoke(tracks[position])
-            Log.v("NAV","adapterclickedformAdapter ${ onItemClick}")
+//            onItemClick?.invoke(tracks[position])
+            clickListener.onClick(tracks[position])
+            Log.v("NAV","adapterclickedformAdapter ${clickListener.onClick(tracks[position])}")
             this.notifyDataSetChanged()
 
         }
