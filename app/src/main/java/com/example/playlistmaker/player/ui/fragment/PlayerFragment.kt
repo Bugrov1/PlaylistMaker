@@ -131,7 +131,7 @@ class PlayerFragment : Fragment() {
     fun setListeners() {
         binding.backArrow.setOnClickListener {
             viewModel.playerStop()
-            findNavController().popBackStack()
+            findNavController().popBackStack(R.id.searchFragment,false)
 //            requireActivity().onBackPressedDispatcher.onBackPressed()
 
         }

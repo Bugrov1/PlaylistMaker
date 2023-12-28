@@ -74,6 +74,10 @@ class PlaylistScreenFragment : Fragment() {
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bottomSheetBehavior = BottomSheetBehavior.from(binding.playlistsBottomSheet).apply {
@@ -115,8 +119,10 @@ class PlaylistScreenFragment : Fragment() {
             deleteTrack(it)
         }
         binding.backButton.setOnClickListener {
-            findNavController().popBackStack()
+            findNavController().popBackStack(R.id.mediaFragment,false)
         }
+
+
         binding.shareButton.setOnClickListener {
             shareDialog()
         }

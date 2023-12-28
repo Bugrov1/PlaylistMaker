@@ -6,12 +6,12 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
@@ -19,11 +19,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
-import com.example.playlistmaker.databinding.FragmentTestBinding
 import com.example.playlistmaker.mediateka.domain.model.Playlist
 import com.example.playlistmaker.mediateka.ui.models.ButtonState
 import com.example.playlistmaker.mediateka.ui.models.DialogStatus
@@ -35,6 +35,8 @@ import java.io.FileOutputStream
 
 open class CreatePlaylistFragment : Fragment() {
 
+    val handler = Handler(Looper.getMainLooper())
+
     open val viewModel: CreatePlaylistViemodel by viewModel()
     lateinit var binding: FragmentNewPlaylistBinding
 
@@ -45,6 +47,11 @@ open class CreatePlaylistFragment : Fragment() {
 
 
     var uriPhoto: Uri? = null
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        handler.removeCallbacksAndMessages(null)
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -104,44 +111,20 @@ open class CreatePlaylistFragment : Fragment() {
             .setNeutralButton(getString(R.string.cancel)) { dialog, which ->
                 launchStatus = DialogStatus.Hidden
             }.setPositiveButton(getString(R.string.finish)) { dialog, which ->
-                requireActivity().onBackPressedDispatcher.onBackPressed()
+                findNavController().popBackStack()
             }
 
         binding.backButton.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+
+            onBackPressed(playlistName)
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
-
             override fun handleOnBackPressed() {
-                when (binding.EditTextName.text.toString().isNotEmpty() ||
-                        binding.editTextDescription.text.toString().isNotEmpty() ) {
-                    true -> {
-                        when (launchStatus) {
-                            DialogStatus.Launched -> {
-                                isEnabled = false
-                                requireActivity().onBackPressedDispatcher.onBackPressed()
-                            }
-
-                            DialogStatus.Neutral -> {
-                                isEnabled = false
-                                requireActivity().onBackPressedDispatcher.onBackPressed()
-                            }
-
-                            else -> {
-                                confirmDialog.show()
-                                launchStatus = DialogStatus.Launched
-                            }
-                        }
-                    }
-
-                    false -> {
-                        isEnabled = false
-                        requireActivity().onBackPressedDispatcher.onBackPressed()
-                    }
-                }
+                onBackPressed(playlistName)
             }
         })
+
 
         binding.createButton.setOnClickListener {
             saveImageToPrivateStorage(uriPhoto)
@@ -158,6 +141,14 @@ open class CreatePlaylistFragment : Fragment() {
                 .show()
             launchStatus = DialogStatus.Neutral
             requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+    }
+    open fun onBackPressed(text:String) {
+        if (text.isNotEmpty()) {
+            confirmDialog.show()
+        } else {
+            findNavController().popBackStack()
+
         }
     }
 

@@ -106,7 +106,7 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
             .setNeutralButton(getString(R.string.cancel)) { dialog, which ->
 
             }.setPositiveButton(getString(R.string.finish)) { dialog, which ->
-                findNavController().popBackStack()
+                findNavController().popBackStack(R.id.playlistScreenFragment,false)
             }
 
 
@@ -122,11 +122,12 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
 
     }
 
-    fun onBackPressed(text:String) {
+    override fun onBackPressed(text:String) {
         if (text.isNotEmpty()) {
             confirmDialog.show()
         } else {
-            findNavController().popBackStack()
+            findNavController().popBackStack(R.id.playlistScreenFragment,false)
+
         }
     }
 
