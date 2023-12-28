@@ -131,7 +131,7 @@ class PlayerFragment : Fragment() {
     fun setListeners() {
         binding.backArrow.setOnClickListener {
             viewModel.playerStop()
-            findNavController().popBackStack(R.id.searchFragment,false)
+            findNavController().popBackStack(R.id.searchFragment, false)
 //            requireActivity().onBackPressedDispatcher.onBackPressed()
 
         }
@@ -150,10 +150,6 @@ class PlayerFragment : Fragment() {
 
         binding.createNewPlaylist.setOnClickListener {
             findNavController().navigate(R.id.action_playerFragment_to_createPlaylistFragment)
-//            supportFragmentManager.beginTransaction()
-//                .add(R.id.fragment_container_view, CreatePlaylistFragment())
-//                .addToBackStack("playerActivity")
-//                .commit()
 
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }

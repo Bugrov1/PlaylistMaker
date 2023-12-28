@@ -15,7 +15,6 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.ui.fragment.PlayerFragment
@@ -34,6 +33,7 @@ class SearchFragment : Fragment() {
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
+
     private val viewModel: SearchViewModel by viewModel()
 
     private val adapter = Adapter()
@@ -41,22 +41,21 @@ class SearchFragment : Fragment() {
 
 //    private val adapterHistory = Adapter()
 
-private val adapterHistory = AdapterTest{ track ->
-    if(clickDebounce()){
-        viewModel.write(track)
-        viewModel.update()
-        Log.v("NAV","adapterHistoryClicked")
-        val trackGson = Gson().toJson(track)
-        Log.v("NAV","$trackGson")
-        findNavController().navigate(R.id.action_searchFragment_to_playerFragment,
-            PlayerFragment.createArgs(trackGson))
+    private val adapterHistory = AdapterTest { track ->
+        if (clickDebounce()) {
+            viewModel.write(track)
+            viewModel.update()
+            Log.v("NAV", "adapterHistoryClicked")
+            val trackGson = Gson().toJson(track)
+            Log.v("NAV", "$trackGson")
+            findNavController().navigate(
+                R.id.action_searchFragment_to_playerFragment,
+                PlayerFragment.createArgs(trackGson)
+            )
+        }
     }
-}
-
-
 
     private val trackList = arrayListOf<Track>()
-
 
     private lateinit var binding: FragmentSearchBinding
 
@@ -64,21 +63,9 @@ private val adapterHistory = AdapterTest{ track ->
 
     private lateinit var inputText: String
     private lateinit var input: EditText
-    private lateinit var placeholderImage: ImageView
-    private lateinit var placeholderMessage: TextView
-
     private lateinit var inputEditText: EditText
-    private lateinit var clearButton: ImageView
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var placeholderButton: Button
-    private lateinit var historyView: View
-    private lateinit var clearHistoryButton: Button
-    private lateinit var historyRecycler: RecyclerView
-    private lateinit var progressBar: ProgressBar
     private lateinit var history: Array<Track>
     private var simpleTextWatcher: TextWatcher? = null
-
-
 
 
     override fun onCreateView(
@@ -89,28 +76,28 @@ private val adapterHistory = AdapterTest{ track ->
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
 
-        Log.v("NAV","onCreateView")
+        Log.v("NAV", "onCreateView")
 
     }
 
     @SuppressLint("MissingInflatedId")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       Log.v("NAV","onViewCreated")
+        Log.v("NAV", "onViewCreated")
         initViews()
         initListeners()
-        history = viewModel.read()?: emptyArray()
+        history = viewModel.read() ?: emptyArray()
         inputText = ""
         input = inputEditText
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
-            Log.v("NAV","$it")
+            Log.v("NAV", "$it")
         }
     }
 
     override fun onResume() {
         super.onResume()
-        Log.v("Nav","RESUMED")
+        Log.v("Nav", "RESUMED")
         viewModel.refresh()
         adapterHistory.notifyDataSetChanged()
         adapter.notifyDataSetChanged()
@@ -120,18 +107,9 @@ private val adapterHistory = AdapterTest{ track ->
 
     private fun initViews() {
         inputEditText = binding.inputEditText
-        clearButton = binding.clearIcon
-        recyclerView = binding.recyclerView
-        placeholderImage = binding.placeholderImage
-        placeholderMessage = binding.placeholderMessage
-        placeholderButton = binding.placeholderButton
-        historyView = binding.historyViewList
-        clearHistoryButton = binding.clearHistory
-        historyRecycler = binding.historyRecycler
-        progressBar = binding.progressBar
-        recyclerView.adapter = adapter
-        historyRecycler.adapter = adapterHistory
-        Log.v("NAV","initiViews")
+        binding.recyclerView.adapter = adapter
+        binding.historyRecycler.adapter = adapterHistory
+        Log.v("NAV", "initiViews")
 
     }
 
@@ -143,10 +121,10 @@ private val adapterHistory = AdapterTest{ track ->
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
-                clearButton.visibility = clearButtonVisibility(s)
+                binding.clearIcon.visibility = clearButtonVisibility(s)
                 inputText = inputEditText.text.toString()
                 viewModel.searchDebounce2(changedText = s?.toString() ?: "")
-                historyView.visibility =
+                binding.historyViewList.visibility =
                     if (inputEditText.hasFocus() && s?.isEmpty() == true && history?.size != 0) View.VISIBLE else View.GONE
                 viewModel.searchDebounce2(changedText = s?.toString() ?: "")
 
@@ -161,7 +139,7 @@ private val adapterHistory = AdapterTest{ track ->
 
         adapter.onItemClick = {
             if (clickDebounce()) {
-                Log.v("NAV","adapterclicked")
+                Log.v("NAV", "adapterclicked")
                 viewModel.write(it)
 //                val intent = Intent(requireContext(), PlayerActivity::class.java)
 //                intent.putExtra("track", Gson().toJson(it))
@@ -182,18 +160,18 @@ private val adapterHistory = AdapterTest{ track ->
 //            }
 //        }
 
-        clearHistoryButton.setOnClickListener {
+        binding.clearHistory.setOnClickListener {
 
             viewModel.clear()
-            historyView.visibility = View.GONE
+            binding.historyViewList.visibility = View.GONE
 
         }
 
-        placeholderButton.setOnClickListener {
+        binding.placeholderButton.setOnClickListener {
             viewModel.searchDebounce2(inputText)
         }
 
-        clearButton.setOnClickListener {
+        binding.clearIcon.setOnClickListener {
             inputEditText.setText("")
             trackList.clear()
             updateTracksList(trackList)
@@ -208,16 +186,19 @@ private val adapterHistory = AdapterTest{ track ->
         }
     }
 
-    private fun startPlayer(track:Track){
+    private fun startPlayer(track: Track) {
         val trackGson = Gson().toJson(track)
-        Log.v("NAV","$trackGson")
-        findNavController().navigate(R.id.action_searchFragment_to_playerFragment,
-            PlayerFragment.createArgs(trackGson)) }
+        Log.v("NAV", "$trackGson")
+        findNavController().navigate(
+            R.id.action_searchFragment_to_playerFragment,
+            PlayerFragment.createArgs(trackGson)
+        )
+    }
 
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.v("TESSSSSSSSSSST","onDestroy")
+        Log.v("TESSSSSSSSSSST", "onDestroy")
         simpleTextWatcher?.let { inputEditText.removeTextChangedListener(it) }
     }
 
@@ -242,43 +223,43 @@ private val adapterHistory = AdapterTest{ track ->
     }
 
     fun showLoading() {
-        progressBar.visibility = View.VISIBLE
-        placeholderMessage.visibility = View.GONE
-        recyclerView.visibility = View.GONE
-        placeholderImage.visibility = View.GONE
-        placeholderButton.visibility = View.GONE
+        binding.progressBar.visibility = View.VISIBLE
+        binding.placeholderMessage.visibility = View.GONE
+        binding.recyclerView.visibility = View.GONE
+        binding.placeholderImage.visibility = View.GONE
+        binding.placeholderButton.visibility = View.GONE
     }
 
     fun showEmpty(message: String) {
-        progressBar.visibility = View.GONE
-        placeholderImage.setImageResource(R.drawable.nothing_found_image)
-        placeholderMessage.text = message
-        placeholderImage.visibility = View.VISIBLE
-        placeholderMessage.visibility = View.VISIBLE
-        placeholderButton.visibility = View.GONE
-        historyView.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
+        binding.placeholderImage.setImageResource(R.drawable.nothing_found_image)
+        binding.placeholderMessage.text = message
+        binding.placeholderImage.visibility = View.VISIBLE
+        binding.placeholderMessage.visibility = View.VISIBLE
+        binding.placeholderButton.visibility = View.GONE
+        binding.historyViewList.visibility = View.GONE
         trackList.clear()
         updateTracksList(trackList)
     }
 
     fun showError(message: String) {
-        progressBar.visibility = View.GONE
-        placeholderImage.setImageResource(R.drawable.goes_wrong_image)
-        placeholderMessage.text = message
-        placeholderImage.visibility = View.VISIBLE
-        placeholderMessage.visibility = View.VISIBLE
-        placeholderButton.visibility = View.VISIBLE
-        historyView.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
+        binding.placeholderImage.setImageResource(R.drawable.goes_wrong_image)
+        binding.placeholderMessage.text = message
+        binding.placeholderImage.visibility = View.VISIBLE
+        binding.placeholderMessage.visibility = View.VISIBLE
+        binding.placeholderButton.visibility = View.VISIBLE
+        binding.historyViewList.visibility = View.GONE
         trackList.clear()
         updateTracksList(trackList)
     }
 
     fun showContent(foundTracks: List<Track>) {
-        progressBar.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
         trackList.clear()
         trackList.addAll(foundTracks)
         updateTracksList(trackList)
-        recyclerView.visibility = View.VISIBLE
+        binding.recyclerView.visibility = View.VISIBLE
     }
 
     fun updateTracksList(newTrackList: List<Track>) {
@@ -308,21 +289,21 @@ private val adapterHistory = AdapterTest{ track ->
     }
 
     fun historyLoad(history: Array<Track>?) {
-        placeholderImage.visibility = View.GONE
-        placeholderMessage.visibility = View.GONE
-        placeholderButton.visibility = View.GONE
+        binding.placeholderImage.visibility = View.GONE
+        binding.placeholderMessage.visibility = View.GONE
+        binding.placeholderButton.visibility = View.GONE
 
         if (history == null || history.isEmpty()) {
-            historyView.visibility = View.GONE
+            binding.historyViewList.visibility = View.GONE
             this.history = emptyArray()
 
         } else {
             this.history = history
             adapterHistory.tracks = history.toCollection(ArrayList())
-            historyRecycler.adapter = adapterHistory
+            binding.historyRecycler.adapter = adapterHistory
             adapterHistory.notifyDataSetChanged()
-            recyclerView.visibility = View.VISIBLE
-            historyView.visibility = View.VISIBLE
+            binding.recyclerView.visibility = View.VISIBLE
+            binding.historyViewList.visibility = View.VISIBLE
         }
     }
 }

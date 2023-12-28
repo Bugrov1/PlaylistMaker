@@ -139,8 +139,7 @@ open class CreatePlaylistFragment : Fragment() {
 
             Toast.makeText(requireContext(), "Плейлист $playlistName создан", Toast.LENGTH_SHORT)
                 .show()
-            launchStatus = DialogStatus.Neutral
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            findNavController().popBackStack()
         }
     }
     open fun onBackPressed(text:String) {

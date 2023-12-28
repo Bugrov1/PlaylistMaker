@@ -21,7 +21,6 @@ class AdapterTest(val clickListener: TrackClickListener
 
     override fun onBindViewHolder(holder: ViewHolderTrack, position: Int) {
         holder.bind(tracks[position])
-
         holder.itemView.setOnClickListener {
             Log.v("NAV","adapterclickedformAdapter ${tracks[position]}")
 //            onItemClick?.invoke(tracks[position])

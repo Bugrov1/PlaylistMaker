@@ -111,12 +111,12 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
 
 
         binding.backButton.setOnClickListener {
-            onBackPressed(binding.EditTextName.toString())
+            findNavController().popBackStack(R.id.playlistScreenFragment,false)
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                onBackPressed(binding.EditTextName.toString())
+                findNavController().popBackStack(R.id.playlistScreenFragment,false)
             }
         })
 
