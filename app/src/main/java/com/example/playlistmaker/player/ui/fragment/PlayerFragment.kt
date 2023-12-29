@@ -12,7 +12,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
@@ -36,7 +35,6 @@ class PlayerFragment : Fragment() {
 
     lateinit var binding: FragmentPlayerBinding
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
-    private lateinit var bottomSheetRecycler: RecyclerView
     private val adapter = BottomAdapter()
 
 
@@ -53,7 +51,7 @@ class PlayerFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.refreshBottomSheet()
-        Log.d("NAV", " Player onResume")
+
 
     }
 
@@ -61,7 +59,7 @@ class PlayerFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentPlayerBinding.inflate(inflater, container, false)
 
         return binding.root
@@ -70,7 +68,6 @@ class PlayerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("NAV", " Player onViewCreated")
 
 
         val trackFromGson = requireArguments().getString(
@@ -155,15 +152,8 @@ class PlayerFragment : Fragment() {
         }
 
         adapter.onItemClick = {
-            Log.d("PlayerActivity", "adapterclicked")
             viewModel.addToPlaylist(track.trackId, it)
-            Toast.makeText(
-                requireContext(),
-                "Добавлено в плейлист ${it.playlistName}.",
-                Toast.LENGTH_SHORT
-            ).show()
         }
-
     }
 
     private fun initViews() {
@@ -177,7 +167,6 @@ class PlayerFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         viewModel.pausePlayer()
-        Log.d("PlayerActivity", "onCreate")
     }
 
 

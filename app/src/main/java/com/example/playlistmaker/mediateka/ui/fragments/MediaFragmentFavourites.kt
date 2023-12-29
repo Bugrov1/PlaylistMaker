@@ -1,15 +1,11 @@
 package com.example.playlistmaker.mediateka.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentMediaFavoritesBinding
 import com.example.playlistmaker.mediateka.ui.models.FavoritesState
@@ -30,10 +26,6 @@ class MediaFragmentFavourites : Fragment() {
     private val adapter = Adapter()
 
 
-    private lateinit var placeholderImage: ImageView
-    private lateinit var placeholderText: TextView
-    private lateinit var historyList: RecyclerView
-
     override fun onResume() {
         super.onResume()
         viewModel.refresh()
@@ -43,7 +35,7 @@ class MediaFragmentFavourites : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentMediaFavoritesBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -58,9 +50,6 @@ class MediaFragmentFavourites : Fragment() {
         }
 
         adapter.onItemClick = {
-//            val intent = Intent(requireContext(), PlayerActivity::class.java)
-//            intent.putExtra("track", Gson().toJson(it))
-//            startActivity(intent)
             startPlayer(it)
         }
 
@@ -69,7 +58,6 @@ class MediaFragmentFavourites : Fragment() {
 
     private fun startPlayer(track: Track) {
         val trackGson = Gson().toJson(track)
-        Log.v("NAV", "$trackGson")
         findNavController().navigate(
             R.id.action_mediaFragment_to_playerFragment,
             PlayerFragment.createArgs(trackGson)
@@ -77,10 +65,7 @@ class MediaFragmentFavourites : Fragment() {
     }
 
     private fun initViews() {
-        placeholderImage = binding.placeholderImage
-        placeholderText = binding.placeholderText
-        historyList = binding.historyList
-        historyList.adapter = adapter
+        binding.historyList.adapter = adapter
 
     }
 
@@ -92,15 +77,15 @@ class MediaFragmentFavourites : Fragment() {
     }
 
     private fun showEmpty() {
-        placeholderText.visibility = View.VISIBLE
-        placeholderImage.visibility = View.VISIBLE
-        historyList.visibility = View.GONE
+        binding.placeholderText.visibility = View.VISIBLE
+        binding.placeholderImage.visibility = View.VISIBLE
+        binding.historyList.visibility = View.GONE
     }
 
     private fun showContent(tracks: List<Track>) {
-        historyList.visibility = View.VISIBLE
-        placeholderText.visibility = View.GONE
-        placeholderImage.visibility = View.GONE
+        binding.historyList.visibility = View.VISIBLE
+        binding.placeholderText.visibility = View.GONE
+        binding.placeholderImage.visibility = View.GONE
         adapter.tracks.clear()
         adapter.tracks.addAll(tracks)
         adapter.notifyDataSetChanged()

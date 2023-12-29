@@ -30,15 +30,6 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
     private lateinit var oldName: String
     override var photoPath: Uri? = null
 
-    companion object {
-        private const val ARGS_ID = "id"
-
-        fun createArgs(id: String): Bundle =
-            bundleOf(
-                ARGS_ID to id
-            )
-
-    }
 
     override val viewModel: EditPlaylistViewModel by viewModel {
         parametersOf(
@@ -52,7 +43,7 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentNewPlaylistBinding.inflate(inflater, container, false)
         return binding.root
@@ -106,27 +97,27 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
             .setNeutralButton(getString(R.string.cancel)) { dialog, which ->
 
             }.setPositiveButton(getString(R.string.finish)) { dialog, which ->
-                findNavController().popBackStack(R.id.playlistScreenFragment,false)
+                findNavController().popBackStack(R.id.playlistScreenFragment, false)
             }
 
 
         binding.backButton.setOnClickListener {
-            findNavController().popBackStack(R.id.playlistScreenFragment,false)
+            findNavController().popBackStack(R.id.playlistScreenFragment, false)
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                findNavController().popBackStack(R.id.playlistScreenFragment,false)
+                findNavController().popBackStack(R.id.playlistScreenFragment, false)
             }
         })
 
     }
 
-    override fun onBackPressed(text:String) {
+    override fun onBackPressed(text: String) {
         if (text.isNotEmpty()) {
             confirmDialog.show()
         } else {
-            findNavController().popBackStack(R.id.playlistScreenFragment,false)
+            findNavController().popBackStack(R.id.playlistScreenFragment, false)
 
         }
     }
@@ -163,6 +154,15 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
                 .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
         }
 
+    }
+
+    companion object {
+        private const val ARGS_ID = "id"
+
+        fun createArgs(id: String): Bundle =
+            bundleOf(
+                ARGS_ID to id
+            )
     }
 
 

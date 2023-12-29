@@ -1,6 +1,5 @@
 package com.example.playlistmaker.search.ui
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -23,9 +22,7 @@ class Adapter(
         holder.bind(tracks[position])
 
         holder.itemView.setOnClickListener {
-            Log.v("NAV","adapterclickedformAdapter ${tracks[position]}")
             onItemClick?.invoke(tracks[position])
-            Log.v("NAV","adapterclickedformAdapter ${ onItemClick}")
             this.notifyDataSetChanged()
 
         }
@@ -37,9 +34,6 @@ class Adapter(
 
     }
 
-    fun interface TrackClickListener {
-        fun onClick(track: Track)
-    }
     override fun getItemCount(): Int {
         return tracks.size
     }

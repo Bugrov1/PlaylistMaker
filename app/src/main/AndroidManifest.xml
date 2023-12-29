@@ -16,10 +16,7 @@
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round">
 
-        <activity
-            android:name=".player.ui.activity.PlayerActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustNothing"/>
+
 
         <activity
             android:name=".root.ui.RootActivity"

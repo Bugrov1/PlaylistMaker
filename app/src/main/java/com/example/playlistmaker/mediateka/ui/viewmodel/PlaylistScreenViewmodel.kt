@@ -16,11 +16,12 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlaylistScreenViewmodel(id:String,
-                              private val playlistInteractor: PlaylistInteractor,
-                              private val  sharingInteractor:SharingInteractor,
-                              private val favoritesInteractor: FavoritesInteractor
-): ViewModel() {
+class PlaylistScreenViewmodel(
+    id: String,
+    private val playlistInteractor: PlaylistInteractor,
+    private val sharingInteractor: SharingInteractor,
+    private val favoritesInteractor: FavoritesInteractor
+) : ViewModel() {
 
     private var idInit = id.toLong()
 
@@ -33,74 +34,74 @@ class PlaylistScreenViewmodel(id:String,
 
     private val _tracksLiveData = MutableLiveData<List<Track>>()
     val tracks: LiveData<List<Track>> = _tracksLiveData
-    init{
+
+    init {
         refresh()
     }
 
-    fun refresh(){
+    fun refresh() {
         fillData(idInit)
     }
 
-    private fun fillData(id:Long) {
+    private fun fillData(id: Long) {
 
         viewModelScope.launch {
             val playlist = playlistInteractor.getPlaylist(id)
             render(playlist)
             val favorites = favoritesInteractor.getIds()
-            val tracks = Gson().fromJson(playlist.tracks,Array<Int>::class.java)?: emptyArray()
+            val tracks = Gson().fromJson(playlist.tracks, Array<Int>::class.java) ?: emptyArray()
             playlistInteractor.getTrackListFlow(tracks.toMutableList())
-                .collect { tracklist->
-                    processResult(tracklist,favorites)
-//                    _tracksLiveData.postValue(tracklist)
+                .collect { tracklist ->
+                    processResult(tracklist, favorites)
                 }
         }
 
     }
 
+    private fun render(playlist: Playlist) {
+        _stateLiveData.postValue(playlist)
+    }
 
-        private fun render(playlist: Playlist) {
-            _stateLiveData.postValue(playlist)
-        }
-
-    private fun processResult(tracks: List<Track>,favorites:List<Int>) {
+    private fun processResult(tracks: List<Track>, favorites: List<Int>) {
         var durationSum = 0.0
-        for(track in tracks){
-            durationSum+=track.trackTimeMillis
+        for (track in tracks) {
+            durationSum += track.trackTimeMillis
         }
         val durationSumConverted = SimpleDateFormat("mm", Locale.getDefault()).format(durationSum)
-        _durationLiveData.postValue(durationSumConverted )
-        val checked=
-            tracks.map { Track(
-                it.trackName,
-                it.artistName,
-                it.trackTimeMillis,
-                it.artworkUrl100,
-                it.trackId,
-                it.collectionName,
-                it.releaseDate,
-                it.primaryGenreName,
-                it.country,
-                it.previewUrl,
-                isFavorite = it.trackId  in favorites
-            )
+        _durationLiveData.postValue(durationSumConverted)
+        val checked =
+            tracks.map {
+                Track(
+                    it.trackName,
+                    it.artistName,
+                    it.trackTimeMillis,
+                    it.artworkUrl100,
+                    it.trackId,
+                    it.collectionName,
+                    it.releaseDate,
+                    it.primaryGenreName,
+                    it.country,
+                    it.previewUrl,
+                    isFavorite = it.trackId in favorites
+                )
             }
         _tracksLiveData.postValue(checked)
     }
 
 
-    fun onShareClicked(message:String) {
+    fun onShareClicked(message: String) {
         sharingInteractor.shareApp(message)
     }
 
-    fun remove(track:Track) {
+    fun remove(track: Track) {
         viewModelScope.launch {
             val playlist = playlistInteractor.getPlaylist(idInit)
-            val tracks = Gson().fromJson(playlist.tracks,Array<Int>::class.java)
+            val tracks = Gson().fromJson(playlist.tracks, Array<Int>::class.java)
             val tracksMutable = tracks.toMutableList()
             tracksMutable.remove(track.trackId)
-            val tracksUpdate =  Gson().toJson(tracksMutable )
+            val tracksUpdate = Gson().toJson(tracksMutable)
             val playlistSize = tracksMutable.size
-            val playlistUpdate =Playlist(
+            val playlistUpdate = Playlist(
                 id = playlist.id,
                 playlistName = playlist.playlistName,
                 description = playlist.description,
@@ -111,7 +112,7 @@ class PlaylistScreenViewmodel(id:String,
             playlistInteractor.updateList(playlistUpdate)
             fillData(idInit)
 
-            if(!playlistInteractor.checkTrack(track)){
+            if (!playlistInteractor.checkTrack(track)) {
                 playlistInteractor.deleteTrack(track)
             }
         }
@@ -119,12 +120,10 @@ class PlaylistScreenViewmodel(id:String,
 
     }
 
-    fun deletePlaylist(playlist: Playlist){
+    fun deletePlaylist(playlist: Playlist) {
         viewModelScope.launch(context = Dispatchers.Default) {
             playlistInteractor.deletePlaylist(playlist)
             playlistInteractor.updateTracksTable()
         }
-
     }
-
 }

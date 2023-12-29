@@ -2,7 +2,6 @@ package com.example.playlistmaker.mediateka.ui.fragments
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,14 +42,6 @@ class PlaylistScreenFragment : Fragment() {
     private lateinit var tracks: List<Track>
     private lateinit var playlist: Playlist
 
-    companion object {
-        private const val ARGS_ID = "id"
-
-        fun createArgs(id: String): Bundle =
-            bundleOf(ARGS_ID to id)
-
-    }
-
     val viewModel: PlaylistScreenViewmodel by viewModel {
         parametersOf(
             requireArguments().getString(
@@ -69,7 +60,7 @@ class PlaylistScreenFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentPlaylistscreenBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -110,19 +101,15 @@ class PlaylistScreenFragment : Fragment() {
         }
 
         adapter.onItemClick = {
-//            val intent = Intent(requireContext(), PlayerActivity::class.java)
-//            intent.putExtra("track", Gson().toJson(it))
-//            startActivity(intent)
             startPlayer(it)
         }
-
-
 
         adapter.onLongItemclick = {
             deleteTrack(it)
         }
+
         binding.backButton.setOnClickListener {
-            findNavController().popBackStack(R.id.mediaFragment,false)
+            findNavController().popBackStack(R.id.mediaFragment, false)
         }
 
 
@@ -164,13 +151,10 @@ class PlaylistScreenFragment : Fragment() {
                     )
                 })
         }
-
-
     }
 
     private fun startPlayer(track: Track) {
         val trackGson = Gson().toJson(track)
-        Log.v("NAV", "$trackGson")
         findNavController().navigate(
             R.id.action_playlistScreenFragment_to_playerFragment,
             PlayerFragment.createArgs(trackGson)
@@ -188,7 +172,6 @@ class PlaylistScreenFragment : Fragment() {
 
 
     private fun deleteTrack(track: Track) {
-
         confirmDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.deleteTrack))
             .setMessage(getString(R.string.areYouSure))
@@ -204,7 +187,6 @@ class PlaylistScreenFragment : Fragment() {
             .setMessage(getString(R.string.noTracksToShare))
             .setNeutralButton(getString(R.string.ok), object : DialogInterface.OnClickListener {
                 override fun onClick(dialog: DialogInterface?, which: Int) {
-
                 }
             })
             .show()
@@ -237,7 +219,6 @@ class PlaylistScreenFragment : Fragment() {
             playlistName.text = playlist.playlistName
             description.text = playlist.description
             tracksNumber.text = playlist.length?.let { TracksEndingCount().tracksString(it) }
-
             Glide.with(requireActivity())
                 .load(playlist.filepath)
                 .placeholder(R.drawable.placeholderbig)
@@ -259,6 +240,13 @@ class PlaylistScreenFragment : Fragment() {
             adapter.tracks.addAll(tracks)
             adapter.notifyDataSetChanged()
         }
+
+    }
+
+    companion object {
+        private const val ARGS_ID = "id"
+        fun createArgs(id: String): Bundle =
+            bundleOf(ARGS_ID to id)
 
     }
 

@@ -41,18 +41,17 @@ class PlayerViewModel(
     private val _trackLiveData = MutableLiveData<PlaylistState>()
     val trackLiveData: MutableLiveData<PlaylistState> = _trackLiveData
 
-    fun addToPlaylist(trackId:Int,playlist:Playlist){
+    fun addToPlaylist(trackId: Int, playlist: Playlist) {
         val jsonIds = playlist.tracks
-        val trackList =  Gson().fromJson(jsonIds,Array<Int>::class.java)?: emptyArray()
-        if(trackList.contains(trackId)) {
+        val trackList = Gson().fromJson(jsonIds, Array<Int>::class.java) ?: emptyArray()
+        if (trackList.contains(trackId)) {
             _trackLiveData.postValue(PlaylistState.inPlaylist("Данный трек уже есть в плейлисте ${playlist.playlistName}"))
-        }
-        else{
-            val newtrackList =  trackList.plus(trackId)
+        } else {
+            val newtrackList = trackList.plus(trackId)
             val tracksList = Gson().toJson(newtrackList)
             val playlistSize = newtrackList.size
-            val updatedPlaylist =Playlist(
-                id=playlist.id,
+            val updatedPlaylist = Playlist(
+                id = playlist.id,
                 playlistName = playlist.playlistName,
                 description = playlist.description,
                 filepath = playlist.filepath,
@@ -71,6 +70,7 @@ class PlayerViewModel(
         }
 
     }
+
     fun getPlayLists() {
         viewModelScope.launch {
             playlistInteractor.getLists()
@@ -160,14 +160,12 @@ class PlayerViewModel(
             else -> {}
         }
         startTimer()
-
     }
 
 
     override fun onCleared() {
         super.onCleared()
         releasePlayer()
-
     }
 
 
@@ -180,8 +178,6 @@ class PlayerViewModel(
                 _playerState.value =
                     PlayerState.Playing(getCurrentPlayerPosition(), trackInit.isFavorite)
             }
-
-
         }
     }
 

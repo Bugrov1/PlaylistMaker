@@ -16,7 +16,6 @@ class PlaylistsViewModel(private val playlistInteractor: PlaylistInteractor) : V
 
     init {
         fillData()
-
     }
 
     fun fillData() {
@@ -43,6 +42,4 @@ class PlaylistsViewModel(private val playlistInteractor: PlaylistInteractor) : V
     fun refresh() {
         fillData()
     }
-
-
 }
