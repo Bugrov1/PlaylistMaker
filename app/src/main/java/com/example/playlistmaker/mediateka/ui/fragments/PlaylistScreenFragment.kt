@@ -110,6 +110,7 @@ class PlaylistScreenFragment : Fragment() {
 
         binding.backButton.setOnClickListener {
             findNavController().popBackStack(R.id.mediaFragment, false)
+
         }
 
 
@@ -162,7 +163,9 @@ class PlaylistScreenFragment : Fragment() {
     }
 
     private fun shareDialog() {
+        bottomSheetShareBehavior.apply { state =BottomSheetBehavior.STATE_HIDDEN }
         if (tracks.size == 0) {
+            bottomSheetShareBehavior.apply { state =BottomSheetBehavior.STATE_HIDDEN }
             showDialog()
         } else {
             viewModel.onShareClicked(createInfo())

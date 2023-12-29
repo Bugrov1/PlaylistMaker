@@ -22,13 +22,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_end="440dp" />
+        app:layout_constraintGuide_percent="0.45"
+        />
 
 
     <ImageButton
         android:id="@+id/albumCover"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@color/grey_background"
         android:gravity="center"
         android:src="@drawable/placeholderbig"
@@ -169,7 +170,7 @@
         android:background="@drawable/bottom_shape_corners"
         android:orientation="horizontal"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="165dp"
+        app:behavior_peekHeight="155dp"
 
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
 

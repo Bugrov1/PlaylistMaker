@@ -295,6 +295,7 @@
         app:behavior_peekHeight="505dp"
 
 
+
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout

@@ -65,6 +65,14 @@
             app:destination="@id/createPlaylistFragment"
             app:popUpToInclusive="false" />
     </fragment>
+    <fragment
+        android:id="@+id/mediaFragmentPlaylists"
+        android:name="com.example.playlistmaker.mediateka.ui.fragments.MediaFragmentPlaylists"
+        android:label="MediaFragmentPlaylists" >
+        <action
+            android:id="@+id/action_mediaFragmentPlaylists_to_playlistScreenFragment"
+            app:destination="@id/playlistScreenFragment" />
+    </fragment>
 
 </navigation>
 
