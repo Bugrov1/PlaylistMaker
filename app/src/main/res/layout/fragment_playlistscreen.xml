@@ -17,16 +17,24 @@
     android:layout_height="match_parent"
 >
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/image_guideline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="440dp" />
+
 
     <ImageButton
         android:id="@+id/albumCover"
         android:layout_width="match_parent"
-        android:layout_height="360dp"
+        android:layout_height="wrap_content"
         android:background="@color/grey_background"
         android:gravity="center"
         android:src="@drawable/placeholderbig"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintBottom_toTopOf="@id/image_guideline"
         android:clickable="true"
         android:adjustViewBounds="true"
         android:scaleType="centerInside"
@@ -161,7 +169,7 @@
         android:background="@drawable/bottom_shape_corners"
         android:orientation="horizontal"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="225dp"
+        app:behavior_peekHeight="165dp"
 
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
 
@@ -217,7 +225,8 @@
         android:background="@drawable/bottom_shape_corners"
         android:orientation="horizontal"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="300dp"
+        app:behavior_peekHeight="299dp"
+
 
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
 
