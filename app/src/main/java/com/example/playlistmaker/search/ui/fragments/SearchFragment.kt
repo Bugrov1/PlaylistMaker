@@ -136,7 +136,8 @@ class SearchFragment : Fragment() {
         }
 
         binding.placeholderButton.setOnClickListener {
-            viewModel.searchDebounce2(inputText)
+//            viewModel.searchDebounce2(inputText)
+            viewModel.onPlaceHolderButtonClicked(inputText)
         }
 
         binding.clearIcon.setOnClickListener {

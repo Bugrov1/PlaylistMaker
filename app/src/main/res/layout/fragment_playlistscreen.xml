@@ -38,7 +38,7 @@
        app:layout_constraintBottom_toTopOf="@id/image_guideline"
         android:clickable="true"
         android:adjustViewBounds="true"
-        android:scaleType="centerInside"
+        android:scaleType="center"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton

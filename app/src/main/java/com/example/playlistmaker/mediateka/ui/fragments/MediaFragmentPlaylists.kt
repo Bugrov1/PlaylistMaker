@@ -60,6 +60,7 @@ class MediaFragmentPlaylists : Fragment() {
     fun setListeners() {
         binding.createNewPlaylist.setOnClickListener {
             findNavController().navigate(R.id.action_mediaFragment_to_createPlaylistFragment)
+
         }
 
         adapter.onItemClick = {

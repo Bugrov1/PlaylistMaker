@@ -18,10 +18,10 @@ import kotlinx.coroutines.launch
 
 class SearchViewModel(
     val searchHistoryProvider: SearchHistoryInteractor,
-    private val tracksInteractor: TrackInteractor,private val favoritesInteractor: FavoritesInteractor
+    private val tracksInteractor: TrackInteractor,
+    private val favoritesInteractor: FavoritesInteractor
 
 ) : ViewModel() {
-
 
 
     private val stateLiveData = MutableLiveData<SearchState>()
@@ -33,63 +33,65 @@ class SearchViewModel(
 
     init {
         checkFavorites()
- }
+    }
 
     private fun renderState(state: SearchState) {
         stateLiveData.postValue(state)
     }
 
     fun historyload() {
-     checkFavorites()
+        checkFavorites()
     }
 
-    fun checkFavorites(){
+    fun checkFavorites() {
         val history = searchHistoryProvider.read()
         viewModelScope.launch {
-            val ids  = favoritesInteractor.getIds()
-             if (history != null) {
-                 val checked=
-                  history.map { Track(
-                    it.trackName,
-                    it.artistName,
-                    it.trackTimeMillis,
-                    it.artworkUrl100,
-                    it.trackId,
-                    it.collectionName,
-                    it.releaseDate,
-                    it.primaryGenreName,
-                    it.country,
-                    it.previewUrl,
-                    isFavorite = it.trackId  in ids
-                )
-                 }
-                 renderState(SearchState.History(checked.toTypedArray()))
-            }else{ renderState(SearchState.History(emptyArray()))}
+            val ids = favoritesInteractor.getIds()
+            if (history != null) {
+                val checked =
+                    history.map {
+                        Track(
+                            it.trackName,
+                            it.artistName,
+                            it.trackTimeMillis,
+                            it.artworkUrl100,
+                            it.trackId,
+                            it.collectionName,
+                            it.releaseDate,
+                            it.primaryGenreName,
+                            it.country,
+                            it.previewUrl,
+                            isFavorite = it.trackId in ids
+                        )
+                    }
+                renderState(SearchState.History(checked.toTypedArray()))
+            } else {
+                renderState(SearchState.History(emptyArray()))
+            }
         }
     }
 
     fun write(track: Track) {
         searchHistoryProvider.write(track)
     }
-    fun read():Array<Track>? {
-           return  searchHistoryProvider.read()
+
+    fun read(): Array<Track>? {
+        return searchHistoryProvider.read()
     }
 
     fun update() {
         renderState(SearchState.History(searchHistoryProvider.read()))
     }
 
-
-
     fun clear() {
 
-            searchHistoryProvider.clear()
-            renderState(SearchState.History(searchHistoryProvider.read()))
+        searchHistoryProvider.clear()
+        renderState(SearchState.History(searchHistoryProvider.read()))
 
     }
 
     private var searchJob: Job? = null
-     var lastSearchText: String? = null
+    var lastSearchText: String? = null
     fun searchDebounce2(changedText: String) {
         if (lastSearchText == changedText) {
             return
@@ -103,13 +105,23 @@ class SearchViewModel(
             searchRequest(changedText)
         }
     }
-    fun refresh(){
-        Log.v("NAV","resfreshed")
-        when(stateLiveData.value){
+
+    fun onPlaceHolderButtonClicked(text: String) {
+        viewModelScope.launch {
+            searchRequest(text)
+        }
+
+    }
+
+
+    fun refresh() {
+        Log.v("NAV", "resfreshed")
+        when (stateLiveData.value) {
             is SearchState.History -> historyload()
             is SearchState.Content -> viewModelScope.launch {
                 lastSearchText?.let { searchRequest(it) }
             }
+
             else -> {}
         }
 
@@ -133,7 +145,7 @@ class SearchViewModel(
     }
 
     private fun processResult(foundTracks: List<Track>?, errorMessage: String?) {
-        Log.v("SEARCH","income data $errorMessage")
+        Log.v("SEARCH", "income data $errorMessage")
         val trackList = mutableListOf<Track>()
         if (foundTracks != null) {
             trackList.clear()
@@ -142,11 +154,11 @@ class SearchViewModel(
 
         when {
             errorMessage != null -> {
-                if (errorMessage == "Ошибка сервера"){
+                if (errorMessage == "Ошибка сервера") {
                     val message =
                         "Ошибка сервера"
                     renderState(SearchState.Error(message))
-                } else{
+                } else {
                     val message =
                         "Проблемы со связью Загрузка не удалась. Проверьте подключение к интернету"
                     renderState(SearchState.Error(message))
