@@ -426,7 +426,6 @@
         android:orientation="horizontal"
         app:behavior_hideable="true"
         app:behavior_peekHeight="505dp"
-        android:visibility="gone"
 
 
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
