@@ -89,7 +89,6 @@ class SearchViewModel(
     }
 
     private var searchJob: Job? = null
-    private var searchJob2: Job? = null
      var lastSearchText: String? = null
     fun searchDebounce2(changedText: String) {
         if (lastSearchText == changedText) {
@@ -134,6 +133,7 @@ class SearchViewModel(
     }
 
     private fun processResult(foundTracks: List<Track>?, errorMessage: String?) {
+        Log.v("SEARCH","income data $errorMessage")
         val trackList = mutableListOf<Track>()
         if (foundTracks != null) {
             trackList.clear()
@@ -142,9 +142,15 @@ class SearchViewModel(
 
         when {
             errorMessage != null -> {
-                val message =
-                    "Проблемы со связью Загрузка не удалась. Проверьте подключение к интернету"
-                renderState(SearchState.Error(message))
+                if (errorMessage == "Ошибка сервера"){
+                    val message =
+                        "Ошибка сервера"
+                    renderState(SearchState.Error(message))
+                } else{
+                    val message =
+                        "Проблемы со связью Загрузка не удалась. Проверьте подключение к интернету"
+                    renderState(SearchState.Error(message))
+                }
 
             }
 
