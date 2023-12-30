@@ -120,8 +120,7 @@
         <item name="android:textFontWeight">400</item>
         <item name="android:textSize">@dimen/sp_13</item>
         <item name="android:textColor">@color/grey</item>
-        <item name="android:paddingTop">@dimen/dp_9</item>
-        <item name="android:paddingBottom">@dimen/dp_8</item>
+
     </style>
 
     <style name="Tablayouttext">
