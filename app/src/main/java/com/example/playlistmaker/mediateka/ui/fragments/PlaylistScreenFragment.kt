@@ -80,6 +80,25 @@ class PlaylistScreenFragment : Fragment() {
             state =
                 BottomSheetBehavior.STATE_HIDDEN
         }
+        bottomSheetShareBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        binding.overlay.visibility = View.GONE
+                    }
+
+                    else -> {
+                        binding.overlay.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+        })
+
         binding.playlistsRecycler.adapter = adapter
         binding.shareRecycler.adapter = adapterShare
 

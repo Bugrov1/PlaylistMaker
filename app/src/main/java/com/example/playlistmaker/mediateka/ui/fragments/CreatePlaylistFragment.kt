@@ -139,6 +139,7 @@ open class CreatePlaylistFragment : Fragment() {
             Toast.makeText(requireContext(), "Плейлист $playlistName создан", Toast.LENGTH_SHORT)
                 .show()
             findNavController().popBackStack()
+
         }
     }
 
