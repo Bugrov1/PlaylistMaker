@@ -162,7 +162,6 @@
             android:layout_height="wrap_content"
             android:text="The Beatles"
             app:layout_constraintEnd_toStartOf="@+id/right_guideline"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"
             app:layout_constraintTop_toBottomOf="@+id/guideline_ArtistNameTop" />
 
@@ -426,7 +425,7 @@
         android:orientation="horizontal"
         app:behavior_hideable="true"
         app:behavior_peekHeight="505dp"
-        android:visibility="gone"
+
 
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
