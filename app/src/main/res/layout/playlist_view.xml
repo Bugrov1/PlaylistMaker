@@ -8,6 +8,7 @@
     android:layout_marginLeft="@dimen/dp_4"
     android:layout_marginRight="@dimen/dp_4"
     android:layout_marginTop="@dimen/dp_16"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@null">
     <ImageView
         card_view:layout_constraintStart_toStartOf="parent"
@@ -16,6 +17,7 @@
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_gravity="center"
+        app:layout_constraintDimensionRatio="w1:1"
         android:src="@drawable/nothing_found_image"
         />
     <TextView
