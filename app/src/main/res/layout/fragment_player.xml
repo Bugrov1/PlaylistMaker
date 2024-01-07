@@ -151,6 +151,7 @@
             android:layout_marginBottom="@dimen/dp_12"
             android:text="@string/test_album"
             android:ellipsize="end"
+            android:maxLines="1"
             android:gravity="top"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"
             app:layout_constraintTop_toBottomOf="@+id/guideline_TrackNameTop" />

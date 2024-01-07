@@ -31,7 +31,7 @@ import java.util.Locale
 class PlayerFragment : Fragment() {
 
     private lateinit var track: Track
-    private val roundingRadius = 10
+    private val roundingRadius = 8
 
     lateinit var binding: FragmentPlayerBinding
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>

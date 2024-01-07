@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.mediateka.domain.model.Playlist
@@ -161,12 +162,14 @@ open class CreatePlaylistFragment : Fragment() {
     }
 
     fun renderImage(uri: Uri) {
+        val roundingRadius = 8
         Glide.with(requireActivity())
             .load(uri)
             .placeholder(R.drawable.placeholderbig)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .skipMemoryCache(true)
             .centerCrop()
+            .transform(RoundedCorners(roundingRadius))
             .into(binding.addPhoto)
     }
 

@@ -37,6 +37,7 @@
         app:layout_constraintStart_toStartOf="parent"
        app:layout_constraintBottom_toTopOf="@id/image_guideline"
         android:clickable="true"
+
         android:adjustViewBounds="true"
         android:scaleType="center"
         app:layout_constraintTop_toTopOf="parent" />

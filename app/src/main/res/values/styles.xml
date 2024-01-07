@@ -91,11 +91,8 @@
         <item name="android:textSize">@dimen/search_refresh_textsize</item>
         <item name="android:letterSpacing">0.02</item>
         <item name="cornerRadius">@dimen/search_refresh_radius</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:paddingTop">@dimen/dp_8</item>
-        <item name="android:paddingLeft">@dimen/dp_6</item>
-        <item name="android:paddingRight">@dimen/dp_6</item>
-        <item name="android:paddingBottom">@dimen/dp_6</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+
 
 
     </style>
