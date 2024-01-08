@@ -48,7 +48,6 @@ class MediaFragmentPlaylists : Fragment() {
         recyclerView.adapter = adapter
 
         viewModel.refresh()
-        binding.placeholderText.text = requireArguments().getString(TEXT).toString()
         viewModel.state.observe(viewLifecycleOwner) {
             adapter.playlists.clear()
             render(it)
