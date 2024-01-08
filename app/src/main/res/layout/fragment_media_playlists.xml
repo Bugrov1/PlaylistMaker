@@ -20,7 +20,6 @@
         />
 
     <ImageView
-        android:visibility="gone"
         android:id="@+id/placeholderImage"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,20 +39,19 @@
         android:layout_marginStart="@dimen/dp_24"
         android:layout_marginEnd="@dimen/dp_24"
         app:layout_constraintEnd_toEndOf="parent"
+        android:maxLines="2"
         android:text="@string/mediaEmptyPlylist"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/placeholderImage"
         style="@style/PlayerMainText"
         android:layout_width="0dp"
-        android:lines="2"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="@dimen/sp_19"
         android:layout_marginTop="@dimen/dp_16" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:visibility="visible"
-
+        android:visibility="gone"
         android:layout_marginStart="@dimen/dp_16"
         android:layout_marginEnd="@dimen/dp_16"
         android:id="@+id/recyclerView"
@@ -67,7 +65,6 @@
         tools:listitem="@layout/playlist_view"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
-
 
         />
 
