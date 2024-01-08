@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
@@ -171,6 +172,7 @@ open class CreatePlaylistFragment : Fragment() {
             .centerCrop()
             .transform(RoundedCorners(roundingRadius))
             .into(binding.addPhoto)
+        binding.addPhoto.scaleType = ImageView.ScaleType.FIT_XY
     }
 
     open fun saveImageToPrivateStorage(uri: Uri?) {

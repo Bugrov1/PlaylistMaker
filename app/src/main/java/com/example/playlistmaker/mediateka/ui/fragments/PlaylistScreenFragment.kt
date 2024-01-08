@@ -246,9 +246,9 @@ class PlaylistScreenFragment : Fragment() {
                 .placeholder(R.drawable.placeholderbig)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
-                .centerCrop()
                 .into(albumCover)
         }
+
     }
 
     private fun renderBottomSheet(tracks: List<Track>) {

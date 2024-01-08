@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white_black"
+    xmlns:card_view="http://schemas.android.com/tools"
     tools:context="com.example.playlistmaker.mediateka.ui.fragments.CreatePlaylistFragment">
 
 
@@ -93,31 +94,45 @@
         app:layout_constraintGuide_percent="0.933"/>
 
 
-    <ImageButton
-        android:id="@+id/addPhoto"
+    <androidx.cardview.widget.CardView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:adjustViewBounds="true"
-        android:background="@drawable/add_photo_rectangle"
-        android:clickable="true"
-        android:gravity="center"
-        android:scaleType="centerInside"
-        android:src="@drawable/add_photo"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp"
+        android:layout_marginStart="@dimen/dp_24"
+        android:layout_marginEnd="@dimen/dp_24"
         app:layout_constraintBottom_toTopOf="@id/image_guideline"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="@id/image_guidelineVertPicEnd"
-        app:layout_constraintStart_toStartOf="@id/image_guidelineVertPicStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/add_photo"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/backButton"
-        app:layout_constraintTop_toTopOf="@id/image_Topguideline"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@id/image_Topguideline">
+
+        <ImageView
+            android:id="@+id/addPhoto"
+            android:background="@drawable/add_photo_rectangle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:gravity="center_horizontal"
+            android:src="@drawable/add_photo"
+            android:scaleType="centerInside"
+            />
+    </androidx.cardview.widget.CardView>
+
+
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/textlayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/image_guidelineVertPicEnd"
-        app:layout_constraintStart_toStartOf="@id/image_guidelineVertPicStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/dp_16"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/dp_16"
         app:layout_constraintTop_toTopOf="@+id/guideline_textTop">
 
         <androidx.constraintlayout.widget.Guideline
@@ -157,6 +172,8 @@
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:hint="@string/namePlaylist"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:textColorHint="@color/black_standart_white"
             app:layout_constraintTop_toTopOf="@id/textlayout"
 

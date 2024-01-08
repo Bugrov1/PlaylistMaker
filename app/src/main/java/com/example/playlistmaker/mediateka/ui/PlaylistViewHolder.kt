@@ -20,7 +20,7 @@ class PlaylistViewHolder (view: View): RecyclerView.ViewHolder(view) {
     fun bind(playlist: Playlist) {
         playlistName.text = playlist.playlistName
         tracksNumber.text = TracksEndingCount().tracksString(playlist.length ?: 0)
-        val roundingRadius = 10
+        val roundingRadius = 8
         Glide.with(itemView)
             .load(playlist.filepath)
             .placeholder(R.drawable.placeholder)
