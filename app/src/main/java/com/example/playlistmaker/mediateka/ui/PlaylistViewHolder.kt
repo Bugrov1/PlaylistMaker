@@ -23,7 +23,7 @@ class PlaylistViewHolder (view: View): RecyclerView.ViewHolder(view) {
         val roundingRadius = 8
         Glide.with(itemView)
             .load(playlist.filepath)
-            .placeholder(R.drawable.placeholder)
+            .placeholder(R.drawable.placeholdermiddle)
             .centerCrop()
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .skipMemoryCache(true)

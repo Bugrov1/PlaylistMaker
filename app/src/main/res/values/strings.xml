@@ -80,6 +80,10 @@
     <string name="trackYearHolder" translatable="false">1965</string>
     <string name="trackGenreHolder" translatable="false">Rock</string>
     <string name="trackCountryHolder" translatable="false">Великобритания</string>
+    <string name="playlistNameHolder" translatable="false">Best Songs 2021</string>
+    <string name="playlistDescriptionHolder" translatable="false">2022</string>
+    <string name="playlistDurationHolder" translatable="false">300 Минут</string>
+    <string name="playlistSizeHolder" translatable="false">98 треков</string>
 
     <plurals name="plurals_1">
         <item quantity="zero">%1$d = zero</item>
