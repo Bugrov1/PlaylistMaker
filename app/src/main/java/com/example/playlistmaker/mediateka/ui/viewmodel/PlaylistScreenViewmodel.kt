@@ -43,6 +43,13 @@ class PlaylistScreenViewmodel(
         fillData(idInit)
     }
 
+    fun refreshData() {
+        viewModelScope.launch {
+            val playlist = playlistInteractor.getPlaylist(idInit)
+            render(playlist)
+        }
+    }
+
     private fun fillData(id: Long) {
 
         viewModelScope.launch {

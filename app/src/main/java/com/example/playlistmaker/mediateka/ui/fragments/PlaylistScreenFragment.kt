@@ -2,9 +2,11 @@ package com.example.playlistmaker.mediateka.ui.fragments
 
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -52,7 +54,7 @@ class PlaylistScreenFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.refresh()
+        viewModel.refreshData()
         adapterShare.notifyDataSetChanged()
 
     }
@@ -241,6 +243,8 @@ class PlaylistScreenFragment : Fragment() {
             playlistName.text = playlist.playlistName
             description.text = playlist.description
             tracksNumber.text = playlist.length?.let { TracksEndingCount().tracksString(it) }
+           Log.v("IMAGE", "${playlist.filepath.toString()=="null"}")
+            Log.v("IMAGE", "${playlist}")
             Glide.with(requireActivity())
                 .load(playlist.filepath)
                 .placeholder(R.drawable.placeholderbig)
@@ -248,6 +252,7 @@ class PlaylistScreenFragment : Fragment() {
                 .skipMemoryCache(true)
                 .into(albumCover)
         }
+        if (playlist.filepath.toString()!="null"){ binding.albumCover.scaleType = ImageView.ScaleType.FIT_XY}
 
     }
 
