@@ -113,7 +113,7 @@ class EditPlaylistFragment : CreatePlaylistFragment() {
 
     }
 
-    override fun onBackPressed(text: String) {
+    override fun onBackPressed(text: String,text2: String, uri: Uri?) {
         if (text.isNotEmpty()) {
             confirmDialog.show()
         } else {

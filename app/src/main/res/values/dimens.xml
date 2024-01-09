@@ -68,7 +68,8 @@
     <dimen name="dp_5">5dp</dimen>
     <dimen name="dp_17">17dp</dimen>
     <dimen name="dp_4">4dp</dimen>
-
+    <dimen name="sp_12">12sp</dimen>
+    <dimen name="sp_16">16sp</dimen>
 
 
 

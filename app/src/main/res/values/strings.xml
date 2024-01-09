@@ -70,11 +70,16 @@
     <string name="ok" translatable="false">OK</string>
     <string name="positive" translatable="false">ДА</string>
     <string name="negative" translatable="false">НЕТ</string>
-
     <string name="wantToDelete" translatable="false">Хотите удалить плейлист?</string>
-
-
     <string name="emptyPlaylist" translatable="false">В этом плейлисте пока нет треков</string>
+    <string name="longText" translatable="false">Long text</string>
+    <string name="playlistName" translatable="false">Playlist name</string>
+    <string name="ArtistNameHolder" translatable="false">The Beatles</string>
+    <string name="trackTimeHolder" translatable="false">00:00</string>
+    <string name="trackDurationHolder" translatable="false">5:35</string>
+    <string name="trackYearHolder" translatable="false">1965</string>
+    <string name="trackGenreHolder" translatable="false">Rock</string>
+    <string name="trackCountryHolder" translatable="false">Великобритания</string>
 
     <plurals name="plurals_1">
         <item quantity="zero">%1$d = zero</item>

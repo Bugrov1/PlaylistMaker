@@ -15,12 +15,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistscreenBinding
 import com.example.playlistmaker.mediateka.domain.model.Playlist
+import com.example.playlistmaker.mediateka.ui.AdapterPlaylistTracks
 import com.example.playlistmaker.mediateka.ui.viewmodel.PlaylistScreenViewmodel
 import com.example.playlistmaker.player.ui.BottomAdapter
 import com.example.playlistmaker.player.ui.TracksEndingCount
 import com.example.playlistmaker.player.ui.fragment.PlayerFragment
 import com.example.playlistmaker.search.domain.models.Track
-import com.example.playlistmaker.search.ui.Adapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
@@ -34,7 +34,7 @@ class PlaylistScreenFragment : Fragment() {
 
     private lateinit var binding: FragmentPlaylistscreenBinding
 
-    private val adapter = Adapter()
+    private val adapter = AdapterPlaylistTracks()
     private val adapterShare = BottomAdapter()
     private lateinit var confirmDialog: MaterialAlertDialogBuilder
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>

@@ -131,10 +131,12 @@
 
 
         <androidx.cardview.widget.CardView
+            android:backgroundTint="@color/white_black"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="0dp"
+
             app:layout_constraintBottom_toTopOf="@id/guideline_bottomCover"
             app:layout_constraintEnd_toStartOf="@+id/right_guideline"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"
@@ -158,7 +160,6 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toStartOf="@+id/right_guideline"
             style="@style/PlayerMainText"
-            android:layout_marginBottom="@dimen/dp_12"
             android:text="@string/test_album"
             android:ellipsize="end"
             android:maxLines="1"
@@ -171,7 +172,7 @@
             style="@style/PlayerSecondText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="The Beatles"
+            android:text="@string/ArtistNameHolder"
             app:layout_constraintEnd_toStartOf="@+id/right_guideline"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"
             app:layout_constraintTop_toBottomOf="@+id/guideline_ArtistNameTop" />
@@ -182,7 +183,7 @@
             android:layout_height="0dp"
             android:background="@drawable/playpausebutton"
             android:contentDescription="@string/back_button"
-            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintDimensionRatio="w,1:1"
             app:layout_constraintEnd_toEndOf="@id/guideline_endPlayButton"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="@id/guideline_startPlayButton"
@@ -215,10 +216,10 @@
         <TextView
             android:id="@+id/playTime"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="@+id/right_guideline"
             app:layout_constraintStart_toStartOf="@+id/left_guideline"
-            android:text="00:00"
+           android:text="@string/trackTimeHolder"
             style="@style/PlayerSecondText"
             android:layout_marginTop="@dimen/dp_4"
             app:layout_constraintTop_toBottomOf="@+id/playPauseButton"
@@ -339,7 +340,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="@dimen/search_left_right_margin"
                 android:gravity="center"
-                android:text="5:35"
+                android:text="@string/trackDurationHolder"
                 android:textColor="@color/black_white"
                 app:layout_constraintBaseline_toBaselineOf="@+id/trackTime"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -373,7 +374,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/search_left_right_margin"
                 android:gravity="center"
-                android:text="1965"
+                android:text="@string/trackYearHolder"
                 android:textColor="@color/black_white"
                 app:layout_constraintBaseline_toBaselineOf="@+id/year"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -387,7 +388,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/search_left_right_margin"
                 android:gravity="center"
-                android:text="Rock"
+                android:text="@string/trackGenreHolder"
                 android:textColor="@color/black_white"
                 app:layout_constraintBaseline_toBaselineOf="@+id/genre"
                 app:layout_constraintBottom_toBottomOf="@id/genre"
@@ -403,7 +404,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/search_left_right_margin"
                 android:gravity="center"
-                android:text="Великобритания"
+                android:text="@string/trackCountryHolder"
                 android:textColor="@color/black_white"
                 app:layout_constraintBaseline_toBaselineOf="@+id/country"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -428,6 +429,7 @@
 
 
     <LinearLayout
+
         android:id="@+id/playlists_bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

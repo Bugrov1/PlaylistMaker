@@ -49,6 +49,7 @@ open class CreatePlaylistFragment : Fragment() {
 
     var uriPhoto: Uri? = null
 
+
     override fun onDestroyView() {
         super.onDestroyView()
         handler.removeCallbacksAndMessages(null)
@@ -68,7 +69,9 @@ open class CreatePlaylistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.createButton.isEnabled = false
+        uriPhoto = null
 
+        Log.d("uriPhoto", "${uriPhoto} ")
 
         viewModel.state.observe(viewLifecycleOwner) {
             renderButton(it)
@@ -97,7 +100,7 @@ open class CreatePlaylistFragment : Fragment() {
                 if (uri != null) {
                     renderImage(uri)
                     uriPhoto = uri
-                    Log.d("uriPhoto", "${uriPhoto.toString().isNotEmpty()} ")
+                    initOnBackPress()
                 } else {
                     Log.d("PhotoPicker", "No media selected")
                 }
@@ -117,12 +120,16 @@ open class CreatePlaylistFragment : Fragment() {
             }
 
         binding.backButton.setOnClickListener {
-            onBackPressed(playlistName)
+            onBackPressed(playlistName,
+                description,
+                uriPhoto)
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                onBackPressed(playlistName)
+                onBackPressed(playlistName
+                    ,description,
+                    uriPhoto)
             }
         })
 
@@ -144,9 +151,19 @@ open class CreatePlaylistFragment : Fragment() {
 
         }
     }
+    private fun initOnBackPress(){
+        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onBackPressed(playlistName
+                    ,description,
+                    uriPhoto)
+            }
+        })
+    }
 
-    open fun onBackPressed(text: String) {
-        if (text.isNotEmpty()) {
+    open fun onBackPressed(text: String,textDesc: String,uri: Uri?) {
+
+        if (text.isNotEmpty() or textDesc.isNotEmpty() or (uri!= null) ) {
             confirmDialog.show()
         } else {
             findNavController().popBackStack()

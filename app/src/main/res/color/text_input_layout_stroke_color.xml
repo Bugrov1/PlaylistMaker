@@ -4,5 +4,7 @@
     <item android:color="#3772E7" android:state_focused="true" />
     <item android:alpha="0.87" android:color="#822686" android:state_hovered="true" />
     <item android:alpha="0.12" android:color="#463300" android:state_enabled="false" />
-    <item android:alpha="0.38" android:color="#4D3C59" />
+    <item android:alpha="0.4" android:color="@color/grey_white2" />
+
+
 </selector>

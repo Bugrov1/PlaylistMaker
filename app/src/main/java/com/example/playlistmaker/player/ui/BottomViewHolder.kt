@@ -1,6 +1,5 @@
 package com.example.playlistmaker.player.ui
 
-import android.content.res.Resources
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -21,10 +20,8 @@ class BottomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         trackNumber.text = TracksEndingCount().tracksString(model.length ?: 0)
 
-//        cover.setImageURI(model.filepath)
+
         val roundingRadius = 10
-//        val imageWidthPixels = 1024;
-//        val  imageHeightPixels = 768;
 
         Glide.with(itemView)
             .load(model.filepath)
