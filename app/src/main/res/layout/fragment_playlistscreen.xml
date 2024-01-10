@@ -31,7 +31,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/grey_background"
-        android:gravity="center"
         android:src="@drawable/placeholderbig"
         android:scaleType="center"
 

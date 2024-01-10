@@ -252,7 +252,9 @@ class PlaylistScreenFragment : Fragment() {
                 .skipMemoryCache(true)
                 .into(albumCover)
         }
-        if (playlist.filepath.toString()!="null"){ binding.albumCover.scaleType = ImageView.ScaleType.FIT_XY}
+        if (playlist.filepath.toString()!="null"){ binding.albumCover.scaleType = ImageView.ScaleType.FIT_XY
+
+        }
 
     }
 

@@ -70,7 +70,9 @@
     <dimen name="dp_4">4dp</dimen>
     <dimen name="sp_12">12sp</dimen>
     <dimen name="sp_16">16sp</dimen>
-
+    <dimen name="dp_39">39dp</dimen>
+    <dimen name="dp_36.92">36.92dp</dimen>
+    <dimen name="dp_39.26">39.26dp</dimen>
 
 
 
