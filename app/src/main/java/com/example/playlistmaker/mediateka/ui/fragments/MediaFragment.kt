@@ -13,7 +13,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class MediaFragment: Fragment() {
 
-    private lateinit var binding: FragmentMediaBinding
+    lateinit var binding: FragmentMediaBinding
 
     private lateinit var tabMediator: TabLayoutMediator
 

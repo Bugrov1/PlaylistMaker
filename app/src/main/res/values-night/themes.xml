@@ -6,8 +6,8 @@
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorSecondary">#3772E7</item>
+        <item name="colorSecondaryVariant">#3772E7</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
@@ -16,10 +16,10 @@
 
 
     <style name="SwitchColor">
-        <item name="colorSecondary">#2C77FB</item>
-        <item name="colorSecondaryVariant">#4B02F0</item>
-        <item name="android:thumbTint">@color/white</item>
-        <item name="android:trackTint">@color/light_grey</item>
+        <item name="colorSecondary">#3772E7</item>
+        <item name="colorSecondaryVariant">#3772E7</item>
+        <item name="android:thumbTint">@color/switch_thumb </item>
+        <item name="android:trackTint">@color/switch_track</item>
 
     </style>
 </resources>

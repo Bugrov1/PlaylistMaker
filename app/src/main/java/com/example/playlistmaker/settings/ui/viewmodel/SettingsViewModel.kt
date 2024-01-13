@@ -36,7 +36,8 @@ class SettingsViewModel(
     }
 
     fun onShareAppClicked() {
-        sharingInteractor.shareApp()
+        sharingInteractor.shareApp("https://practicum.yandex.ru/profile/android-developer/")
+
     }
 
     fun onLicenseClicked() {

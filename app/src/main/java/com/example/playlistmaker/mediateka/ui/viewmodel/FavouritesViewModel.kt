@@ -16,7 +16,6 @@ class FavouritesViewModel(private val favoritesInteractor: FavoritesInteractor) 
 
     init {
         fillData()
-
     }
 
     fun fillData() {

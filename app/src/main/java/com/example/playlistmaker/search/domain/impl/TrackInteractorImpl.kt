@@ -1,5 +1,6 @@
 package com.example.playlistmaker.search.domain.impl
 
+import android.util.Log
 import com.example.playlistmaker.search.domain.api.TrackInteractor
 
 import com.example.playlistmaker.search.domain.api.TrackRepository
@@ -14,7 +15,9 @@ class TrackInteractorImpl(private val repository: TrackRepository) : TrackIntera
 
     override fun searchTracks(expression: String): Flow<Pair<List<Track>?, String?>> {
         return repository.searchTracks(expression).map { result ->
+            Log.v("SEARCH","intercator answer  ${result.message}")
             when (result) {
+
                 is Resource.Success -> {
                     Pair(result.data, null)
                 }

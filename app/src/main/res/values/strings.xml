@@ -47,15 +47,66 @@
     <string name="country">Страна</string>
     <string name="media">Медиатека</string>
     <string name="mediaEmpty">Ваша медиатека пуста</string>
-    <string name="mediaEmptyPlylist">Вы не создали \n ни одного плейлиста</string>
+    <string name="mediaEmptyPlylist" >Вы не создали \n ни одного плейлиста</string>
     <string name="newPlylist">Новый плейлист</string>
     <string name="favourites">Избранные треки</string>
     <string name="playlists">Плейлисты</string>
     <string name="share">Share</string>
     <string name="namePlaylist">Название*</string>
     <string name="descripyionPlaylist">Описание</string>
-    <string name="createButton">Создать</string>
+    <string name="createButton" translatable="false">Создать</string>
+    <string name="sharePlaylist">Поделиться</string>
+    <string name="editInfo">Редактировать информацию</string>
+    <string name="deletePlaylist">Удалить плейлист</string>
+    <string name="finishCreatePlaylist" translatable="false">Завершить создание плейлиста?</string>
+    <string name="allUnsavedWillbeLost" translatable="false">Все несохраненные данные будут потеряны.</string>
+    <string name="cancel" translatable="false">Отмена</string>
+    <string name="finish" translatable="false">Завершить</string>
+    <string name="save" translatable="false">Сохранить</string>
+    <string name="deleteTrack" translatable="false"> Удалить трек</string>
+    <string name="delete" translatable="false">Удалить</string>
+    <string name="noTracksToShare" translatable="false">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="areYouSure" translatable="false"> Вы уверены, что хотите удалить трек из плейлиста?</string>
+    <string name="ok" translatable="false">OK</string>
+    <string name="positive" translatable="false">ДА</string>
+    <string name="negative" translatable="false">НЕТ</string>
+    <string name="wantToDelete" translatable="false">Хотите удалить плейлист?</string>
+    <string name="emptyPlaylist" translatable="false">В этом плейлисте пока нет треков</string>
+    <string name="longText" translatable="false">Long text</string>
+    <string name="playlistName" translatable="false">Playlist name</string>
+    <string name="ArtistNameHolder" translatable="false">The Beatles</string>
+    <string name="trackTimeHolder" translatable="false">00:00</string>
+    <string name="trackDurationHolder" translatable="false">5:35</string>
+    <string name="trackYearHolder" translatable="false">1965</string>
+    <string name="trackGenreHolder" translatable="false">Rock</string>
+    <string name="trackCountryHolder" translatable="false">Великобритания</string>
+    <string name="playlistNameHolder" translatable="false">Best Songs 2021</string>
+    <string name="playlistDescriptionHolder" translatable="false">2022</string>
+    <string name="playlistDurationHolder" translatable="false">300 Минут</string>
+    <string name="playlistSizeHolder" translatable="false">98 треков</string>
+
+    <plurals name="plurals_1">
+        <item quantity="zero">%1$d = zero</item>
+        <item quantity="one">%1$d = one</item>
+        <item quantity="two">%1$d = two</item>
+        <item quantity="few">%1$d = few</item>
+        <item quantity="many">%1$d = many</item>
+        <item quantity="other">%1$d = other</item>
+    </plurals>
+
+    <!-- А этот код мы используем для проверки того, как выглядит реальное склонение -->
+    <plurals name="plurals_2">
+        <item quantity="zero">%1$d  tracks</item>
+        <item quantity="one">%1$d track</item>
+        <item quantity="two">%1$d tracks</item>
+        <item quantity="few">%1$d tracks</item>
+        <item quantity="many">%1$d tracks</item>
+        <item quantity="other">%1$d tracks</item>
+    </plurals>
+
+
 
 
 
 </resources>
+
