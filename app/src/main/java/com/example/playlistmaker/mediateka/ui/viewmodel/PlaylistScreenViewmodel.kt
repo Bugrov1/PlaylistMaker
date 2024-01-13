@@ -131,6 +131,8 @@ class PlaylistScreenViewmodel(
         viewModelScope.launch(context = Dispatchers.Default) {
             playlistInteractor.deletePlaylist(playlist)
             playlistInteractor.updateTracksTable()
+
         }
+
     }
 }

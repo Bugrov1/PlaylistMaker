@@ -93,6 +93,9 @@ class SearchViewModel(
     private var searchJob: Job? = null
     var lastSearchText: String? = null
     fun searchDebounce2(changedText: String) {
+        if(changedText.isEmpty()){
+            update()
+        }
         if (lastSearchText == changedText) {
             return
         }
@@ -107,9 +110,10 @@ class SearchViewModel(
     }
 
     fun onPlaceHolderButtonClicked(text: String) {
-        viewModelScope.launch {
+        if (text.isNotEmpty()){  viewModelScope.launch {
             searchRequest(text)
         }
+        }else{update()}//добавил апдейт
 
     }
 

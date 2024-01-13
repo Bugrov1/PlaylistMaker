@@ -1,6 +1,6 @@
 package com.example.playlistmaker.search.data.dto
 
 class TrackResponse(
-    val resultCount: Int,
+    var code: Int = 0,
     val results: List<TrackDto>
 ): Response()

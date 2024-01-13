@@ -18,6 +18,7 @@ class TrackRepositoryImpl(private val networkClient: NetworkClient,
 
     override fun searchTracks(expression: String): Flow<Resource<List<Track>>> = flow {
         val response = networkClient.doRequest(TrackSearchRequest(expression))
+
         Log.v("SEARCH","${response.resultCode}")
         when (response.resultCode) {
              -1 -> {
@@ -47,8 +48,12 @@ class TrackRepositoryImpl(private val networkClient: NetworkClient,
                 }
 
             }
+            404->{
+                emit(Resource.Success(emptyList()))
+            }
 
             else -> {
+
                emit(Resource.Error("Ошибка сервера"))
                 Log.v("SEARCH","repository answer Ошибка сервера")
             }

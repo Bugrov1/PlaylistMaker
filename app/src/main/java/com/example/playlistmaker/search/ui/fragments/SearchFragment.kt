@@ -259,6 +259,7 @@ class SearchFragment : Fragment() {
             is SearchState.History -> historyLoad(state.history)
             is SearchState.Update -> updateHistory(state.history)
 
+            else -> {}
         }
     }
 
