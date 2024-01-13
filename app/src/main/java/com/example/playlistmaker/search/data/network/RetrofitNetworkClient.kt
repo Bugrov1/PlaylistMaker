@@ -8,8 +8,6 @@ import com.example.playlistmaker.search.data.NetworkClient
 import com.example.playlistmaker.search.data.dto.TrackResponse
 import com.example.playlistmaker.search.data.dto.TrackSearchRequest
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.awaitResponse
 
@@ -39,24 +37,9 @@ class RetrofitNetworkClient(private val context: Context,
             }
 
 
-//            try {
-//                val response= itunesService.search(dto.expression)
-//
-//                response.apply { resultCode = 200 }
-//            } catch (e: Throwable) {
-//                Log.v("SEARCH","response  is {${e}}")
-//                Response().apply { resultCode = 500 }
-//
-//            }
-
         }
     }
-    suspend fun getResult(text:String){
 
-        GlobalScope.launch(Dispatchers.IO) {
-            val response = itunesService.search(text)
-        }
-    }
 
 
 
